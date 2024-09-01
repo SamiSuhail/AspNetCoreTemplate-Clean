@@ -1,4 +1,7 @@
-﻿namespace MyApp.Server.Infrastructure.GraphQL;
+﻿using MyApp.Server.Modules.Queries;
+using MyApp.Server.Modules.Queries.Auth;
+
+namespace MyApp.Server.Infrastructure.GraphQL;
 
 public static class StartupExtensions
 {
@@ -6,6 +9,8 @@ public static class StartupExtensions
     {
         services.AddGraphQLServer()
             .AddAuthorization()
+            .AddQueryType<Query>()
+            .AddTypeExtension<AuthQuery>()
             .AddErrorFilter<CustomErrorFilter>()
             .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = env.IsDevelopment());
 

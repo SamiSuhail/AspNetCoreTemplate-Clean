@@ -1,4 +1,5 @@
 ﻿using MyApp.Server.Infrastructure.Database;
+using MyApp.Server.Modules.Commands.Auth.BackgroundJobs.CleanupConfirmations;
 using Quartz;
 
 namespace MyApp.Server.Infrastructure.BackgroundJobs;
@@ -11,6 +12,8 @@ public static class StartupExtensions
 
         services.AddQuartz(c =>
         {
+            CleanupConfirmationsScheduler.Start(c);
+
             c.UsePersistentStore(o =>
             {
                 o.UsePostgres(connectionStrings.Database);

@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
-using MyApp.ApplicationIsolationTests.Core.FakeExternalServices;
+﻿using MyApp.ApplicationIsolationTests.Core.FakeExternalServices;
 using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Email;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Refit;
 using Testcontainers.PostgreSql;
 using DbDeployHelpers = MyApp.DbDeploy.Helpers;
 
@@ -32,6 +33,8 @@ public class AppFactory : WebApplicationFactory<ProgramApi>, IAsyncLifetime
 
     public MockBag MockBag { get; set; }
     public HttpClient HttpClient { get; private set; }
+    public IApplicationClient AppClient { get; private set; }
+    public IApplicationGraphQLClient GraphQLClient { get; private set; }
 
     public async Task InitializeAsync()
     {
@@ -41,6 +44,23 @@ public class AppFactory : WebApplicationFactory<ProgramApi>, IAsyncLifetime
         DbDeployHelpers.DeployDatabase(_connectionString);
 
         HttpClient = CreateClient();
+        AppClient = RestService.For<IApplicationClient>(HttpClient);
+        GraphQLClient = CreateGraphQLClient();
+    }
+
+    public IApplicationGraphQLClient CreateGraphQLClient(Action<HttpClient>? configureClient = null)
+    {
+        return new ServiceCollection()
+            .AddApplicationGraphQLClient()
+            .ConfigureHttpClient(c =>
+            {
+                c.BaseAddress = new($"{HttpClient.BaseAddress!.AbsoluteUri}graphql");
+                configureClient?.Invoke(c);
+            },
+                cb => cb.ConfigurePrimaryHttpMessageHandler(() => Server.CreateHandler()))
+            .Services
+            .BuildServiceProvider()
+            .GetRequiredService<IApplicationGraphQLClient>();
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
