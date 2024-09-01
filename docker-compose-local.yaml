@@ -1,0 +1,21 @@
+volumes:
+  pg_volume:                                
+    name: pg_volume
+
+services: 
+    postgres:
+        image: postgres
+        ports:
+          - 5432:5432
+        volumes:
+          - pg_volume:/var/lib/postgresql/data
+        environment:
+            POSTGRES_DB: ${PG_NAME}
+            POSTGRES_USER: ${PG_USERNAME}
+            POSTGRES_PASSWORD: ${PG_PASSWORD}
+
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+          - 1025:1025
+          - 8025:8025
