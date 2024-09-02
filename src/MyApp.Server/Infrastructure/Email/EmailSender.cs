@@ -9,17 +9,13 @@ public interface IEmailSender
     Task Send(string name, string email, string subject, string text, CancellationToken cancellationToken);
 }
 
-public class EmailSender : IEmailSender
+public class EmailSender(EmailSettings settings) : IEmailSender
 {
-    const string SenderName = "MyApp";
-    const string SenderEmail = "myapp@gmail.com";
-    const string SMTPHost = "localhost";
-    const int SMTPPort = 1025;
     public async Task Send(string name, string email, string subject, string text, CancellationToken cancellationToken)
     {
         var message = new MimeMessage();
 
-        message.From.Add(new MailboxAddress(SenderName, SenderEmail));
+        message.From.Add(new MailboxAddress(settings.SenderName, settings.SenderEmail));
         message.To.Add(new MailboxAddress(name, email));
 
         message.Subject = subject;
@@ -29,7 +25,7 @@ public class EmailSender : IEmailSender
         };
 
         using var smtp = new SmtpClient();
-        await smtp.ConnectAsync(SMTPHost, SMTPPort, false, cancellationToken);
+        await smtp.ConnectAsync(settings.SMTPHost, settings.SMTPPort, false, cancellationToken);
 
         await smtp.SendAsync(message, cancellationToken);
         await smtp.DisconnectAsync(true, cancellationToken);
