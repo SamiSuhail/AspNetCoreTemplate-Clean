@@ -1,6 +1,8 @@
 volumes:
-  pg_volume:                                
-    name: pg_volume
+    pg_volume:                                
+        name: pg_volume
+    rabbitmq_volume:
+        name: rabbitmq_volume
 
 services: 
     postgres:
@@ -19,3 +21,15 @@ services:
         ports:
           - 1025:1025
           - 8025:8025
+    
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: rabbitmq
+        ports:
+          - 5672:5672
+          - 15672:15672
+        volumes:
+          - rabbitmq_volume:/var/lib/rabbitmq/data
+        environment:
+            RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
