@@ -5,12 +5,12 @@ using Moq;
 using MyApp.ApplicationIsolationTests.Core;
 using MyApp.Server.Infrastructure.Messaging;
 using MyApp.Server.Modules.Commands.Auth.ConfirmEmail;
-using MyApp.Server.Modules.Commands.Auth.ForgotPassword;
 using MyApp.Server.Modules.Commands.Auth.Login;
+using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Modules.Commands.Auth.Register;
+using MyApp.Server.Modules.Commands.Auth.Registration;
 using MyApp.Server.Modules.Commands.Auth.ResendConfirmation;
 using MyApp.Server.Modules.Commands.Auth.ResetPassword;
-using MyApp.Server.Modules.Commands.Auth.SendEmailConfirmation;
 using MyApp.Server.Modules.Queries.Ping;
 
 namespace MyApp.ApplicationIsolationTests;

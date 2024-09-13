@@ -1,6 +1,6 @@
 ﻿using MyApp.Server.Utilities;
 
-namespace MyApp.Server.Modules.Commands.Auth.ResetPassword;
+namespace MyApp.Server.Modules.Commands.Auth.PasswordManagement.ResetPassword;
 
 public class ResetPasswordTransformer : IRequestTransformer<ResetPasswordRequest>
 {

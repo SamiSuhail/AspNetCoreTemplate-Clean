@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MyApp.Server.Modules.Commands.Auth.Register;
+namespace MyApp.Server.Modules.Commands.Auth.Registration.Register;
 
 public class RegisterValidator : AbstractValidator<RegisterRequest>
 {

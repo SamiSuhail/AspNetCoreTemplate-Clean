@@ -4,7 +4,7 @@ using MyApp.Server.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MyApp.Server.Modules.Commands.Auth.ResetPassword;
+namespace MyApp.Server.Modules.Commands.Auth.PasswordManagement.ResetPassword;
 
 public record ResetPasswordRequest(string Code, string Password) : IRequest;
 

@@ -1,6 +1,6 @@
 ﻿using MyApp.Server.Utilities;
 
-namespace MyApp.Server.Modules.Commands.Auth.ConfirmEmail;
+namespace MyApp.Server.Modules.Commands.Auth.Registration.ConfirmEmail;
 
 public class ConfirmEmailTransformer : IRequestTransformer<ConfirmEmailRequest>
 {

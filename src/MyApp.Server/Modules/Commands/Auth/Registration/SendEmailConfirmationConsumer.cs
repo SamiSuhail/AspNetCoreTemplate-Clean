@@ -2,7 +2,7 @@
 using MyApp.Server.Domain.Auth.EmailConfirmation;
 using MyApp.Server.Infrastructure.Email;
 
-namespace MyApp.Server.Modules.Commands.Auth.SendEmailConfirmation;
+namespace MyApp.Server.Modules.Commands.Auth.Registration;
 
 public record SendEmailConfirmationMessage(string Username, string Email, string Code);
 

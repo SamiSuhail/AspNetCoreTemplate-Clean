@@ -1,9 +1,9 @@
-﻿using MyApp.Server.Modules.Commands.Auth.ConfirmEmail;
-using MyApp.Server.Modules.Commands.Auth.ForgotPassword;
-using MyApp.Server.Modules.Commands.Auth.Login;
-using MyApp.Server.Modules.Commands.Auth.Register;
-using MyApp.Server.Modules.Commands.Auth.ResendConfirmation;
-using MyApp.Server.Modules.Commands.Auth.ResetPassword;
+﻿using MyApp.Server.Modules.Commands.Auth.Login;
+using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Server.Modules.Commands.Auth.Registration.ConfirmEmail;
+using MyApp.Server.Modules.Commands.Auth.Registration.Register;
+using MyApp.Server.Modules.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Server.Modules.Queries.Ping;
 using Refit;
 

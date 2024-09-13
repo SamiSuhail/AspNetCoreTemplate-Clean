@@ -7,7 +7,7 @@ using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Messaging;
 using MyApp.Server.Modules.Commands.Auth.SendEmailConfirmation;
 
-namespace MyApp.Server.Modules.Commands.Auth.Register;
+namespace MyApp.Server.Modules.Commands.Auth.Registration.Register;
 
 public record RegisterRequest(
     string Email,

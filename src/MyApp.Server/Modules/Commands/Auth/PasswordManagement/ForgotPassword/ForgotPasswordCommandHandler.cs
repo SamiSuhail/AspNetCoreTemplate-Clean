@@ -5,8 +5,9 @@ using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Messaging;
+using MyApp.Server.Modules.Commands.Auth.ForgotPassword;
 
-namespace MyApp.Server.Modules.Commands.Auth.ForgotPassword;
+namespace MyApp.Server.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
 
 public record ForgotPasswordRequest(string Email, string Username) : IRequest;
 

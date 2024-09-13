@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 
-namespace MyApp.Server.Modules.Commands.Auth.ResetPassword;
+namespace MyApp.Server.Modules.Commands.Auth.PasswordManagement.ResetPassword;
 
 public class ResetPasswordValidator : AbstractValidator<ResetPasswordRequest>
 {

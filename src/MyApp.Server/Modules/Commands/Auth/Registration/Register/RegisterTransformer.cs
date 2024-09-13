@@ -1,6 +1,6 @@
 ﻿using MyApp.Server.Utilities;
 
-namespace MyApp.Server.Modules.Commands.Auth.Register;
+namespace MyApp.Server.Modules.Commands.Auth.Registration.Register;
 
 public class RegisterTransformer : IRequestTransformer<RegisterRequest>
 {

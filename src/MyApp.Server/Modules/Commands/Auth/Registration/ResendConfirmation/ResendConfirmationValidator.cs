@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MyApp.Server.Modules.Commands.Auth.ResendConfirmation;
+namespace MyApp.Server.Modules.Commands.Auth.Registration.ResendConfirmation;
 
 public class ResendConfirmationValidator : AbstractValidator<ResendConfirmationRequest>
 {

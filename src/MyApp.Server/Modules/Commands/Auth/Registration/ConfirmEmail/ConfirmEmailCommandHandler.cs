@@ -4,7 +4,7 @@ using MyApp.Server.Infrastructure.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace MyApp.Server.Modules.Commands.Auth.ConfirmEmail;
+namespace MyApp.Server.Modules.Commands.Auth.Registration.ConfirmEmail;
 
 public record ConfirmEmailRequest(string Code) : IRequest;
 

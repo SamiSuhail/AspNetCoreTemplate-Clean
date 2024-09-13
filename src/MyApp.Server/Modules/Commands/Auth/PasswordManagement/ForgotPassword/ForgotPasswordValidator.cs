@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace MyApp.Server.Modules.Commands.Auth.ForgotPassword;
+namespace MyApp.Server.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
 
 public class ForgotPasswordValidator : AbstractValidator<ForgotPasswordRequest>
 {

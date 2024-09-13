@@ -1,6 +1,6 @@
 ﻿using MyApp.Server.Utilities;
 
-namespace MyApp.Server.Modules.Commands.Auth.ForgotPassword;
+namespace MyApp.Server.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
 
 public class ForgotPasswordTransformer : IRequestTransformer<ForgotPasswordRequest>
 {

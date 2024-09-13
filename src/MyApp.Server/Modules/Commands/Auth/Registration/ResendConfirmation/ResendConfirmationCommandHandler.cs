@@ -6,7 +6,7 @@ using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Messaging;
 using MyApp.Server.Modules.Commands.Auth.SendEmailConfirmation;
 
-namespace MyApp.Server.Modules.Commands.Auth.ResendConfirmation;
+namespace MyApp.Server.Modules.Commands.Auth.Registration.ResendConfirmation;
 
 public record ResendConfirmationRequest(string Email) : IRequest;
 

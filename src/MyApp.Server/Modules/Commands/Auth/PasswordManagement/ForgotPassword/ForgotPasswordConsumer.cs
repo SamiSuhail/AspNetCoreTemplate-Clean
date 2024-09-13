@@ -2,7 +2,7 @@
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Infrastructure.Email;
 
-namespace MyApp.Server.Modules.Commands.Auth.ForgotPassword;
+namespace MyApp.Server.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
 
 public record ForgotPasswordMessage(string Username, string Email, string Code);
 

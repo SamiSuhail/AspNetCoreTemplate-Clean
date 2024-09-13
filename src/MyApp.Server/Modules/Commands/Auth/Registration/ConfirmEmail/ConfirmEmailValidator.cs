@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MyApp.Server.Domain.Auth.EmailConfirmation;
 
-namespace MyApp.Server.Modules.Commands.Auth.ConfirmEmail;
+namespace MyApp.Server.Modules.Commands.Auth.Registration.ConfirmEmail;
 
 public class ConfirmEmailValidator : AbstractValidator<ConfirmEmailRequest>
 {
