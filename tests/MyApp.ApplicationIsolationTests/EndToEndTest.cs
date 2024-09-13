@@ -1,8 +1,11 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Moq;
 using MyApp.ApplicationIsolationTests.Core;
-using MyApp.Server.Modules.Commands.Auth.BackgroundJobs.ConfirmRegistration;
+using MyApp.Server.Infrastructure.Messaging;
 using MyApp.Server.Modules.Commands.Auth.ConfirmEmail;
+using MyApp.Server.Modules.Commands.Auth.SendEmailConfirmation;
 using MyApp.Server.Modules.Commands.Auth.ForgotPassword;
 using MyApp.Server.Modules.Commands.Auth.ForgotPassword.EmailNotifier;
 using MyApp.Server.Modules.Commands.Auth.Login;
@@ -10,8 +13,6 @@ using MyApp.Server.Modules.Commands.Auth.Register;
 using MyApp.Server.Modules.Commands.Auth.ResendConfirmation;
 using MyApp.Server.Modules.Commands.Auth.ResetPassword;
 using MyApp.Server.Modules.Queries.Ping;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Moq;
 
 namespace MyApp.ApplicationIsolationTests;
 
@@ -82,8 +83,8 @@ public class EndToEndTest : IClassFixture<AppFactory>
 
     private async Task TestRegister()
     {
-        var mock = _mockBag.Get<IConfirmRegistrationEmailNotifier>();
-        mock.Setup(m => m.StartInBackground(It.IsAny<ConfirmRegistrationEmailNotifierRequest>(), It.IsAny<CancellationToken>()))
+        var mock = _mockBag.Get<IMessageProducer>();
+        mock.Setup(m => m.Send(It.IsAny<SendEmailConfirmationMessage>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         var request = new RegisterRequest(Email, Username, Password);
         var response = await _client.Register(request);
@@ -95,9 +96,9 @@ public class EndToEndTest : IClassFixture<AppFactory>
     private async Task<string> TestResendConfirmation()
     {
         var code = string.Empty;
-        var mock = _mockBag.Get<IConfirmRegistrationEmailNotifier>();
-        mock.Setup(m => m.StartInBackground(It.IsAny<ConfirmRegistrationEmailNotifierRequest>(), It.IsAny<CancellationToken>()))
-            .Callback<ConfirmRegistrationEmailNotifierRequest, CancellationToken>((request, _) => code = request.Code)
+        var mock = _mockBag.Get<IMessageProducer>();
+        mock.Setup(m => m.Send(It.IsAny<SendEmailConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<SendEmailConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
             .Returns(Task.CompletedTask);
         var request = new ResendConfirmationRequest(Email);
         var response = await _client.ResendConfirmation(request);

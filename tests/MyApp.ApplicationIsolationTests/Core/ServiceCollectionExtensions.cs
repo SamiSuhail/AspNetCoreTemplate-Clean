@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentAssertions.Common;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using MyApp.Server.Infrastructure.Messaging;
 
 namespace MyApp.ApplicationIsolationTests.Core;
 
@@ -24,6 +26,14 @@ public static class ServiceCollectionExtensions
             mockBag.Add(serviceType, mock);
         }
 
+        return services;
+    }
+
+    public static IServiceCollection ReplaceWithMock<TService>(this IServiceCollection services, MockBag mockBag) where TService : class
+    {
+        var messageProducerMock = new Mock<TService>(MockBehavior.Strict);
+        mockBag.Add(messageProducerMock);
+        services.ReplaceService(messageProducerMock.Object);
         return services;
     }
 
