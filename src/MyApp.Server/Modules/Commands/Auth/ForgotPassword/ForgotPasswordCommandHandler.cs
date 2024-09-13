@@ -1,16 +1,16 @@
-﻿using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
+using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Infrastructure.Database;
-using MyApp.Server.Modules.Commands.Auth.ForgotPassword.EmailNotifier;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using MyApp.Server.Infrastructure.Messaging;
 
 namespace MyApp.Server.Modules.Commands.Auth.ForgotPassword;
 
 public record ForgotPasswordRequest(string Email, string Username) : IRequest;
 
-public class ForgotPasswordCommandHandler(IScopedDbContext dbContext, IForgotPasswordEmailNotifier notifier) : IRequestHandler<ForgotPasswordRequest>
+public class ForgotPasswordCommandHandler(IScopedDbContext dbContext, IMessageProducer messageProducer) : IRequestHandler<ForgotPasswordRequest>
 {
     public async Task Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
     {
@@ -33,6 +33,6 @@ public class ForgotPasswordCommandHandler(IScopedDbContext dbContext, IForgotPas
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        await notifier.StartInBackground(new(request.Username, request.Email, newConfirmation.Code), cancellationToken);
+        await messageProducer.Send(new ForgotPasswordMessage(request.Username, request.Email, newConfirmation.Code), cancellationToken);
     }
 }
