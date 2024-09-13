@@ -6,7 +6,7 @@ using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
 using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Messaging;
-using MyApp.Server.Modules.Commands.Auth.ConfirmRegistration;
+using MyApp.Server.Modules.Commands.Auth.SendEmailConfirmation;
 
 namespace MyApp.Server.Modules.Commands.Auth.Register;
 
@@ -35,7 +35,7 @@ public class RegisterCommandHandler(IScopedDbContext dbContext, IMessageProducer
         await dbContext.WrapInTransaction(async () =>
         {
             await dbContext.SaveChangesAsync(cancellationToken);
-            await messageProducer.Send(new ConfirmRegistrationMessage(user.Username, user.Email, emailConfirmation.Code), cancellationToken);
+            await messageProducer.Send(new SendEmailConfirmationMessage(user.Username, user.Email, emailConfirmation.Code), cancellationToken);
         }, cancellationToken);
     }
 }

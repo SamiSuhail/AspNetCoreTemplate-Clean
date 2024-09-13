@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using MassTransit;
-using MyApp.Server.Modules.Commands.Auth.ConfirmRegistration;
+using MyApp.Server.Modules.Commands.Auth.SendEmailConfirmation;
 
 namespace MyApp.Server.Infrastructure.Messaging;
 
