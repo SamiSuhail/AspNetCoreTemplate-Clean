@@ -20,7 +20,7 @@ public class UserEntity
         IsEmailConfirmed = true;
     }
 
-    public static UserEntity Create(string username, string password, string email, EmailConfirmationEntity emailConfirmation)
+    public static UserEntity Create(string username, string password, string email)
         => new()
         {
             Username = username,
@@ -28,7 +28,7 @@ public class UserEntity
             Email = email,
             IsEmailConfirmed = false,
             CreatedAt = DateTime.UtcNow,
-            EmailConfirmation = emailConfirmation,
+            EmailConfirmation = EmailConfirmationEntity.Create(),
         };
 
     public void UpdatePassword(string password)

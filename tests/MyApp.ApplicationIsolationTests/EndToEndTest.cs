@@ -1,9 +1,17 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MyApp.ApplicationIsolationTests.Core;
+using MyApp.Server.Domain.Auth.EmailConfirmation;
+using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Server.Domain.Auth.User;
+using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Messaging;
+using MyApp.Server.Modules.Commands.Auth.BackgroundJobs.CleanupConfirmations;
 using MyApp.Server.Modules.Commands.Auth.Login;
 using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ResetPassword;
@@ -54,6 +62,7 @@ public class EndToEndTest : IClassFixture<AppFactory>
         await TestPingDatabase();
         await TestPingDatabaseGraphQL();
         await TestMeQuery();
+        await TestCleanupConfirmations();
     }
 
     private async Task TestUnauthorized()
@@ -173,12 +182,59 @@ public class EndToEndTest : IClassFixture<AppFactory>
         var user = profile!.User;
 
         user.Should().NotBeNull();
-        using (var _ = new AssertionScope())
+        using (new AssertionScope())
         {
             user.Id.Should().BePositive();
             user.Username.Should().Be(Username);
             user.Email.Should().Be(Email);
             user.CreatedAt.ShouldBeToday();
+        }
+    }
+
+    private async Task TestCleanupConfirmations()
+    {
+        using var serviceScope = _appFactory.Services.CreateScope();
+        var services = serviceScope.ServiceProvider;
+        var arrangeDbContext = services.GetRequiredService<ITransientDbContext>();
+
+        var user = UserEntity.Create("newusername", "newpassword", "new@email.com");
+        arrangeDbContext.Add(user);
+        await arrangeDbContext.SaveChangesAsync(CancellationToken.None);
+
+        var passwordResetConfirmation = PasswordResetConfirmationEntity.Create(user.Id);
+        arrangeDbContext.Add(passwordResetConfirmation);
+        await arrangeDbContext.SaveChangesAsync(CancellationToken.None);
+
+        var timeFiveSecondsAgo = DateTime.UtcNow.AddSeconds(-5);
+        var expiredEmailConfirmationDatetime = timeFiveSecondsAgo.AddMinutes(-EmailConfirmationConstants.ExpirationTimeMinutes);
+        var expiredPasswordResetConfirmationDatetime = timeFiveSecondsAgo.AddMinutes(-PasswordResetConfirmationConstants.ExpirationTimeMinutes);
+
+        var ecRowsUpdated = await arrangeDbContext.Set<EmailConfirmationEntity>()
+            .Where(ec => ec.UserId == user.Id)
+            .ExecuteUpdateAsync(x => x.SetProperty(ec => ec.CreatedAt, expiredEmailConfirmationDatetime));
+        var prcRowsUpdated = await arrangeDbContext.Set<PasswordResetConfirmationEntity>()
+            .Where(ec => ec.UserId == user.Id)
+            .ExecuteUpdateAsync(x => x.SetProperty(ec => ec.CreatedAt, expiredPasswordResetConfirmationDatetime));
+
+        using (new AssertionScope())
+        {
+            ecRowsUpdated.Should().Be(1);
+            prcRowsUpdated.Should().Be(1);
+        }
+
+        await services.GetRequiredService<ISender>()
+            .Send(new CleanupConfirmationsRequest());
+
+        var assertDbContext = services.GetRequiredService<ITransientDbContext>();
+        var ecIsDeleted = !await assertDbContext.Set<EmailConfirmationEntity>()
+            .AnyAsync(ec => ec.UserId == user.Id);
+        var prcIsDeleted = !await assertDbContext.Set<PasswordResetConfirmationEntity>()
+            .AnyAsync(prc => prc.UserId == user.Id);
+
+        using (new AssertionScope())
+        {
+            ecIsDeleted.Should().BeTrue();
+            prcIsDeleted.Should().BeTrue();
         }
     }
 }

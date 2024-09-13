@@ -26,14 +26,13 @@ public class RegisterCommandHandler(IScopedDbContext dbContext, IMessageProducer
         RegisterConflictFailure.Create(usernameTaken, emailTaken)
             .ThrowOnError();
 
-        var emailConfirmation = EmailConfirmationEntity.Create();
-        var user = UserEntity.Create(request.Username, request.Password, request.Email, emailConfirmation);
+        var user = UserEntity.Create(request.Username, request.Password, request.Email);
         dbContext.Add(user);
 
         await dbContext.WrapInTransaction(async () =>
         {
             await dbContext.SaveChangesAsync(cancellationToken);
-            await messageProducer.Send(new SendEmailConfirmationMessage(user.Username, user.Email, emailConfirmation.Code), cancellationToken);
+            await messageProducer.Send(new SendEmailConfirmationMessage(user.Username, user.Email, user.EmailConfirmation!.Code), cancellationToken);
         }, cancellationToken);
     }
 }
