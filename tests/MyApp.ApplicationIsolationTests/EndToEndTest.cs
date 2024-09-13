@@ -5,13 +5,12 @@ using Moq;
 using MyApp.ApplicationIsolationTests.Core;
 using MyApp.Server.Infrastructure.Messaging;
 using MyApp.Server.Modules.Commands.Auth.ConfirmEmail;
-using MyApp.Server.Modules.Commands.Auth.SendEmailConfirmation;
 using MyApp.Server.Modules.Commands.Auth.ForgotPassword;
-using MyApp.Server.Modules.Commands.Auth.ForgotPassword.EmailNotifier;
 using MyApp.Server.Modules.Commands.Auth.Login;
 using MyApp.Server.Modules.Commands.Auth.Register;
 using MyApp.Server.Modules.Commands.Auth.ResendConfirmation;
 using MyApp.Server.Modules.Commands.Auth.ResetPassword;
+using MyApp.Server.Modules.Commands.Auth.SendEmailConfirmation;
 using MyApp.Server.Modules.Queries.Ping;
 
 namespace MyApp.ApplicationIsolationTests;
@@ -118,9 +117,9 @@ public class EndToEndTest : IClassFixture<AppFactory>
     private async Task<string> TestForgotPassword()
     {
         var code = string.Empty;
-        var mock = _mockBag.Get<IForgotPasswordEmailNotifier>();
-        mock.Setup(m => m.StartInBackground(It.IsAny<ForgotPasswordEmailNotifierRequest>(), It.IsAny<CancellationToken>()))
-            .Callback<ForgotPasswordEmailNotifierRequest, CancellationToken>((request, _) => code = request.Code)
+        var mock = _mockBag.Get<IMessageProducer>();
+        mock.Setup(m => m.Send(It.IsAny<ForgotPasswordMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<ForgotPasswordMessage, CancellationToken>((request, _) => code = request.Code)
             .Returns(Task.CompletedTask);
         var request = new ForgotPasswordRequest(Email, Username);
         var response = await _client.ForgotPassword(request);
