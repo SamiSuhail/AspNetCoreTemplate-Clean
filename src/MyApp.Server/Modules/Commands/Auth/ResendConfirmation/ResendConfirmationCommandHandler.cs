@@ -1,5 +1,4 @@
-﻿using MassTransit;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Server.Domain.Auth.EmailConfirmation;
 using MyApp.Server.Domain.Auth.EmailConfirmation.Failures;

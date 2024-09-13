@@ -1,8 +1,6 @@
 ﻿using MassTransit;
-using MyApp.Server.Domain.Auth.EmailConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Infrastructure.Email;
-using Quartz;
 
 namespace MyApp.Server.Modules.Commands.Auth.ForgotPassword;
 
