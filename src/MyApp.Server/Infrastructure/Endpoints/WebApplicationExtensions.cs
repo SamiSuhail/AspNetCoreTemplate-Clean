@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using System.Text.RegularExpressions;
+using MyApp.Server.Utilities;
 
 namespace MyApp.Server.Infrastructure.Endpoints;
 
@@ -10,24 +10,10 @@ public static class WebApplicationExtensions
         var groupName = group.GetType().Name;
 
         return app
-            .MapGroup($"/api/{PascalToKebabCase(groupName)}")
+            .MapGroup($"/api/{groupName.PascalToKebabCase()}")
             .WithTags(groupName)
             .WithOpenApi()
             .RequireAuthorization();
-
-        static string PascalToKebabCase(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-                return value;
-
-            return Regex.Replace(
-                value,
-                "(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z0-9])",
-                "-$1",
-                RegexOptions.Compiled)
-                .Trim()
-                .ToLower();
-        }
     }
 
     public static WebApplication MapCustomEndpoints(this WebApplication app)

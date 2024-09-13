@@ -1,4 +1,6 @@
-﻿namespace MyApp.Server.Utilities;
+﻿using System.Text;
+
+namespace MyApp.Server.Utilities;
 
 public static class StringExtensions
 {
@@ -15,5 +17,48 @@ public static class StringExtensions
     {
         var temp = s.Split(oldValues, StringSplitOptions.RemoveEmptyEntries);
         return string.Join(newVal, temp);
+    }
+
+    public static string PascalToKebabCase(this string txt)
+    {
+        if (txt.Length == 0) return string.Empty;
+
+        var sb = new StringBuilder();
+
+        for (var i = 0; i < txt.Length; i++)
+        {
+            if (char.IsLower(txt[i])) // if current char is already lowercase
+            {
+                sb.Append(txt[i]);
+            }
+            else if (i == 0) // if current char is the first char
+            {
+                sb.Append(char.ToLower(txt[i]));
+            }
+            else if (char.IsDigit(txt[i]) && !char.IsDigit(txt[i - 1])) // if current char is a number and the previous is not
+            {
+                sb.Append('-');
+                sb.Append(txt[i]);
+            }
+            else if (char.IsDigit(txt[i])) // if current char is a number and previous is
+            {
+                sb.Append(txt[i]);
+            }
+            else if (char.IsLower(txt[i - 1])) // if current char is upper and previous char is lower
+            {
+                sb.Append('-');
+                sb.Append(char.ToLower(txt[i]));
+            }
+            else if (i + 1 == txt.Length || char.IsUpper(txt[i + 1])) // if current char is upper and next char doesn't exist or is upper
+            {
+                sb.Append(char.ToLower(txt[i]));
+            }
+            else // if current char is upper and next char is lower
+            {
+                sb.Append('-');
+                sb.Append(char.ToLower(txt[i]));
+            }
+        }
+        return sb.ToString();
     }
 }
