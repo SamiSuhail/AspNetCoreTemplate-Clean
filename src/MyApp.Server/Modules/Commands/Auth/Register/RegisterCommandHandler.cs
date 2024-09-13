@@ -1,10 +1,12 @@
-﻿using MyApp.Server.Domain.Auth.EmailConfirmation;
+﻿using MassTransit;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using MyApp.Server.Domain.Auth.EmailConfirmation;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
 using MyApp.Server.Infrastructure.Database;
-using MyApp.Server.Modules.Commands.Auth.BackgroundJobs.ConfirmRegistration;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using MyApp.Server.Infrastructure.Messaging;
+using MyApp.Server.Modules.Commands.Auth.ConfirmRegistration;
 
 namespace MyApp.Server.Modules.Commands.Auth.Register;
 
@@ -13,7 +15,7 @@ public record RegisterRequest(
     string Username,
     string Password) : IRequest;
 
-public class RegisterCommandHandler(IScopedDbContext dbContext, IConfirmRegistrationEmailNotifier notifier) : IRequestHandler<RegisterRequest>
+public class RegisterCommandHandler(IScopedDbContext dbContext, IMessageProducer messageProducer) : IRequestHandler<RegisterRequest>
 {
     public async Task Handle(RegisterRequest request, CancellationToken cancellationToken)
     {
@@ -29,8 +31,11 @@ public class RegisterCommandHandler(IScopedDbContext dbContext, IConfirmRegistra
         var emailConfirmation = EmailConfirmationEntity.Create();
         var user = UserEntity.Create(request.Username, request.Password, request.Email, emailConfirmation);
         dbContext.Add(user);
-        await dbContext.SaveChangesAsync(cancellationToken);
 
-        await notifier.StartInBackground(new(user.Username, user.Email, emailConfirmation.Code), cancellationToken);
+        await dbContext.WrapInTransaction(async () =>
+        {
+            await dbContext.SaveChangesAsync(cancellationToken);
+            await messageProducer.Send(new ConfirmRegistrationMessage(user.Username, user.Email, emailConfirmation.Code), cancellationToken);
+        }, cancellationToken);
     }
 }
