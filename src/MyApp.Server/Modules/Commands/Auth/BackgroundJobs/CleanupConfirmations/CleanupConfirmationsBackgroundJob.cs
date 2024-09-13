@@ -10,17 +10,26 @@ public class CleanupConfirmationsBackgroundJob(IScopedDbContext dbContext) : IJo
 {
     public async Task Execute(IJobExecutionContext context)
     {
-        var emailConfirmationExpirationTime = DateTime.UtcNow.AddMinutes(-EmailConfirmationConstants.ExpirationTimeMinutes);
         var cancellationToken = context.CancellationToken;
 
-        await dbContext.Set<EmailConfirmationEntity>()
-            .Where(ec => ec.CreatedAt < emailConfirmationExpirationTime)
-            .ExecuteDeleteAsync(cancellationToken);
+        await CleanupEmailConfirmations(cancellationToken);
+        await CleanupPasswordResetConfirmations(cancellationToken);
+    }
 
-        var passwordResetExpirationTime = DateTime.UtcNow.AddMinutes(-PasswordResetConfirmationConstants.ExpirationTimeMinutes);
+    private async Task CleanupEmailConfirmations(CancellationToken cancellationToken)
+    {
+        var expirationTime = DateTime.UtcNow.AddMinutes(-EmailConfirmationConstants.ExpirationTimeMinutes);
+        await dbContext.Set<EmailConfirmationEntity>()
+            .Where(ec => ec.CreatedAt < expirationTime)
+            .ExecuteDeleteAsync(cancellationToken);
+    }
+
+    private async Task CleanupPasswordResetConfirmations(CancellationToken cancellationToken)
+    {
+        var expirationTime = DateTime.UtcNow.AddMinutes(-PasswordResetConfirmationConstants.ExpirationTimeMinutes);
 
         await dbContext.Set<PasswordResetConfirmationEntity>()
-            .Where(ec => ec.CreatedAt < passwordResetExpirationTime)
+            .Where(ec => ec.CreatedAt < expirationTime)
             .ExecuteDeleteAsync(cancellationToken);
     }
 }

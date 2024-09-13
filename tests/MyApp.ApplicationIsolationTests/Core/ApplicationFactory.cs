@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using Testcontainers.PostgreSql;
 using DbDeployHelpers = MyApp.DbDeploy.Helpers;
+using MyApp.Server.Infrastructure.Messaging;
 
 namespace MyApp.ApplicationIsolationTests.Core;
 
@@ -72,6 +73,7 @@ public class AppFactory : WebApplicationFactory<ProgramApi>, IAsyncLifetime
         builder.ConfigureServices(services =>
         {
             services.ReplaceService<IEmailSender>(new FakeEmailSender());
+            services.ReplaceWithMock<IMessageProducer>(MockBag);
             services.ReplaceStandardMocks(MockBag);
             services.AddSingleton(new ConnectionStringsSettings() { Database = _connectionString });
         });

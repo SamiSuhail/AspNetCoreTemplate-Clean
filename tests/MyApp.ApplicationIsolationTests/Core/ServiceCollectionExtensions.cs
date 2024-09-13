@@ -27,6 +27,14 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection ReplaceWithMock<TService>(this IServiceCollection services, MockBag mockBag) where TService : class
+    {
+        var messageProducerMock = new Mock<TService>(MockBehavior.Strict);
+        mockBag.Add(messageProducerMock);
+        services.ReplaceService(messageProducerMock.Object);
+        return services;
+    }
+
     public static void ReplaceService<T>(this IServiceCollection services, T service) where T : class
     {
         var serviceType = typeof(T);

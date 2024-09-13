@@ -8,6 +8,7 @@ using MyApp.Server.Infrastructure.ErrorHandling;
 using MyApp.Server.Infrastructure.GraphQL;
 using MyApp.Server.Infrastructure.Logging;
 using MyApp.Server.Infrastructure.MediatR;
+using MyApp.Server.Infrastructure.Messaging;
 using MyApp.Server.Infrastructure.RequestTransformation;
 using MyApp.Server.Infrastructure.Swagger;
 using MyApp.Server.Infrastructure.Validation;
@@ -29,6 +30,7 @@ builder.Services.AddHttpContextAccessor()
     .AddCustomEmail(configuration)
     .AddCustomStandardTransients()
     .AddCustomBackgroundJobs(configuration)
+    .AddCustomMessaging(configuration)
     .AddCustomGraphQL(builder.Environment)
     .AddExceptionHandler<CustomExceptionHandler>();
 

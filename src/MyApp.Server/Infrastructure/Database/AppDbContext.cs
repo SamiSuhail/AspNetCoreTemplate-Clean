@@ -22,6 +22,8 @@ public interface IBaseDbContext
     ValueTask<TEntity?> FindAsync<TEntity>(int id, CancellationToken cancellationToken) where TEntity : class;
     ValueTask<TEntity?> FindAsync<TEntity>(Guid id, CancellationToken cancellationToken) where TEntity : class;
     ValueTask<TEntity?> FindAsync<TEntity>(object?[]? keyValues, CancellationToken cancellationToken) where TEntity : class;
+
+    Task WrapInTransaction(Func<Task> action, CancellationToken cancellationToken);
 }
 
 public class AppDbContext(
@@ -58,4 +60,24 @@ public class AppDbContext(
         => base.FindAsync<TEntity>([id], cancellationToken);
     ValueTask<TEntity?> IBaseDbContext.FindAsync<TEntity>(object?[]? keyValues, CancellationToken cancellationToken) where TEntity : class
         => base.FindAsync<TEntity>(keyValues, cancellationToken);
+
+    async Task IBaseDbContext.WrapInTransaction(Func<Task> action, CancellationToken cancellationToken)
+    {
+        var strategy = Database.CreateExecutionStrategy();
+        await strategy.ExecuteAsync(async ct =>
+        {
+            using var transaction = await Database.BeginTransactionAsync(ct);
+
+            try
+            {
+                await action.Invoke();
+                await transaction.CommitAsync(ct);
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync(ct);
+                throw;
+            }
+        }, cancellationToken);
+    }
 }
