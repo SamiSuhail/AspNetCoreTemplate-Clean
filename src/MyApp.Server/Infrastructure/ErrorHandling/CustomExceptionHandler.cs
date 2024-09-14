@@ -4,9 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MyApp.Server.Infrastructure.ErrorHandling;
 
+public static class UnhandledExceptionConstants
+{
+    public const string Message = "An unexpected error occured - please try again later. If the error persists, please contact support.";
+}
+
 public class CustomExceptionHandler : IExceptionHandler
 {
-    private readonly Dictionary<Type, Func<HttpContext, Exception, Task>> _exceptionHandlers;
+    private readonly Dictionary<Type, Func<HttpContext, Exception, CancellationToken, Task>> _exceptionHandlers;
     private readonly ILogger _logger;
 
     public CustomExceptionHandler(ILogger logger)
@@ -24,15 +29,17 @@ public class CustomExceptionHandler : IExceptionHandler
 
         if (_exceptionHandlers.TryGetValue(exceptionType, out var handler)) 
         {
-            await handler.Invoke(httpContext, exception);
+            await handler.Invoke(httpContext, exception, cancellationToken);
             return true;
         }
 
         _logger.Error(exception, "An unhandled exception has occured!");
-        return false;
+        httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        await httpContext.Response.WriteAsync(UnhandledExceptionConstants.Message, cancellationToken);
+        return true;
     }
 
-    private async Task HandleDomainException(HttpContext httpContext, Exception ex)
+    private async Task HandleDomainException(HttpContext httpContext, Exception ex, CancellationToken cancellationToken)
     {
         var exception = (DomainException)ex;
 
@@ -47,7 +54,7 @@ public class CustomExceptionHandler : IExceptionHandler
             Title = "One or more errors occured.",
             Status = StatusCodes.Status400BadRequest,
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-        });
+        }, cancellationToken);
 
         static Dictionary<string, string[]> AsErrors(IEnumerable<DomainError> errors)
             => errors.GroupBy(e => e.Key, e => e.Message)

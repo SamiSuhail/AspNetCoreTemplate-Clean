@@ -2,16 +2,14 @@
 
 namespace MyApp.Server.Domain.Auth.EmailConfirmation.Failures;
 
-public static class ResendConfirmationInvalidConstants
-{
-    public const string Message = "No user with this email is awaiting confirmation.";
-}
-
 public class ResendConfirmationInvalidFailure : DomainFailure
 {
+    public const string Key = nameof(UserEntity.Email);
+    public const string Message = "No user with this email is awaiting confirmation.";
+
     private ResendConfirmationInvalidFailure() : base() { }
     public static DomainException Exception()
         => new ResendConfirmationInvalidFailure()
-            .AddError(nameof(UserEntity.Email), ResendConfirmationInvalidConstants.Message)
+            .AddError(Key, Message)
             .ToException();
 }

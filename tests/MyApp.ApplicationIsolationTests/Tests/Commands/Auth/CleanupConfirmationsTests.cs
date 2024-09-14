@@ -8,7 +8,7 @@ namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 public class CleanupConfirmationsTests(AppFactory appFactory) : BaseTest(appFactory), IAsyncLifetime
 {
     [Fact]
-    public async Task GivenConfirmationsExist_ThenConfirmationsAreDeleted()
+    public async Task GivenHappyPath_ThenConfirmationsAreDeleted()
     {
         // Arrange
         int userId = await CreateUserAndConfirmations();

@@ -1,5 +1,8 @@
 ﻿using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
+using MyApp.Server.Infrastructure.Auth;
+using MyApp.Server.Infrastructure.Messaging;
+using MyApp.Server.Modules.Commands.Auth.Registration;
 using MyApp.Server.Modules.Commands.Auth.Registration.Register;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
@@ -9,7 +12,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
     private readonly RegisterRequest _request = new(RandomData.Email, RandomData.Username, RandomData.Password);
 
     [Fact]
-    public async Task GivenUsernameAndEmailNotTaken_ThenCreatesUnconfirmedUser()
+    public async Task GivenHappyPath_ThenCreatesUnconfirmedUser()
     {
         // Act
         var response = await UnauthorizedAppClient.Register(_request);
@@ -21,22 +24,76 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         using (new AssertionScope())
         {
-            user!.Id.Should().NotBe(0);
-            user.IsEmailConfirmed.Should().BeFalse();
+            user!.IsEmailConfirmed.Should().BeFalse();
             user.CreatedAt.ShouldBeNow();
             _request.Password.Verify(user.PasswordHash).Should().BeTrue();
         }
         user.EmailConfirmation.Should().NotBeNull();
         using (new AssertionScope())
         {
-            user.EmailConfirmation!.Id.Should().NotBe(0);
-            user.EmailConfirmation.CreatedAt.ShouldBeNow();
+            user.EmailConfirmation!.CreatedAt.ShouldBeNow();
             user.EmailConfirmation.Code.Should().NotBeNullOrEmpty();
         }
     }
 
     [Fact]
-    public async Task GivenUsernameTaken_ThenReturnsBadRequest()
+    public async Task GivenHappyPath_ThenProducesMessage()
+    {
+        // Act
+        var response = await UnauthorizedAppClient.Register(_request);
+
+        // Assert
+        response.AssertSuccess();
+        AssertHelper.AssertMessageProduced<SendEmailConfirmationMessage>();
+    }
+
+    [Fact]
+    public async Task GivenDatabaseError_ThenNoMessageProduced()
+    {
+        // Arrange
+        var request = _request with
+        {
+            Email = TestUser.Email
+        };
+
+        // Act
+        var response = await UnauthorizedAppClient.Register(request);
+
+        // Assert
+        response.AssertBadRequest();
+        AssertHelper.AssertMessageProduced<SendEmailConfirmationMessage>(Times.Never());
+        await AssertUserNotExists(request.Username, request.Email);
+    }
+
+    [Fact]
+    public async Task GivenMessageProducerThrows_ThenNoDataIsPersisted()
+    {
+        // Arrange
+        MockBag.Get<IMessageProducer>()
+            .Setup(m => m.Send(It.IsAny<SendEmailConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new Exception());
+
+        // Act
+        var response = await UnauthorizedAppClient.Register(_request);
+
+        // Assert
+        response.AssertInternalServerError();
+        await AssertUserNotExists(_request.Username, _request.Email);
+    }
+
+    [Fact]
+    public async Task GivenUserIsAuthenticated_ThenReturnsAnonymousOnlyError()
+    {
+        // Act
+        var response = await AppClient.Register(_request);
+
+        // Assert
+        response.AssertAnonymousOnlyError();
+        await AssertUserNotExists(_request.Username, _request.Email);
+    }
+
+    [Fact]
+    public async Task GivenUsernameTaken_ThenReturnsUsernameConflictFailure()
     {
         // Arrange
         var request = _request with
@@ -48,13 +105,12 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.Register(request);
 
         // Assert
-        var user = await GetUser(request.Username, request.Email);
-        user.Should().BeNull();
         response.AssertSingleBadRequestError(RegisterConflictFailure.UsernameTakenKey, RegisterConflictFailure.UsernameTakenMessage);
+        await AssertUserNotExists(request.Username, request.Email);
     }
 
     [Fact]
-    public async Task GivenEmailTaken_ThenReturnsBadRequest()
+    public async Task GivenEmailTaken_ThenReturnsEmailConflictFailure()
     {
         // Arrange
         var request = _request with
@@ -66,9 +122,14 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.Register(request);
 
         // Assert
-        var user = await GetUser(request.Username, request.Email);
-        user.Should().BeNull();
         response.AssertSingleBadRequestError(RegisterConflictFailure.EmailTakenKey, RegisterConflictFailure.EmailTakenMessage);
+        await AssertUserNotExists(request.Username, request.Email);
+    }
+
+    private async Task AssertUserNotExists(string username, string email)
+    {
+        var user = await GetUser(username, email);
+        user.Should().BeNull();
     }
 
     private async Task<UserEntity?> GetUser(string username, string email)

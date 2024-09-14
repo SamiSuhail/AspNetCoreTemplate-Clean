@@ -29,12 +29,9 @@ public class EndToEndTest(AppFactory appFactory) : BaseTest(appFactory)
 
     private async Task TestRegister()
     {
-        var mock = MockBag.Get<IMessageProducer>();
         var request = new RegisterRequest(Email, Username, Password);
         var response = await UnauthorizedAppClient.Register(request);
         response.AssertSuccess();
-        mock.VerifyAll();
-        mock.Reset();
     }
 
     private async Task<string> TestResendConfirmation()

@@ -1,6 +1,12 @@
 ﻿
 namespace MyApp.Server.Infrastructure.Auth;
 
+public static class AnonymousOnlyConstants
+{
+    public const string Key = "User";
+    public const string Message = "Authenticated users are not allowed.";
+}
+
 public class AnonymousOnlyFilter : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
@@ -9,7 +15,7 @@ public class AnonymousOnlyFilter : IEndpointFilter
         {
             var errors = new Dictionary<string, string[]>()
             {
-                { "User", ["Authenticated users are not allowed."] },
+                { AnonymousOnlyConstants.Key, [AnonymousOnlyConstants.Message] },
             };
             return Results.ValidationProblem(errors);
         }

@@ -1,9 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyApp.Server.Domain.Auth.User;
+using MyApp.Server.Infrastructure.Auth;
+using MyApp.Server.Infrastructure.Database;
+using MyApp.Server.Infrastructure.ErrorHandling;
+using MyApp.Server.Infrastructure.Messaging;
+using MyApp.Server.Modules.Commands.Auth.Registration;
 using Newtonsoft.Json;
 
 namespace MyApp.ApplicationIsolationTests.Utilities;
 
-public static class AssertionExtensions
+public static class AssertHelper
 {
     public static void AssertSuccess(this IApiResponse response)
     {
@@ -11,6 +17,10 @@ public static class AssertionExtensions
         response.IsSuccessStatusCode.Should().BeTrue();
         response.Error?.Content.Should().BeNull();
     }
+
+    public static void AssertAnonymousOnlyError(this IApiResponse response)
+        => response.AssertSingleBadRequestError(AnonymousOnlyConstants.Key, AnonymousOnlyConstants.Message);
+
     public static void AssertSingleBadRequestError(this IApiResponse response, string key, string message)
     {
         response.AssertBadRequestErrors(new()
@@ -36,6 +46,12 @@ public static class AssertionExtensions
                 {JsonConvert.SerializeObject(problemDetails.Errors, Formatting.Indented)}
                 """);
         }
+    }
+
+    public static void AssertInternalServerError(this IApiResponse response)
+    {
+        response.AssertError(HttpStatusCode.InternalServerError);
+        response.Error!.Content.Should().Be(UnhandledExceptionConstants.Message);
     }
 
     public static ValidationProblemDetails AssertBadRequest(this IApiResponse response)
@@ -71,6 +87,22 @@ public static class AssertionExtensions
         error.Should().NotBeNull();
         error.Code.Should().Be(errorCode);
         response.Data.Should().BeNull();
+    }
+
+    public static void AssertMessageProduced<TMessage>(Times? times = null) where TMessage : class
+    {
+        MockBag.Get<IMessageProducer>()
+            .Verify(x => x.Send(It.IsAny<TMessage>(), It.IsAny<CancellationToken>()),
+                times ?? Times.Once());
+    }
+
+    public static async Task<UserEntity?> GetUser(this IBaseDbContext dbContext, int userId)
+    {
+        return await dbContext.Set<UserEntity>()
+            .IgnoreQueryFilters()
+            .Include(u => u.EmailConfirmation)
+            .Where(u => u.Id == userId)
+            .FirstOrDefaultAsync();
     }
 
     public static void ShouldBeNow(this DateTime date, int precisionSeconds = 10)

@@ -24,6 +24,7 @@ public abstract class BaseTest(AppFactory appFactory) : IAsyncLifetime
 
     public async Task DisposeAsync()
     {
+        MockBag.Reset();
         _scope.Dispose();
         await Task.CompletedTask;
     }
