@@ -1,0 +1,14 @@
+﻿global using System.Net;
+global using FluentAssertions;
+global using FluentAssertions.Execution;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.DependencyInjection;
+global using Moq;
+global using MyApp.ApplicationIsolationTests.Clients;
+global using MyApp.ApplicationIsolationTests.Core;
+global using MyApp.ApplicationIsolationTests.Mocks;
+global using MyApp.ApplicationIsolationTests.Utilities;
+global using Refit;
+global using StrawberryShake;
+global using static MyApp.ApplicationIsolationTests.Clients.ClientProvider;

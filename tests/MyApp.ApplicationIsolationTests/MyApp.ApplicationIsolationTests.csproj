@@ -10,7 +10,7 @@
   </PropertyGroup>
 
     <ItemGroup>
-		<None Update="Core\Queries\*.graphql">
+		<None Update="Clients\Queries\*.graphql">
 			<Generator>MSBuild:GenerateGraphQLCode</Generator>
 	    </None>
     </ItemGroup>

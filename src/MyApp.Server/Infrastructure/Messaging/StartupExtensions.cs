@@ -14,6 +14,8 @@ public static class StartupExtensions
             .Configure(options =>
             {
                 options.WaitUntilStarted = true;
+                options.StartTimeout = TimeSpan.FromSeconds(30);
+                options.StopTimeout = TimeSpan.FromSeconds(30);
             });
 
         services.AddOptions<RabbitMqTransportOptions>()

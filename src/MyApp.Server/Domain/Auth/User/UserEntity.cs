@@ -24,7 +24,7 @@ public class UserEntity
         => new()
         {
             Username = username,
-            PasswordHash = BC.EnhancedHashPassword(password),
+            PasswordHash = password.Hash(),
             Email = email,
             IsEmailConfirmed = false,
             CreatedAt = DateTime.UtcNow,
@@ -33,6 +33,6 @@ public class UserEntity
 
     public void UpdatePassword(string password)
     {
-        PasswordHash = BC.EnhancedHashPassword(password);
+        PasswordHash = password.Hash();
     }
 }

@@ -29,7 +29,7 @@ public class LoginCommandHandler(IScopedDbContext dbContext, IJwtGenerator jwtGe
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw LoginInvalidFailure.Exception();
 
-        var correctPassword = BC.EnhancedVerify(request.Password, user.PasswordHash);
+        var correctPassword = request.Password.Verify(user.PasswordHash);
         if (!correctPassword)
             throw LoginInvalidFailure.Exception();
 

@@ -12,6 +12,8 @@ public static class StartupExtensions
             .AddQueryType<Query>()
             .AddTypeExtension<AuthQuery>()
             .AddErrorFilter<CustomErrorFilter>()
+            .AddTypeConverter<DateTime, DateTimeOffset>(dateTime => new DateTimeOffset(dateTime, TimeSpan.Zero))
+            .AddTypeConverter<DateTimeOffset, DateTime>(dateTimeOffset => dateTimeOffset.UtcDateTime)
             .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = env.IsDevelopment());
 
         return services;
