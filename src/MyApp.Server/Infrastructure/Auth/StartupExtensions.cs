@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace MyApp.Server.Infrastructure.Auth;
 
@@ -10,7 +8,8 @@ public static class StartupExtensions
     {
         var authSettings = AuthSettings.Get(configuration);
 
-        services.AddScoped<IJwtUserReader, JwtUserReader>();
+        services.AddScoped<IJwtReader, JwtReader>();
+        services.AddScoped<IUserContextAccessor, UserContextAccessor>();
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton(authSettings);
         services.AddAuthentication(options =>
@@ -19,20 +18,10 @@ public static class StartupExtensions
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-        .AddJwtBearer(jwt => {
-            var rsa = RSA.Create();
-            rsa.FromXmlString(authSettings.Jwt.PublicKeyXml);
+        .AddJwtBearer(jwt =>
+        {
             jwt.SaveToken = true;
-            jwt.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new RsaSecurityKey(rsa),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                RequireExpirationTime = true,
-                ClockSkew = TimeSpan.Zero
-            };
+            jwt.TokenValidationParameters = JwtValidationParametersProvider.Get(authSettings.Jwt.PublicKeyXml);
         });
         services.AddAuthorization();
 

@@ -9,7 +9,7 @@ namespace MyApp.Server.Modules.Queries.Auth.Handlers;
 public record UserQuery(int Id, string Username, string Email, DateTime CreatedAt);
 public record GetUserRequest() : IRequest<UserQuery>;
 
-public class GetUserQueryHandler(IJwtUserReader userReader, ITransientDbContext appDbContext) : IRequestHandler<GetUserRequest, UserQuery>
+public class GetUserQueryHandler(IUserContextAccessor userReader, ITransientDbContext appDbContext) : IRequestHandler<GetUserRequest, UserQuery>
 {
     public async Task<UserQuery> Handle(GetUserRequest request, CancellationToken cancellationToken)
     {

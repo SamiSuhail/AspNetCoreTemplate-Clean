@@ -7,6 +7,7 @@ using MyApp.Server.Modules.Commands.Auth.Registration.Register;
 using MyApp.Server.Modules.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Server.Infrastructure.Auth;
 
 namespace MyApp.Server.Modules.Commands.Auth;
 
@@ -15,6 +16,7 @@ public class Auth : EndpointGroupBase
     public override void Map(WebApplication app)
     {
         app.MapGroup(this)
+            .AddEndpointFilter<AnonymousOnlyFilter>()
             .AllowAnonymous()
             .MapPost(Register, "register")
             .MapPost(ResendConfirmation, "resend-confirmation")

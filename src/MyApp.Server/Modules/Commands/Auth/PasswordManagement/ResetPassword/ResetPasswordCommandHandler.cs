@@ -14,6 +14,7 @@ public class ResetPasswordCommandHandler(IScopedDbContext dbContext) : IRequestH
     {
         var expirationTime = DateTime.UtcNow.AddMinutes(-PasswordResetConfirmationConstants.ExpirationTimeMinutes);
         var passwordResetConfirmation = await dbContext.Set<PasswordResetConfirmationEntity>()
+            .IgnoreQueryFilters()
             .Include(p => p.User)
             .Where(p => p.Code == request.Code && p.CreatedAt > expirationTime)
             .FirstOrDefaultAsync(cancellationToken)

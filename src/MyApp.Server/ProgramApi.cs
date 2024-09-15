@@ -1,4 +1,3 @@
-using MyApp.Server.CommonStartupExtensions;
 using MyApp.Server.Infrastructure.Auth;
 using MyApp.Server.Infrastructure.BackgroundJobs;
 using MyApp.Server.Infrastructure.Database;
@@ -28,7 +27,6 @@ builder.Services.AddHttpContextAccessor()
     .AddCustomMediatR()
     .AddCustomRequestTransformers()
     .AddCustomEmail(configuration)
-    .AddCustomStandardTransients()
     .AddCustomBackgroundJobs(configuration)
     .AddCustomMessaging(configuration)
     .AddCustomGraphQL(builder.Environment)
@@ -47,4 +45,7 @@ app.MapCustomGraphQL();
 
 await app.RunAsync();
 
-public partial class ProgramApi { }
+namespace MyApp.Server
+{
+    public partial class ProgramApi { }
+}

@@ -6,7 +6,7 @@ namespace MyApp.Server.Infrastructure.Database;
 public interface IScopedDbContext : IBaseDbContext { }
 public interface ITransientDbContext : IBaseDbContext { }
 
-public interface IBaseDbContext
+public interface IBaseDbContext : IDisposable, IAsyncDisposable
 {
     void Add<TEntity>(TEntity entity) where TEntity : class;
     void AddRange<TEntity>(params TEntity[] entities) where TEntity : class;

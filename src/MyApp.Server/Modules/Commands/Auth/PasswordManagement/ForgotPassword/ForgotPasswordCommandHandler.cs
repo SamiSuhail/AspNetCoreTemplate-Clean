@@ -31,8 +31,10 @@ public class ForgotPasswordCommandHandler(IScopedDbContext dbContext, IMessagePr
         var newConfirmation = PasswordResetConfirmationEntity.Create(user.Id);
         dbContext.Add(newConfirmation);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
-
-        await messageProducer.Send(new ForgotPasswordMessage(request.Username, request.Email, newConfirmation.Code), cancellationToken);
+        await dbContext.WrapInTransaction(async () =>
+        {
+            await dbContext.SaveChangesAsync(cancellationToken);
+            await messageProducer.Send(new ForgotPasswordMessage(request.Username, request.Email, newConfirmation.Code), cancellationToken);
+        }, cancellationToken);
     }
 }

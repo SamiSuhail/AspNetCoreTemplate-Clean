@@ -10,7 +10,7 @@ public interface IAppDbContextFactory : IDisposable
     Task<ITransientDbContext> CreateTransientDbContextAsync(CancellationToken cancellationToken);
 }
 
-public class AppDbContextFactory(IDbContextFactory<AppDbContext> factory) : IAppDbContextFactory
+public sealed class AppDbContextFactory(IDbContextFactory<AppDbContext> factory) : IAppDbContextFactory
 {
     private readonly List<AppDbContext> _transientDbContexts = [];
     private AppDbContext? _scopedDbContext;

@@ -5,9 +5,8 @@ using MyApp.Server.Modules.Commands.Auth.Registration.ConfirmEmail;
 using MyApp.Server.Modules.Commands.Auth.Registration.Register;
 using MyApp.Server.Modules.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Server.Modules.Queries.Ping;
-using Refit;
 
-namespace MyApp.ApplicationIsolationTests.Core;
+namespace MyApp.ApplicationIsolationTests.Clients;
 
 public interface IApplicationClient
 {
