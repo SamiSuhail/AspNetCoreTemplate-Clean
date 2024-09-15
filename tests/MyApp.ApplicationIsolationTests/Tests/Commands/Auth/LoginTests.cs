@@ -28,6 +28,25 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
     }
 
     [Fact]
+    public async Task GivenEmailNotConfirmed_ReturnsEmailNotConfirmedFailure()
+    {
+        // Arrange
+        var password = RandomData.Password;
+        var user = await ArrangeDbContext.ArrangeUnconfirmedUser(RandomData.Username, password, RandomData.Email);
+        var request = _request with
+        {
+            Username = user.Username,
+            Password = password,
+        };
+
+        // Act
+        var response = await UnauthorizedAppClient.Login(request);
+
+        // Assert
+        response.AssertSingleBadRequestError(EmailNotConfirmedFailure.Key, EmailNotConfirmedFailure.Message);
+    }
+
+    [Fact]
     public async Task GivenUsernameInvalid_ReturnsInvalidFailure()
     {
         // Arrange

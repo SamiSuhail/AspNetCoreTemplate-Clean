@@ -18,6 +18,7 @@ public class LoginCommandHandler(IScopedDbContext dbContext, IJwtGenerator jwtGe
     public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
         var user = await dbContext.Set<UserEntity>()
+            .IgnoreQueryFilters()
             .Where(u => u.Username == request.Username)
             .Select(u => new
             {
@@ -25,9 +26,13 @@ public class LoginCommandHandler(IScopedDbContext dbContext, IJwtGenerator jwtGe
                 u.Username,
                 u.PasswordHash,
                 u.Email,
+                u.IsEmailConfirmed,
             })
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw LoginInvalidFailure.Exception();
+
+        if (!user.IsEmailConfirmed)
+            throw EmailNotConfirmedFailure.Exception();
 
         var correctPassword = request.Password.Verify(user.PasswordHash);
         if (!correctPassword)
