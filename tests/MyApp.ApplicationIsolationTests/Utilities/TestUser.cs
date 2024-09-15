@@ -1,5 +1,4 @@
-﻿using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Infrastructure.Auth;
+﻿using MyApp.Server.Infrastructure.Auth;
 using MyApp.Server.Infrastructure.Database;
 
 namespace MyApp.ApplicationIsolationTests.Utilities;

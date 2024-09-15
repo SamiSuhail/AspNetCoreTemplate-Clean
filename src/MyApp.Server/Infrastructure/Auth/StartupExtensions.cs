@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace MyApp.Server.Infrastructure.Auth;
 

@@ -53,7 +53,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        AssertHelper.AssertMessageProduced<ForgotPasswordMessage>();
+        AssertMessage.Produced<ForgotPasswordMessage>();
     }
 
     [Theory]
@@ -95,7 +95,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        AssertHelper.AssertMessageProduced<ForgotPasswordMessage>(Times.Never());
+        AssertMessage.Produced<ForgotPasswordMessage>(Times.Never());
     }
 
     [Theory]

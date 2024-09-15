@@ -1,9 +1,9 @@
 ﻿using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Infrastructure.Database;
 
-namespace MyApp.ApplicationIsolationTests.Utilities;
+namespace MyApp.ApplicationIsolationTests.Utilities.Arrange;
 
-public static class ArrangeHelper
+public static class UserDbContextExtensions
 {
     public static async Task<UserEntity> ArrangeRandomConfirmedUser(this IBaseDbContext dbContext)
     {

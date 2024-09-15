@@ -2,7 +2,7 @@
 
 public static class RandomData
 {
-    public static char[] AlphanumericCharacters = Enumerable.Range('0', 10)
+    public static char[] AlphanumericCharacters { get; } = Enumerable.Range('0', 10)
         .Concat(Enumerable.Range('a', 26))
         .Concat(Enumerable.Range('A', 26))
         .Select(x => (char) x)

@@ -1,6 +1,5 @@
 ﻿using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Infrastructure.Auth;
 using MyApp.Server.Infrastructure.Messaging;
 using MyApp.Server.Modules.Commands.Auth.Registration;
 using MyApp.Server.Modules.Commands.Auth.Registration.Register;
@@ -44,7 +43,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        AssertHelper.AssertMessageProduced<SendEmailConfirmationMessage>();
+        AssertMessage.Produced<SendEmailConfirmationMessage>();
     }
 
     [Fact]
@@ -61,7 +60,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        AssertHelper.AssertMessageProduced<SendEmailConfirmationMessage>(Times.Never());
+        AssertMessage.Produced<SendEmailConfirmationMessage>(Times.Never());
         await AssertUserNotExists(request.Username, request.Email);
     }
 

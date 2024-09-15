@@ -1,5 +1,4 @@
-﻿
-using MyApp.Server.Domain.Auth.EmailConfirmation;
+﻿using MyApp.Server.Domain.Auth.EmailConfirmation;
 using MyApp.Server.Domain.Auth.EmailConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Infrastructure.Messaging;
@@ -44,7 +43,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertSuccess();
-        AssertHelper.AssertMessageProduced<SendEmailConfirmationMessage>();
+        AssertMessage.Produced<SendEmailConfirmationMessage>();
     }
 
     [Fact]
@@ -61,7 +60,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertBadRequest();
-        AssertHelper.AssertMessageProduced<SendEmailConfirmationMessage>(Times.Never());
+        AssertMessage.Produced<SendEmailConfirmationMessage>(Times.Never());
         await AssertEmailConfirmationUnchanged();
     }
 

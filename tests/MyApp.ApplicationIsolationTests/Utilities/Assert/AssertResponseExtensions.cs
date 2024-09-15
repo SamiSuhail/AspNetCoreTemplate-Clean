@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Infrastructure.Auth;
-using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.ErrorHandling;
-using MyApp.Server.Infrastructure.Messaging;
-using MyApp.Server.Modules.Commands.Auth.Registration;
 using Newtonsoft.Json;
 
-namespace MyApp.ApplicationIsolationTests.Utilities;
+namespace MyApp.ApplicationIsolationTests.Utilities.Assert;
 
-public static class AssertHelper
+public static class AssertResponseExtensions
 {
     public static void AssertSuccess(this IApiResponse response)
     {
@@ -69,42 +65,4 @@ public static class AssertHelper
         if (statusCode != null)
             response.StatusCode.Should().Be(statusCode);
     }
-
-    public static void AssertSuccess(this IOperationResult response)
-    {
-        using var _ = new AssertionScope();
-        response.Errors.Should().BeEmpty();
-        response.Data.Should().NotBeNull();
-    }
-
-    public static void AssertUnauthorized(this IOperationResult response)
-        => response.AssertSingleError("AUTH_NOT_AUTHORIZED");
-
-    public static void AssertSingleError(this IOperationResult response, string errorCode)
-    {
-        response.Errors.Should().HaveCount(1);
-        var error = response.Errors[0];
-        error.Should().NotBeNull();
-        error.Code.Should().Be(errorCode);
-        response.Data.Should().BeNull();
-    }
-
-    public static void AssertMessageProduced<TMessage>(Times? times = null) where TMessage : class
-    {
-        MockBag.Get<IMessageProducer>()
-            .Verify(x => x.Send(It.IsAny<TMessage>(), It.IsAny<CancellationToken>()),
-                times ?? Times.Once());
-    }
-
-    public static async Task<UserEntity?> GetUser(this IBaseDbContext dbContext, int userId)
-    {
-        return await dbContext.Set<UserEntity>()
-            .IgnoreQueryFilters()
-            .Include(u => u.EmailConfirmation)
-            .Where(u => u.Id == userId)
-            .FirstOrDefaultAsync();
-    }
-
-    public static void ShouldBeNow(this DateTime date, int precisionSeconds = 10)
-        => date.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(precisionSeconds));
 }

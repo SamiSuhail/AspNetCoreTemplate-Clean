@@ -1,0 +1,23 @@
+﻿namespace MyApp.ApplicationIsolationTests.Utilities.Assert;
+
+public static class AssertGraphQLResponseExtensions
+{
+    public static void AssertSuccess(this IOperationResult response)
+    {
+        using var _ = new AssertionScope();
+        response.Errors.Should().BeEmpty();
+        response.Data.Should().NotBeNull();
+    }
+
+    public static void AssertUnauthorized(this IOperationResult response)
+        => response.AssertSingleError("AUTH_NOT_AUTHORIZED");
+
+    public static void AssertSingleError(this IOperationResult response, string errorCode)
+    {
+        response.Errors.Should().HaveCount(1);
+        var error = response.Errors[0];
+        error.Should().NotBeNull();
+        error.Code.Should().Be(errorCode);
+        response.Data.Should().BeNull();
+    }
+}
