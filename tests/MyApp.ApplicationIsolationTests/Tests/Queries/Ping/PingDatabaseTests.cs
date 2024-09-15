@@ -5,7 +5,7 @@ namespace MyApp.ApplicationIsolationTests.Tests.Queries.Ping;
 public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
 {
     [Fact]
-    public async Task GivenUserIsUnauthorized_ThenReturnsError()
+    public async Task GivenUserIsUnauthorized_ReturnsError()
     {
         // Act
         var response = await UnauthorizedAppClient.PingDatabase();
@@ -15,7 +15,7 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
     }
 
     [Fact]
-    public async Task GivenUserIsAuthorized_ThenReturnsResponse()
+    public async Task GivenUserIsAuthorized_ReturnsResponse()
     {
         // Act
         var response = await AppClient.PingDatabase();

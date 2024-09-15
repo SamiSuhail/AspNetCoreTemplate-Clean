@@ -7,12 +7,12 @@ namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
 public class ConfirmEmailTests(AppFactory appFactory) : BaseTest(appFactory), IAsyncLifetime
 {
-    private UserEntity _user = null!;
-    private ConfirmEmailRequest _request = null!;
+    private UserEntity _user = default!;
+    private ConfirmEmailRequest _request = default!;
     public override async Task InitializeAsync()
     {
         await base.InitializeAsync();
-        _user = await ArrangeDbContext.ArrangeRandomUser();
+        _user = await ArrangeDbContext.ArrangeRandomUnconfirmedUser();
         _request = new(_user.EmailConfirmation!.Code);
     }
 
@@ -31,7 +31,7 @@ public class ConfirmEmailTests(AppFactory appFactory) : BaseTest(appFactory), IA
     }
 
     [Fact]
-    public async Task GivenUserIsAuthenticated_ThenReturnsAnonymousOnlyError()
+    public async Task GivenUserIsAuthenticated_ReturnsAnonymousOnlyError()
     {
         // Act
         var response = await AppClient.ConfirmEmail(_request);
@@ -42,12 +42,10 @@ public class ConfirmEmailTests(AppFactory appFactory) : BaseTest(appFactory), IA
     }
 
     [Fact]
-    public async Task GivenUserAlreadyConfirmed_ThenReturnsInvalidFailure()
+    public async Task GivenUserAlreadyConfirmed_ReturnsInvalidFailure()
     {
         // Arrange
-        _user.ConfirmEmail();
-        ArrangeDbContext.Remove(_user.EmailConfirmation!);
-        await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
+        await ArrangeDbContext.ConfirmUser(_user);
 
         // Act
         var response = await UnauthorizedAppClient.ConfirmEmail(_request);
@@ -57,7 +55,7 @@ public class ConfirmEmailTests(AppFactory appFactory) : BaseTest(appFactory), IA
     }
 
     [Fact]
-    public async Task GivenCodeDoesNotExist_ThenReturnsInvalidFailure()
+    public async Task GivenCodeDoesNotExist_ReturnsInvalidFailure()
     {
         // Arrange
         var request = _request with { Code = "000000" };
@@ -71,7 +69,7 @@ public class ConfirmEmailTests(AppFactory appFactory) : BaseTest(appFactory), IA
     }
 
     [Fact]
-    public async Task GivenCodeIsExpired_ThenReturnsInvalidFailure()
+    public async Task GivenCodeIsExpired_ReturnsInvalidFailure()
     {
         // Arrange
         await ArrangeDbContext.Set<EmailConfirmationEntity>()

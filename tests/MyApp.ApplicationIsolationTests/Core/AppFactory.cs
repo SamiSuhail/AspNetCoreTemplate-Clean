@@ -11,7 +11,7 @@ namespace MyApp.ApplicationIsolationTests.Core;
 public class AppFactory : WebApplicationFactory<ProgramApi>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgreSqlContainer;
-    private string _connectionString = null!;
+    private string _connectionString = default!;
     public AppFactory()
         : base()
     {
@@ -38,7 +38,6 @@ public class AppFactory : WebApplicationFactory<ProgramApi>, IAsyncLifetime
         {
             services.AddMassTransitTestHarness();
             services.ReplaceWithMock<IMessageProducer>(MockBehavior.Loose);
-            services.ReplaceStandardMocks();
         });
     }
 

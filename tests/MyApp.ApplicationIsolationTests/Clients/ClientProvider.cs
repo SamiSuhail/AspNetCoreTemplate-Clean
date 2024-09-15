@@ -12,8 +12,8 @@ public static class ClientProvider
         GraphQLClient = appFactory.CreateGraphQLClient(c => c.SetAuthorizationHeader(TestUser.AccessToken));
     }
 
-    public static IApplicationClient UnauthorizedAppClient = null!;
-    public static IApplicationClient AppClient = null!;
-    public static IApplicationGraphQLClient UnauthorizedGraphQLClient = null!;
-    public static IApplicationGraphQLClient GraphQLClient = null!;
+    public static IApplicationClient UnauthorizedAppClient = default!;
+    public static IApplicationClient AppClient = default!;
+    public static IApplicationGraphQLClient UnauthorizedGraphQLClient = default!;
+    public static IApplicationGraphQLClient GraphQLClient = default!;
 }

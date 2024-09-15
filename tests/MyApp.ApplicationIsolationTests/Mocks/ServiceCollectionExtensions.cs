@@ -2,28 +2,6 @@
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection ReplaceStandardMocks(this IServiceCollection services)
-    {
-        var interfaces = services
-            .Where(t => t.ServiceType.Name.EndsWith("EmailNotifier") && t.ServiceType.IsInterface)
-            .ToArray();
-
-        foreach (var descriptor in interfaces)
-        {
-            var serviceType = descriptor.ServiceType;
-            var mockType = typeof(Mock<>).MakeGenericType(serviceType);
-            var mockInstance = Activator.CreateInstance(mockType, MockBehavior.Strict)
-                ?? throw new InvalidOperationException($"Could not active type {serviceType.Name} while replacing standard mocks.");
-            var mock = (Mock)mockInstance;
-
-            services.Remove(descriptor);
-            services.AddSingleton(serviceType, mock.Object);
-            MockBag.Add(serviceType, mock);
-        }
-
-        return services;
-    }
-
     public static IServiceCollection ReplaceWithMock<TService>(
         this IServiceCollection services,
         MockBehavior mockBehavior = MockBehavior.Strict) 

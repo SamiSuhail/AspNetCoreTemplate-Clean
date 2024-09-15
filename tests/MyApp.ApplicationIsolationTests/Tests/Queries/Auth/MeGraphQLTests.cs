@@ -3,7 +3,7 @@
 public class MeGraphQLTests(AppFactory appFactory) : BaseTest(appFactory)
 {
     [Fact]
-    public async Task GivenUserIsUnauthorized_ThenReturnsError()
+    public async Task GivenUserIsUnauthorized_ReturnsError()
     {
         // Act
         var response = await UnauthorizedGraphQLClient.Me.ExecuteAsync();
@@ -13,7 +13,7 @@ public class MeGraphQLTests(AppFactory appFactory) : BaseTest(appFactory)
     }
 
     [Fact]
-    public async Task GivenUserIsAuthorized_ThenReturnsResponse()
+    public async Task GivenUserIsAuthorized_ReturnsResponse()
     {
         // Act
         var response = await GraphQLClient.Me.ExecuteAsync();

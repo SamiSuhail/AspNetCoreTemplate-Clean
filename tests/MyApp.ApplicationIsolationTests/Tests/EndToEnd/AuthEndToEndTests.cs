@@ -1,4 +1,5 @@
-﻿using MyApp.Server.Infrastructure.Messaging;
+﻿using MyApp.Server.Infrastructure.Auth;
+using MyApp.Server.Infrastructure.Messaging;
 using MyApp.Server.Modules.Commands.Auth.Login;
 using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ResetPassword;
@@ -7,9 +8,9 @@ using MyApp.Server.Modules.Commands.Auth.Registration.ConfirmEmail;
 using MyApp.Server.Modules.Commands.Auth.Registration.Register;
 using MyApp.Server.Modules.Commands.Auth.Registration.ResendConfirmation;
 
-namespace MyApp.ApplicationIsolationTests;
+namespace MyApp.ApplicationIsolationTests.Tests.EndToEnd;
 
-public class EndToEndTest(AppFactory appFactory) : BaseTest(appFactory)
+public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
 {
     // user
     private const string Email = "olduser@email.com";
@@ -24,7 +25,7 @@ public class EndToEndTest(AppFactory appFactory) : BaseTest(appFactory)
         await TestConfirmEmail(emailConfirmationCode);
         var passwordResetConfirmationCode = await TestForgotPassword();
         await TestResetPassword(passwordResetConfirmationCode);
-        var accessToken = await TestLogin();
+        await TestLogin();
     }
 
     private async Task TestRegister()
@@ -78,7 +79,7 @@ public class EndToEndTest(AppFactory appFactory) : BaseTest(appFactory)
         response.AssertSuccess();
     }
 
-    private async Task<string> TestLogin()
+    private async Task TestLogin()
     {
         var request = new LoginRequest(Username, Password);
         var response = await UnauthorizedAppClient.Login(request);
@@ -86,6 +87,10 @@ public class EndToEndTest(AppFactory appFactory) : BaseTest(appFactory)
         response.Content.Should().NotBeNull();
         var accessToken = response.Content!.AccessToken;
         accessToken.Should().NotBeNullOrWhiteSpace();
-        return accessToken;
+        var userContext = ScopedServices.GetRequiredService<IJwtReader>()
+            .ReadAccessToken(accessToken);
+        using var _ = new AssertionScope();
+        userContext.Username.Should().Be(Username);
+        userContext.Email.Should().Be(Email);
     }
 }

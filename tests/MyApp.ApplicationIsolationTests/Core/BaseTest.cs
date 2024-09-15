@@ -1,4 +1,5 @@
-﻿using MyApp.Server.Infrastructure.Database;
+﻿using MyApp.Server.Domain.Auth.User;
+using MyApp.Server.Infrastructure.Database;
 
 namespace MyApp.ApplicationIsolationTests.Core;
 
@@ -12,17 +13,20 @@ public abstract class BaseTest(AppFactory appFactory) : IAsyncLifetime
         ScopedServices = _scope.ServiceProvider;
         ArrangeDbContext = CreateDbContext();
         AssertDbContext = CreateDbContext();
+        User = (await CreateDbContext().GetUser(TestUser.Id))!;
         await Task.CompletedTask;
     }
-    public IServiceProvider ScopedServices { get; set; } = default!;
+    public IServiceProvider ScopedServices { get; private set; } = default!;
 
     // Exposing the below two properties to avoid accidental sharing of DbContext between arrange and assert
     // This is done to avoid unexpected results due to entity tracking
-    public ITransientDbContext ArrangeDbContext { get; set; } = default!;
-    public ITransientDbContext AssertDbContext { get; set; } = default!;
+    public ITransientDbContext ArrangeDbContext { get; private set; } = default!;
+    public ITransientDbContext AssertDbContext { get; private set; } = default!;
+    public UserEntity User { get; private set; } = default!;
+
     public ITransientDbContext CreateDbContext() => ScopedServices.GetRequiredService<ITransientDbContext>();
 
-    public async Task DisposeAsync()
+    public virtual async Task DisposeAsync()
     {
         MockBag.Reset();
         _scope.Dispose();

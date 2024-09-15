@@ -4,6 +4,9 @@ namespace MyApp.Server.Utilities;
 
 public static class StringExtensions
 {
+    public static bool IsNullOrEmpty(this string? value)
+        => value == null || value.Length == 0;
+
     public static string RemoveWhitespace(this string s)
         => s.ReplaceWhitespace(string.Empty);
 

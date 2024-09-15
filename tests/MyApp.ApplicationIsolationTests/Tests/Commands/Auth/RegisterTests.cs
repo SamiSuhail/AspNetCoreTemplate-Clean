@@ -82,7 +82,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
     }
 
     [Fact]
-    public async Task GivenUserIsAuthenticated_ThenReturnsAnonymousOnlyError()
+    public async Task GivenUserIsAuthenticated_ReturnsAnonymousOnlyError()
     {
         // Act
         var response = await AppClient.Register(_request);
@@ -93,7 +93,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
     }
 
     [Fact]
-    public async Task GivenUsernameTaken_ThenReturnsUsernameConflictFailure()
+    public async Task GivenUsernameTaken_ReturnsUsernameConflictFailure()
     {
         // Arrange
         var request = _request with
@@ -110,7 +110,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
     }
 
     [Fact]
-    public async Task GivenEmailTaken_ThenReturnsEmailConflictFailure()
+    public async Task GivenEmailTaken_ReturnsEmailConflictFailure()
     {
         // Arrange
         var request = _request with

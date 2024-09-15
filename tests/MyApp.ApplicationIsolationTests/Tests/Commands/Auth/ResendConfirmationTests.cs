@@ -10,13 +10,13 @@ namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
 public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    private UserEntity _user = null!;
-    private ResendConfirmationRequest _request = null!;
+    private UserEntity _user = default!;
+    private ResendConfirmationRequest _request = default!;
 
     public override async Task InitializeAsync()
     {
         await base.InitializeAsync();
-        _user = await ArrangeDbContext.ArrangeRandomUser();
+        _user = await ArrangeDbContext.ArrangeRandomUnconfirmedUser();
         _request = new ResendConfirmationRequest(_user.Email);
     }
 
@@ -82,7 +82,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
     }
 
     [Fact]
-    public async Task GivenUserIsAuthenticated_ThenReturnsAnonymousOnlyError()
+    public async Task GivenUserIsAuthenticated_ReturnsAnonymousOnlyError()
     {
         // Act
         var response = await AppClient.ResendConfirmation(_request);
@@ -93,7 +93,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
     }
 
     [Fact]
-    public async Task GivenEmailDoesNotExist_ThenReturnsInvalidFailure()
+    public async Task GivenEmailDoesNotExist_ReturnsInvalidFailure()
     {
         // Arrange
         var request = _request with { Email = RandomData.Email };
@@ -107,20 +107,17 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
     }
 
     [Fact]
-    public async Task GivenUserAlreadyConfirmed_ThenReturnsInvalidFailure()
+    public async Task GivenUserAlreadyConfirmed_ReturnsInvalidFailure()
     {
         // Arrange
-        _user.ConfirmEmail();
-        ArrangeDbContext.Remove(_user.EmailConfirmation!);
-        await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
+        await ArrangeDbContext.ConfirmUser(_user);
 
         // Act
         var response = await UnauthorizedAppClient.ResendConfirmation(_request);
 
         // Assert
         AssertInvalidFailure(response);
-        var emailConfirmation = await GetEmailConfirmation();
-        emailConfirmation.Should().BeNull();
+        await AssertEmailConfirmationUnchanged();
     }
 
     private async Task<EmailConfirmationEntity> GetEmailConfirmation()
@@ -133,6 +130,13 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
     private async Task AssertEmailConfirmationUnchanged()
     {
         var emailConfirmation = await GetEmailConfirmation();
+
+        if (_user.EmailConfirmation == null)
+        {
+            emailConfirmation.Should().BeNull();
+            return;
+        }
+
         emailConfirmation.Should().NotBeNull();
         emailConfirmation.Id.Should().Be(_user.EmailConfirmation!.Id);
         emailConfirmation.Code.Should().Be(_user.EmailConfirmation.Code);

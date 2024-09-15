@@ -6,7 +6,7 @@ namespace MyApp.ApplicationIsolationTests.Utilities;
 
 public static class TestUser
 {
-    public static string AccessToken = null!;
+    public static string AccessToken = default!;
     public static int Id = default!;
     public const string Username = "Username";
     public const string Password = "Password1!";
@@ -19,21 +19,11 @@ public static class TestUser
             return;
         using var scope = sp.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ITransientDbContext>();
-        var user = await dbContext.CreateConfirmedTestUser(Username, Password, Email);
+        var user = await dbContext.ArrangeConfirmedUser(Username, Password, Email);
         Id = user.Id;
         CreatedAt = user.CreatedAt;
 
         var jwtGenerator = sp.GetRequiredService<IJwtGenerator>();
         AccessToken = jwtGenerator.Create(Id, Username, Email);
-    }
-
-    public static async Task<UserEntity> CreateConfirmedTestUser(this IBaseDbContext dbContext, string username, string password, string email)
-    {
-        var user = UserEntity.Create(username, password, email);
-        user.ConfirmEmail();
-        dbContext.Add(user);
-        dbContext.Remove(user.EmailConfirmation!);
-        await dbContext.SaveChangesAsync(CancellationToken.None);
-        return user;
     }
 }
