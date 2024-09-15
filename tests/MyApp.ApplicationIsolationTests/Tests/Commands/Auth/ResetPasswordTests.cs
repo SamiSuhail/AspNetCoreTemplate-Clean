@@ -34,7 +34,7 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         response.AssertSuccess();
         var user = await AssertDbContext.GetUser(_userId);
         user.Should().NotBeNull();
-        UserPasswordHelper.Verify(_request.Password, user!.PasswordHash).Should().BeTrue();
+        _request.Password.Verify(user!.PasswordHash).Should().BeTrue();
     }
 
     [Theory]

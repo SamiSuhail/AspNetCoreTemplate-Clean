@@ -1,6 +1,6 @@
 ﻿namespace MyApp.Server.Domain.Auth.User;
 
-public static class UserPasswordHelper
+public static class UserPasswordExtensions
 {
     public static string Hash(this string password)
         => BC.EnhancedHashPassword(password);
