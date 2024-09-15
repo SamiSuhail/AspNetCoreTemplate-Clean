@@ -1,36 +1,18 @@
-using MyApp.Server.Infrastructure.Auth;
-using MyApp.Server.Infrastructure.BackgroundJobs;
-using MyApp.Server.Infrastructure.Database;
-using MyApp.Server.Infrastructure.Email;
-using MyApp.Server.Infrastructure.Endpoints;
-using MyApp.Server.Infrastructure.ErrorHandling;
-using MyApp.Server.Infrastructure.GraphQL;
+using MyApp.Server.Application;
+using MyApp.Server.Infrastructure;
 using MyApp.Server.Infrastructure.Logging;
-using MyApp.Server.Infrastructure.MediatR;
-using MyApp.Server.Infrastructure.Messaging;
-using MyApp.Server.Infrastructure.RequestTransformation;
-using MyApp.Server.Infrastructure.Swagger;
-using MyApp.Server.Infrastructure.Validation;
-using static MyApp.Server.Infrastructure.Logging.StartupExtensions;
+using MyApp.Server.Presentation;
+using MyApp.Server.Presentation.Startup;
+using static MyApp.Server.Infrastructure.Logging.LoggingStartupExtensions;
 
 CreateCustomSerilogBootstrapLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-builder.Services.AddHttpContextAccessor()
-    .AddCustomSerilog(configuration)
-    .AddCustomAuth(configuration)
-    .AddCustomSwagger()
-    .AddCustomDatabase(configuration)
-    .AddCustomValidators()
-    .AddCustomMediatR()
-    .AddCustomRequestTransformers()
-    .AddCustomEmail(configuration)
-    .AddCustomBackgroundJobs(configuration)
-    .AddCustomMessaging(configuration)
-    .AddCustomGraphQL(builder.Environment)
-    .AddExceptionHandler<CustomExceptionHandler>();
+builder.Services.AddInfrastructureServices(configuration)
+    .AddApplicationServices(configuration)
+    .AddPresentationServices(builder.Environment);
 
 var app = builder.Build();
 app.UseCustomSerilog();

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using MassTransit;
-using MyApp.Server.Utilities;
+using MyApp.Server.Shared;
 
 namespace MyApp.Server.Infrastructure.Messaging;
 

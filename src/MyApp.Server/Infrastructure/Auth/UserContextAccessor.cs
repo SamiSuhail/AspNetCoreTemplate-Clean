@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Utilities;
+﻿using MyApp.Server.Shared;
 
 namespace MyApp.Server.Infrastructure.Auth;
 

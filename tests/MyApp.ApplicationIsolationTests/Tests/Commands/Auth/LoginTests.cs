@@ -1,6 +1,6 @@
-﻿using MyApp.Server.Domain.Auth.User.Failures;
+﻿using MyApp.Server.Application.Commands.Auth.Login;
+using MyApp.Server.Domain.Auth.User.Failures;
 using MyApp.Server.Infrastructure.Auth;
-using MyApp.Server.Modules.Commands.Auth.Login;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 

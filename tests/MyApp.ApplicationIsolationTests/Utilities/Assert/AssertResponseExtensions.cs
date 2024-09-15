@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyApp.Server.Infrastructure.Auth;
-using MyApp.Server.Infrastructure.ErrorHandling;
+using MyApp.Server.Presentation.Startup.Filters;
+using MyApp.Server.Presentation.Startup.Middleware;
 using Newtonsoft.Json;
 
 namespace MyApp.ApplicationIsolationTests.Utilities.Assert;

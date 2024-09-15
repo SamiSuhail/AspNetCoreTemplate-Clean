@@ -1,7 +1,7 @@
-﻿using MyApp.Server.Domain.Auth.EmailConfirmation;
+﻿using MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
+using MyApp.Server.Domain.Auth.EmailConfirmation;
 using MyApp.Server.Domain.Auth.EmailConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Modules.Commands.Auth.Registration.ConfirmEmail;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 

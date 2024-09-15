@@ -1,7 +1,7 @@
-﻿using MyApp.Server.Domain.Auth.EmailConfirmation;
+﻿using MyApp.Server.Application.Commands.Auth.BackgroundJobs.CleanupConfirmations;
+using MyApp.Server.Domain.Auth.EmailConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Modules.Commands.Auth.BackgroundJobs.CleanupConfirmations;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 

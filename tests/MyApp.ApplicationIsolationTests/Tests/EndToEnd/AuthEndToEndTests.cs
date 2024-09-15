@@ -1,12 +1,12 @@
-﻿using MyApp.Server.Infrastructure.Auth;
+﻿using MyApp.Server.Application.Commands.Auth.Login;
+using MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Server.Application.Commands.Auth.Registration;
+using MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
+using MyApp.Server.Application.Commands.Auth.Registration.Register;
+using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Server.Infrastructure.Auth;
 using MyApp.Server.Infrastructure.Messaging;
-using MyApp.Server.Modules.Commands.Auth.Login;
-using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Server.Modules.Commands.Auth.PasswordManagement.ResetPassword;
-using MyApp.Server.Modules.Commands.Auth.Registration;
-using MyApp.Server.Modules.Commands.Auth.Registration.ConfirmEmail;
-using MyApp.Server.Modules.Commands.Auth.Registration.Register;
-using MyApp.Server.Modules.Commands.Auth.Registration.ResendConfirmation;
 
 namespace MyApp.ApplicationIsolationTests.Tests.EndToEnd;
 
