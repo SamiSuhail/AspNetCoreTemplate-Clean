@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using MyApp.Server;
 using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Messaging;
 using Testcontainers.PostgreSql;

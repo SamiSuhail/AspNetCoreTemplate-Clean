@@ -28,14 +28,14 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         await TestLogin();
     }
 
-    private async Task TestRegister()
+    private static async Task TestRegister()
     {
         var request = new RegisterRequest(Email, Username, Password);
         var response = await UnauthorizedAppClient.Register(request);
         response.AssertSuccess();
     }
 
-    private async Task<string> TestResendConfirmation()
+    private static async Task<string> TestResendConfirmation()
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
@@ -50,14 +50,14 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         return code;
     }
 
-    private async Task TestConfirmEmail(string confirmationCode)
+    private static async Task TestConfirmEmail(string confirmationCode)
     {
         var request = new ConfirmEmailRequest(confirmationCode);
         var response = await UnauthorizedAppClient.ConfirmEmail(request);
         response.AssertSuccess();
     }
 
-    private async Task<string> TestForgotPassword()
+    private static async Task<string> TestForgotPassword()
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
@@ -72,7 +72,7 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         return code;
     }
 
-    private async Task TestResetPassword(string code)
+    private static async Task TestResetPassword(string code)
     {
         var request = new ResetPasswordRequest(code, Password);
         var response = await UnauthorizedAppClient.ResetPassword(request);

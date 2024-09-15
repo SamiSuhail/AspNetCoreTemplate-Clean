@@ -45,4 +45,7 @@ app.MapCustomGraphQL();
 
 await app.RunAsync();
 
-public partial class ProgramApi { }
+namespace MyApp.Server
+{
+    public partial class ProgramApi { }
+}

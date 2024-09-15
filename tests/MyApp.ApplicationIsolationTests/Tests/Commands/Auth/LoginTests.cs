@@ -6,7 +6,7 @@ namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
 public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    private LoginRequest _request = new(TestUser.Username, TestUser.Password);
+    private readonly LoginRequest _request = new(TestUser.Username, TestUser.Password);
 
     [Fact]
     public async Task GivenHappyPath_ReturnsValidAccessToken()
