@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using MyApp.Server.Domain.Shared;
+using MyApp.Server.Domain.Shared.Confirmations;
 using MyApp.Server.Infrastructure.Email;
 
 namespace MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
@@ -16,7 +16,6 @@ public class ForgotPasswordConsumer(IEmailSender emailSender) : IConsumer<Forgot
     public async Task Consume(ConsumeContext<ForgotPasswordMessage> context)
     {
         var (username, email, code) = context.Message;
-        await Task.Delay(TimeSpan.FromSeconds(15));
         var messageText = string.Format(MessageTemplate, BaseConfirmationConstants.ExpirationTimeMinutes, code);
         await emailSender.Send(username, email, "Go2Gether Password Reset", messageText, context.CancellationToken);
     }

@@ -1,4 +1,4 @@
-﻿namespace MyApp.Server.Domain.Shared;
+﻿namespace MyApp.Server.Domain.Shared.Confirmations;
 
 public class BaseConfirmationConstants
 {

@@ -1,7 +1,5 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Auth.User.Failures;
+using MyApp.Server.Application.Utilities;
 using MyApp.Server.Infrastructure.Auth;
 using MyApp.Server.Infrastructure.Database;
 
@@ -17,10 +15,7 @@ public class SignOutOnAllDevicesCommandHandler(IUserContextAccessor userContextA
 
         await dbContext.WrapInTransaction(async () =>
         {
-            var user = await dbContext.Set<UserEntity>()
-                .Where(u => u.Id == userId)
-                .FirstOrDefaultAsync(cancellationToken)
-                ?? throw UserIdNotFoundFailure.Exception();
+            var user = await dbContext.FindUser(userId, cancellationToken);
 
             user.SignOutOnAllDevices();
             await dbContext.SaveChangesAsync(cancellationToken);

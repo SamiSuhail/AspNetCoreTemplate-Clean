@@ -104,7 +104,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.Register(request);
 
         // Assert
-        response.AssertSingleBadRequestError(RegisterConflictFailure.UsernameTakenKey, RegisterConflictFailure.UsernameTakenMessage);
+        response.AssertSingleBadRequestError(UserConflictFailure.UsernameTakenKey, UserConflictFailure.UsernameTakenMessage);
         await AssertUserNotExists(request.Username, request.Email);
     }
 
@@ -121,7 +121,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.Register(request);
 
         // Assert
-        response.AssertSingleBadRequestError(RegisterConflictFailure.EmailTakenKey, RegisterConflictFailure.EmailTakenMessage);
+        response.AssertSingleBadRequestError(UserConflictFailure.EmailTakenKey, UserConflictFailure.EmailTakenMessage);
         await AssertUserNotExists(request.Username, request.Email);
     }
 

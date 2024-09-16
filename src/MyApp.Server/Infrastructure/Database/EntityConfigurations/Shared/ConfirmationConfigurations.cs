@@ -1,8 +1,7 @@
-﻿using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
-using MyApp.Server.Domain.Auth.UserConfirmation;
+﻿using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
-using MyApp.Server.Domain.Shared;
 using static MyApp.Server.Infrastructure.Database.Constants;
+using MyApp.Server.Domain.Shared.Confirmations;
 
 namespace MyApp.Server.Infrastructure.Database.EntityConfigurations.Shared;
 
@@ -16,7 +15,6 @@ public static class ConfirmationConfigurations
     {
         { typeof(UserConfirmationEntity),  new(Schemas.Auth, Tables.UserConfirmations)},
         { typeof(PasswordResetConfirmationEntity),  new(Schemas.Auth, Tables.PasswordResetConfirmations)},
-        { typeof(EmailChangeConfirmationEntity),  new(Schemas.UserManagement, Tables.EmailChangeConfirmations)},
     };
 
     public static ConfirmationConfigurationValues Get<TConfirmationEntity>() where TConfirmationEntity : BaseConfirmationEntity

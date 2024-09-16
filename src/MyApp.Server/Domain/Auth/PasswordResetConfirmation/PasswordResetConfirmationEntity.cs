@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Domain.Shared;
+﻿using MyApp.Server.Domain.Shared.Confirmations;
 
 namespace MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.UserConfirmation.Failures;
-using MyApp.Server.Domain.Shared;
+using MyApp.Server.Domain.Shared.Confirmations;
 using MyApp.Server.Infrastructure.Database;
 
 namespace MyApp.Server.Application.Commands.Auth.Registration.ConfirmUserRegistration;

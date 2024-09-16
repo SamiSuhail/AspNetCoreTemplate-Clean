@@ -30,6 +30,7 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(x => x.Email)
             .HasMaxLength(UserConstants.EmailMaxLength)
             .IsRequired();
+
         builder.HasIndex(x => x.Email)
             .IsUnique()
             .HasDatabaseName("uq_users_email");
@@ -39,9 +40,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.HasIndex(x => x.IsEmailConfirmed);
 
         builder.Property(x => x.RefreshTokenVersion)
-            .IsRequired();
-
-        builder.Property(x => x.CreatedAt)
             .IsRequired();
 
         builder.HasQueryFilter(u => u.IsEmailConfirmed == true);

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MyApp.Server.Domain.Shared;
+using MyApp.Server.Domain.Shared.Confirmations;
 
 namespace MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
 

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Shared;
+using MyApp.Server.Domain.Shared.Confirmations;
 
 namespace MyApp.Server.Infrastructure.Database.EntityConfigurations.Shared;
 
@@ -40,8 +40,5 @@ public static class BaseConfirmationConfigurationExtensions
         builder.HasIndex(x => x.Code)
             .IsUnique()
             .HasDatabaseName($"uq_{tableName}_code");
-
-        builder.Property(x => x.CreatedAt)
-            .IsRequired();
     }
 }

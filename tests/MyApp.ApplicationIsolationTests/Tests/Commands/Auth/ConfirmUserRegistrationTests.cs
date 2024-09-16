@@ -2,7 +2,7 @@
 using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Shared;
+using MyApp.Server.Domain.Shared.Confirmations;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 

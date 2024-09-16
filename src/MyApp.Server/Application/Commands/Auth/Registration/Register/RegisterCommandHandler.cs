@@ -22,7 +22,7 @@ public class RegisterCommandHandler(IScopedDbContext dbContext, IMessageProducer
         var usernameTaken = await users.AnyAsync(u => u.Username == request.Username, cancellationToken);
         var emailTaken = await users.AnyAsync(u => u.Email == request.Email, cancellationToken);
 
-        RegisterConflictFailure.Create(usernameTaken, emailTaken)
+        UserConflictFailure.Create(usernameTaken, emailTaken)
             .ThrowOnError();
 
         var user = UserEntity.Create(request.Username, request.Password, request.Email);

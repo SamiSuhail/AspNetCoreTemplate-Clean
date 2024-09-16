@@ -1,9 +1,8 @@
 ﻿using MyApp.Server.Domain.Auth.User;
-using static MyApp.Server.Domain.Shared.BaseConfirmationConstants;
 
-namespace MyApp.Server.Domain.Shared;
+namespace MyApp.Server.Domain.Shared.Confirmations;
 
-public abstract class BaseConfirmationEntity
+public abstract class BaseConfirmationEntity : ICreationAudited, IOwnedByUser
 {
     public int Id { get; protected set; }
     public int UserId { get; protected set; }
@@ -23,14 +22,8 @@ public abstract class BaseConfirmationEntity
     {
         return new()
         {
-            Code = GenerateCode(),
+            Code = ConfirmationCodeGenerator.GenerateCode(),
             CreatedAt = DateTime.UtcNow,
         };
-    }
-
-    protected static string GenerateCode()
-    {
-        var codeMaxValueExclusive = (int)Math.Pow(10, CodeLength);
-        return new Random().Next(codeMaxValueExclusive).ToString($"D{CodeLength}");
     }
 }
