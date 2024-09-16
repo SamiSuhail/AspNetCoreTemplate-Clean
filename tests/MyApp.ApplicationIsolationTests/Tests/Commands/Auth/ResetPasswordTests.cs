@@ -2,6 +2,7 @@
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
+using MyApp.Server.Domain.Shared;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
@@ -83,7 +84,7 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
             .Where(pr => pr.UserId == _userId)
             .ExecuteUpdateAsync(s => 
                 s.SetProperty(pr => pr.CreatedAt, 
-                    DateTime.UtcNow.AddMinutes(-PasswordResetConfirmationConstants.ExpirationTimeMinutes - 1)));
+                    DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes - 1)));
 
         // Act
         var response = await UnauthorizedAppClient.ResetPassword(_request);

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Server.Domain.Auth.EmailConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Server.Domain.Shared;
 using MyApp.Server.Infrastructure.Database;
 
 namespace MyApp.Server.Application.Commands.Auth.BackgroundJobs.CleanupConfirmations;
@@ -21,7 +22,7 @@ public class CleanupConfirmationsHandler(IAppDbContextFactory dbContextFactory) 
     private async Task CleanupEmailConfirmations(CancellationToken cancellationToken)
     {
         await using var dbContext = await dbContextFactory.CreateTransientDbContextAsync(cancellationToken);
-        var expirationTime = DateTime.UtcNow.AddMinutes(-EmailConfirmationConstants.ExpirationTimeMinutes);
+        var expirationTime = DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
         await dbContext.Set<EmailConfirmationEntity>()
             .Where(ec => ec.CreatedAt < expirationTime)
             .ExecuteDeleteAsync(cancellationToken);
@@ -30,7 +31,7 @@ public class CleanupConfirmationsHandler(IAppDbContextFactory dbContextFactory) 
     private async Task CleanupPasswordResetConfirmations(CancellationToken cancellationToken)
     {
         await using var dbContext = await dbContextFactory.CreateTransientDbContextAsync(cancellationToken);
-        var expirationTime = DateTime.UtcNow.AddMinutes(-PasswordResetConfirmationConstants.ExpirationTimeMinutes);
+        var expirationTime = DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
 
         await dbContext.Set<PasswordResetConfirmationEntity>()
             .Where(ec => ec.CreatedAt < expirationTime)

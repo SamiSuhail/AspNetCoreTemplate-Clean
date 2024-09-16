@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using MyApp.Server.Domain.Auth.EmailConfirmation;
+using MyApp.Server.Domain.Shared;
 using MyApp.Server.Infrastructure.Email;
 
 namespace MyApp.Server.Application.Commands.Auth.Registration;
@@ -17,7 +17,7 @@ public class SendEmailConfirmationConsumer(IEmailSender emailSender) : IConsumer
     {
         var (username, email, code) = context.Message;
         await Task.Delay(TimeSpan.FromSeconds(15));
-        var messageText = string.Format(MessageTemplate, EmailConfirmationConstants.ExpirationTimeMinutes, code);
+        var messageText = string.Format(MessageTemplate, BaseConfirmationConstants.ExpirationTimeMinutes, code);
         await emailSender.Send(username, email, "Go2Gether Email Confirmation", messageText, context.CancellationToken);
     }
 }

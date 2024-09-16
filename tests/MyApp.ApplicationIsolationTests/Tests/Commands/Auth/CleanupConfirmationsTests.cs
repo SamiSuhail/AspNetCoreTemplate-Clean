@@ -2,6 +2,7 @@
 using MyApp.Server.Domain.Auth.EmailConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.User;
+using MyApp.Server.Domain.Shared;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
@@ -36,8 +37,8 @@ public class CleanupConfirmationsTests(AppFactory appFactory) : BaseTest(appFact
     private async Task ExpireConfirmations(int userId)
     {
         var timeFiveSecondsAgo = DateTime.UtcNow.AddSeconds(-5);
-        var expiredEmailConfirmationDatetime = timeFiveSecondsAgo.AddMinutes(-EmailConfirmationConstants.ExpirationTimeMinutes);
-        var expiredPasswordResetConfirmationDatetime = timeFiveSecondsAgo.AddMinutes(-PasswordResetConfirmationConstants.ExpirationTimeMinutes);
+        var expiredEmailConfirmationDatetime = timeFiveSecondsAgo.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
+        var expiredPasswordResetConfirmationDatetime = timeFiveSecondsAgo.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
 
         var ecRowsUpdated = await ArrangeDbContext.Set<EmailConfirmationEntity>()
             .Where(ec => ec.UserId == userId)

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MyApp.Server.Domain.Auth.EmailConfirmation;
+using MyApp.Server.Domain.Shared;
 
 namespace MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
 
@@ -9,6 +9,6 @@ public class ConfirmEmailValidator : AbstractValidator<ConfirmEmailRequest>
     {
         RuleFor(r => r.Code)
             .NotNull()
-            .Length(EmailConfirmationConstants.CodeLength);
+            .Length(BaseConfirmationConstants.CodeLength);
     }
 }

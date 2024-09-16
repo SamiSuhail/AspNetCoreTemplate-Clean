@@ -1,17 +1,9 @@
-﻿using MyApp.Server.Domain.Auth.User;
-using static MyApp.Server.Domain.Auth.EmailConfirmation.EmailConfirmationConstants;
+﻿using MyApp.Server.Domain.Shared;
 
 namespace MyApp.Server.Domain.Auth.EmailConfirmation;
 
-public class EmailConfirmationEntity
+public class EmailConfirmationEntity : BaseConfirmationEntity
 {
-    public int Id { get; private set; }
-    public int UserId { get; private set; }
-    public string Code { get; private set; } = default!;
-    public DateTime CreatedAt { get; private set; }
-
-    public UserEntity User { get; private set; } = default!;
-
     public static EmailConfirmationEntity Create(int userId)
     {
         var emailConfirmation = Create();
@@ -21,11 +13,9 @@ public class EmailConfirmationEntity
 
     public static EmailConfirmationEntity Create()
     {
-        var codeMaxValueExclusive = (int)Math.Pow(10, CodeLength);
-        var code = new Random().Next(codeMaxValueExclusive).ToString($"D{CodeLength}");
         return new()
         {
-            Code = code,
+            Code = GenerateCode(),
             CreatedAt = DateTime.UtcNow,
         };
     }

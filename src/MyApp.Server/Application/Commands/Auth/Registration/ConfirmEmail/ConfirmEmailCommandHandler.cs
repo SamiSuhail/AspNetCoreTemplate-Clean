@@ -1,7 +1,8 @@
-﻿using MyApp.Server.Domain.Auth.EmailConfirmation;
-using MyApp.Server.Domain.Auth.EmailConfirmation.Failures;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MyApp.Server.Domain.Auth.EmailConfirmation;
+using MyApp.Server.Domain.Auth.EmailConfirmation.Failures;
+using MyApp.Server.Domain.Shared;
 using MyApp.Server.Infrastructure.Database;
 
 namespace MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
@@ -12,7 +13,7 @@ public class ConfirmEmailCommandHandler(IScopedDbContext dbContext) : IRequestHa
 {
     public async Task Handle(ConfirmEmailRequest request, CancellationToken cancellationToken)
     {
-        var expirationTime = DateTime.UtcNow.AddMinutes(-EmailConfirmationConstants.ExpirationTimeMinutes);
+        var expirationTime = DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
         var emailConfirmation = await dbContext.Set<EmailConfirmationEntity>()
             .Include(ec => ec.User)
             .IgnoreQueryFilters()

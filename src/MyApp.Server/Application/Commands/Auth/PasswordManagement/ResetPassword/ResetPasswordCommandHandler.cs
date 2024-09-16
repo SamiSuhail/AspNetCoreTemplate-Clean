@@ -1,7 +1,8 @@
-﻿using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
-using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
+using MyApp.Server.Domain.Shared;
 using MyApp.Server.Infrastructure.Database;
 
 namespace MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
@@ -12,7 +13,7 @@ public class ResetPasswordCommandHandler(IScopedDbContext dbContext) : IRequestH
 {
     public async Task Handle(ResetPasswordRequest request, CancellationToken cancellationToken)
     {
-        var expirationTime = DateTime.UtcNow.AddMinutes(-PasswordResetConfirmationConstants.ExpirationTimeMinutes);
+        var expirationTime = DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
         var passwordResetConfirmation = await dbContext.Set<PasswordResetConfirmationEntity>()
             .IgnoreQueryFilters()
             .Include(p => p.User)

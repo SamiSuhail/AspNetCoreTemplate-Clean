@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Server.Domain.Shared;
 
 namespace MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
 
@@ -9,7 +9,7 @@ public class ResetPasswordValidator : AbstractValidator<ResetPasswordRequest>
     {
         RuleFor(r => r.Code)
             .NotNull()
-            .Length(PasswordResetConfirmationConstants.CodeLength);
+            .Length(BaseConfirmationConstants.CodeLength);
 
         RuleFor(r => r.Password)
             .Password();

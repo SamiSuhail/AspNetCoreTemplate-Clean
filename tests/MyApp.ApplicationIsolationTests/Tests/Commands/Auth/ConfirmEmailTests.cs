@@ -2,6 +2,7 @@
 using MyApp.Server.Domain.Auth.EmailConfirmation;
 using MyApp.Server.Domain.Auth.EmailConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
+using MyApp.Server.Domain.Shared;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
@@ -77,7 +78,7 @@ public class ConfirmEmailTests(AppFactory appFactory) : BaseTest(appFactory), IA
             .ExecuteUpdateAsync(s =>
                 s.SetProperty(
                     ec => ec.CreatedAt,
-                    DateTime.UtcNow.AddMinutes(-EmailConfirmationConstants.ExpirationTimeMinutes - 1)));
+                    DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes - 1)));
 
         // Act
         var response = await UnauthorizedAppClient.ConfirmEmail(_request);
