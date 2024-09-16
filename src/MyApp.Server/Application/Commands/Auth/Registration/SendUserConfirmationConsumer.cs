@@ -4,16 +4,16 @@ using MyApp.Server.Infrastructure.Email;
 
 namespace MyApp.Server.Application.Commands.Auth.Registration;
 
-public record SendEmailConfirmationMessage(string Username, string Email, string Code);
+public record SendUserConfirmationMessage(string Username, string Email, string Code);
 
-public class SendEmailConfirmationConsumer(IEmailSender emailSender) : IConsumer<SendEmailConfirmationMessage>
+public class SendUserConfirmationConsumer(IEmailSender emailSender) : IConsumer<SendUserConfirmationMessage>
 {
     private const string MessageTemplate = """
         Please use the code below to confirm your e-mail address. This code is valid for {0} minutes after time of requesting it. <br />
         Code: {1}
         """;
 
-    public async Task Consume(ConsumeContext<SendEmailConfirmationMessage> context)
+    public async Task Consume(ConsumeContext<SendUserConfirmationMessage> context)
     {
         var (username, email, code) = context.Message;
         await Task.Delay(TimeSpan.FromSeconds(15));

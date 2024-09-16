@@ -55,7 +55,7 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.Login(request);
 
         // Assert
-        response.AssertSingleBadRequestError(EmailNotConfirmedFailure.Key, EmailNotConfirmedFailure.Message);
+        response.AssertSingleBadRequestError(UserRegistrationNotConfirmedFailure.Key, UserRegistrationNotConfirmedFailure.Message);
     }
 
     [Fact]

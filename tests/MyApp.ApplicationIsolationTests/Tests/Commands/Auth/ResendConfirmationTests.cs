@@ -1,7 +1,7 @@
 ﻿using MyApp.Server.Application.Commands.Auth.Registration;
 using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
-using MyApp.Server.Domain.Auth.EmailConfirmation;
-using MyApp.Server.Domain.Auth.EmailConfirmation.Failures;
+using MyApp.Server.Domain.Auth.UserConfirmation;
+using MyApp.Server.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Infrastructure.Messaging;
 
@@ -27,12 +27,12 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertSuccess();
-        var emailConfirmation = await GetEmailConfirmation();
-        emailConfirmation.Should().NotBeNull();
+        var userConfirmation = await GetUserConfirmation();
+        userConfirmation.Should().NotBeNull();
         using var _ = new AssertionScope();
-        emailConfirmation!.Id.Should().NotBe(_user.EmailConfirmation!.Id);
-        emailConfirmation!.Code.Should().NotBe(_user.EmailConfirmation!.Code);
-        emailConfirmation!.CreatedAt.ShouldBeNow();
+        userConfirmation!.Id.Should().NotBe(_user.UserConfirmation!.Id);
+        userConfirmation!.Code.Should().NotBe(_user.UserConfirmation!.Code);
+        userConfirmation!.CreatedAt.ShouldBeNow();
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertSuccess();
-        AssertMessage.Produced<SendEmailConfirmationMessage>();
+        AssertMessage.Produced<SendUserConfirmationMessage>();
     }
 
     [Fact]
@@ -60,8 +60,8 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertBadRequest();
-        AssertMessage.Produced<SendEmailConfirmationMessage>(Times.Never());
-        await AssertEmailConfirmationUnchanged();
+        AssertMessage.Produced<SendUserConfirmationMessage>(Times.Never());
+        await AssertUserConfirmationUnchanged();
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
     {
         // Arrange
         MockBag.Get<IMessageProducer>()
-            .Setup(m => m.Send(It.IsAny<SendEmailConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Setup(m => m.Send(It.IsAny<SendUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception());
 
         // Act
@@ -77,7 +77,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertInternalServerError();
-        await AssertEmailConfirmationUnchanged();
+        await AssertUserConfirmationUnchanged();
     }
 
     [Fact]
@@ -88,7 +88,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertAnonymousOnlyError();
-        await AssertEmailConfirmationUnchanged();
+        await AssertUserConfirmationUnchanged();
     }
 
     [Fact]
@@ -102,7 +102,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         AssertInvalidFailure(response);
-        await AssertEmailConfirmationUnchanged();
+        await AssertUserConfirmationUnchanged();
     }
 
     [Fact]
@@ -116,29 +116,29 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         AssertInvalidFailure(response);
-        await AssertEmailConfirmationUnchanged();
+        await AssertUserConfirmationUnchanged();
     }
 
-    private async Task<EmailConfirmationEntity> GetEmailConfirmation()
+    private async Task<UserConfirmationEntity> GetUserConfirmation()
     {
         var user = await AssertDbContext.GetUser(_user.Id);
         user.Should().NotBeNull();
-        return user!.EmailConfirmation!;
+        return user!.UserConfirmation!;
     }
 
-    private async Task AssertEmailConfirmationUnchanged()
+    private async Task AssertUserConfirmationUnchanged()
     {
-        var emailConfirmation = await GetEmailConfirmation();
+        var userConfirmation = await GetUserConfirmation();
 
-        if (_user.EmailConfirmation == null)
+        if (_user.UserConfirmation == null)
         {
-            emailConfirmation.Should().BeNull();
+            userConfirmation.Should().BeNull();
             return;
         }
 
-        emailConfirmation.Should().NotBeNull();
-        emailConfirmation.Id.Should().Be(_user.EmailConfirmation!.Id);
-        emailConfirmation.Code.Should().Be(_user.EmailConfirmation.Code);
+        userConfirmation.Should().NotBeNull();
+        userConfirmation.Id.Should().Be(_user.UserConfirmation!.Id);
+        userConfirmation.Code.Should().Be(_user.UserConfirmation.Code);
     }
 
     private static void AssertInvalidFailure(IApiResponse response)

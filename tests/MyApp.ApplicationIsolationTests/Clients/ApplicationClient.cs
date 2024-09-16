@@ -2,7 +2,7 @@
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
 using MyApp.Server.Application.Commands.Auth.RefreshToken;
-using MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
+using MyApp.Server.Application.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
 using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Server.Application.Queries.Ping;
@@ -24,8 +24,8 @@ public interface IApplicationClient
     [Post("/api/auth/resend-confirmation")]
     public Task<IApiResponse> ResendConfirmation(ResendConfirmationRequest request);
 
-    [Post("/api/auth/confirm-email")]
-    public Task<IApiResponse> ConfirmEmail(ConfirmEmailRequest request);
+    [Post("/api/auth/confirm-user-registration")]
+    public Task<IApiResponse> ConfirmUserRegistration(ConfirmUserRegistrationRequest request);
 
     [Post("/api/auth/login")]
     public Task<IApiResponse<LoginResponse>> Login(LoginRequest request);

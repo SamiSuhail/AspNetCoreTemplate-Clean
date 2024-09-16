@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Domain.Auth.EmailConfirmation;
+﻿using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 
 namespace MyApp.Server.Domain.Auth.User;
@@ -14,9 +14,9 @@ public class UserEntity
     public DateTime CreatedAt { get; private set; }
 
     public PasswordResetConfirmationEntity? PasswordResetConfirmation { get; private set; }
-    public EmailConfirmationEntity? EmailConfirmation { get; private set; }
+    public UserConfirmationEntity? UserConfirmation { get; private set; }
 
-    public void ConfirmEmail()
+    public void ConfirmUserRegistration()
     {
         IsEmailConfirmed = true;
     }
@@ -30,7 +30,7 @@ public class UserEntity
             IsEmailConfirmed = false,
             RefreshTokenVersion = 1,
             CreatedAt = DateTime.UtcNow,
-            EmailConfirmation = EmailConfirmationEntity.Create(),
+            UserConfirmation = UserConfirmationEntity.Create(),
         };
 
     public void SignOutOnAllDevices()

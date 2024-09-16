@@ -1,5 +1,5 @@
 ﻿using MyApp.Server.Application.Commands.Auth.BackgroundJobs.CleanupConfirmations;
-using MyApp.Server.Domain.Auth.EmailConfirmation;
+using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Shared;
@@ -37,15 +37,15 @@ public class CleanupConfirmationsTests(AppFactory appFactory) : BaseTest(appFact
     private async Task ExpireConfirmations(int userId)
     {
         var timeFiveSecondsAgo = DateTime.UtcNow.AddSeconds(-5);
-        var expiredEmailConfirmationDatetime = timeFiveSecondsAgo.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
+        var expiredUserConfirmationDatetime = timeFiveSecondsAgo.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
         var expiredPasswordResetConfirmationDatetime = timeFiveSecondsAgo.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
 
-        var ecRowsUpdated = await ArrangeDbContext.Set<EmailConfirmationEntity>()
-            .Where(ec => ec.UserId == userId)
-            .ExecuteUpdateAsync(x => x.SetProperty(ec => ec.CreatedAt, expiredEmailConfirmationDatetime));
+        var ecRowsUpdated = await ArrangeDbContext.Set<UserConfirmationEntity>()
+            .Where(uc => uc.UserId == userId)
+            .ExecuteUpdateAsync(x => x.SetProperty(uc => uc.CreatedAt, expiredUserConfirmationDatetime));
         var prcRowsUpdated = await ArrangeDbContext.Set<PasswordResetConfirmationEntity>()
-            .Where(ec => ec.UserId == userId)
-            .ExecuteUpdateAsync(x => x.SetProperty(ec => ec.CreatedAt, expiredPasswordResetConfirmationDatetime));
+            .Where(prc => prc.UserId == userId)
+            .ExecuteUpdateAsync(x => x.SetProperty(prc => prc.CreatedAt, expiredPasswordResetConfirmationDatetime));
 
         using (new AssertionScope())
         {
@@ -62,14 +62,14 @@ public class CleanupConfirmationsTests(AppFactory appFactory) : BaseTest(appFact
 
     private async Task AssertConfirmationsCleanedUp(int userId)
     {
-        var ecIsDeleted = !await AssertDbContext.Set<EmailConfirmationEntity>()
-                    .AnyAsync(ec => ec.UserId == userId);
+        var ucIsDeleted = !await AssertDbContext.Set<UserConfirmationEntity>()
+                    .AnyAsync(uc => uc.UserId == userId);
         var prcIsDeleted = !await AssertDbContext.Set<PasswordResetConfirmationEntity>()
             .AnyAsync(prc => prc.UserId == userId);
 
         using (new AssertionScope())
         {
-            ecIsDeleted.Should().BeTrue();
+            ucIsDeleted.Should().BeTrue();
             prcIsDeleted.Should().BeTrue();
         }
     }

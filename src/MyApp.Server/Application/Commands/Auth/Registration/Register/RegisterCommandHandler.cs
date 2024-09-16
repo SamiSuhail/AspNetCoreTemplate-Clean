@@ -31,7 +31,7 @@ public class RegisterCommandHandler(IScopedDbContext dbContext, IMessageProducer
         await dbContext.WrapInTransaction(async () =>
         {
             await dbContext.SaveChangesAsync(cancellationToken);
-            await messageProducer.Send(new SendEmailConfirmationMessage(user.Username, user.Email, user.EmailConfirmation!.Code), cancellationToken);
+            await messageProducer.Send(new SendUserConfirmationMessage(user.Username, user.Email, user.UserConfirmation!.Code), cancellationToken);
         }, cancellationToken);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using MyApp.Server.Domain.Auth.User;
 
-namespace MyApp.Server.Domain.Auth.EmailConfirmation.Failures;
+namespace MyApp.Server.Domain.Auth.UserConfirmation.Failures;
 
 public class ResendConfirmationInvalidFailure : DomainFailure
 {

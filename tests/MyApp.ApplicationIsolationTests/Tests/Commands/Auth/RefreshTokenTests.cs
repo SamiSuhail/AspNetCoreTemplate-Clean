@@ -1,8 +1,6 @@
-﻿using System.Security.Cryptography;
-using MyApp.ApplicationIsolationTests.Clients;
+﻿using MyApp.ApplicationIsolationTests.Clients;
 using MyApp.Server.Application.Commands.Auth.RefreshToken;
 using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Infrastructure;
 using MyApp.Server.Infrastructure.Auth;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;

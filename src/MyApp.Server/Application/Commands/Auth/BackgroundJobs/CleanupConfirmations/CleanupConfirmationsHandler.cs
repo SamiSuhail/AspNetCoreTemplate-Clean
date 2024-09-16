@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Server.Domain.Auth.EmailConfirmation;
+using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Shared;
 using MyApp.Server.Infrastructure.Database;
@@ -14,17 +14,17 @@ public class CleanupConfirmationsHandler(IAppDbContextFactory dbContextFactory) 
     public async Task Handle(CleanupConfirmationsRequest request, CancellationToken cancellationToken)
     {
         await Task.WhenAll(
-            CleanupEmailConfirmations(cancellationToken),
+            CleanupUserConfirmations(cancellationToken),
             CleanupPasswordResetConfirmations(cancellationToken)
         );
     }
 
-    private async Task CleanupEmailConfirmations(CancellationToken cancellationToken)
+    private async Task CleanupUserConfirmations(CancellationToken cancellationToken)
     {
         await using var dbContext = await dbContextFactory.CreateTransientDbContextAsync(cancellationToken);
         var expirationTime = DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
-        await dbContext.Set<EmailConfirmationEntity>()
-            .Where(ec => ec.CreatedAt < expirationTime)
+        await dbContext.Set<UserConfirmationEntity>()
+            .Where(uc => uc.CreatedAt < expirationTime)
             .ExecuteDeleteAsync(cancellationToken);
     }
 
@@ -34,7 +34,7 @@ public class CleanupConfirmationsHandler(IAppDbContextFactory dbContextFactory) 
         var expirationTime = DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
 
         await dbContext.Set<PasswordResetConfirmationEntity>()
-            .Where(ec => ec.CreatedAt < expirationTime)
+            .Where(prc => prc.CreatedAt < expirationTime)
             .ExecuteDeleteAsync(cancellationToken);
     }
 }

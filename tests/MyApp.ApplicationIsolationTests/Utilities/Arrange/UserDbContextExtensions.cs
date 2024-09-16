@@ -32,8 +32,8 @@ public static class UserDbContextExtensions
 
     public static async Task ConfirmUser(this IBaseDbContext dbContext, UserEntity user)
     {
-        user.ConfirmEmail();
-        dbContext.Remove(user.EmailConfirmation!);
+        user.ConfirmUserRegistration();
+        dbContext.Remove(user.UserConfirmation!);
         await dbContext.SaveChangesAsync(CancellationToken.None);
     }
 }

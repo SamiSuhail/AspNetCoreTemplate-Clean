@@ -1,7 +1,6 @@
 ﻿using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
-using MyApp.Server.Domain.Auth.EmailConfirmation;
+using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
-using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Shared;
 using static MyApp.Server.Infrastructure.Database.Constants;
 
@@ -15,7 +14,7 @@ public static class ConfirmationConfigurations
 {
     private static readonly Dictionary<Type, ConfirmationConfigurationValues> _configurations = new()
     {
-        { typeof(EmailConfirmationEntity),  new(Schemas.Auth, Tables.EmailConfirmations)},
+        { typeof(UserConfirmationEntity),  new(Schemas.Auth, Tables.UserConfirmations)},
         { typeof(PasswordResetConfirmationEntity),  new(Schemas.Auth, Tables.PasswordResetConfirmations)},
         { typeof(EmailChangeConfirmationEntity),  new(Schemas.UserManagement, Tables.EmailChangeConfirmations)},
     };

@@ -27,11 +27,11 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
             user.CreatedAt.ShouldBeNow();
             _request.Password.Verify(user.PasswordHash).Should().BeTrue();
         }
-        user.EmailConfirmation.Should().NotBeNull();
+        user.UserConfirmation.Should().NotBeNull();
         using (new AssertionScope())
         {
-            user.EmailConfirmation!.CreatedAt.ShouldBeNow();
-            user.EmailConfirmation.Code.Should().NotBeNullOrEmpty();
+            user.UserConfirmation!.CreatedAt.ShouldBeNow();
+            user.UserConfirmation.Code.Should().NotBeNullOrEmpty();
         }
     }
 
@@ -43,7 +43,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        AssertMessage.Produced<SendEmailConfirmationMessage>();
+        AssertMessage.Produced<SendUserConfirmationMessage>();
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        AssertMessage.Produced<SendEmailConfirmationMessage>(Times.Never());
+        AssertMessage.Produced<SendUserConfirmationMessage>(Times.Never());
         await AssertUserNotExists(request.Username, request.Email);
     }
 
@@ -69,7 +69,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         MockBag.Get<IMessageProducer>()
-            .Setup(m => m.Send(It.IsAny<SendEmailConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Setup(m => m.Send(It.IsAny<SendUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception());
 
         // Act
@@ -135,7 +135,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         return await AssertDbContext.Set<UserEntity>()
             .IgnoreQueryFilters()
-            .Include(x => x.EmailConfirmation)
+            .Include(x => x.UserConfirmation)
             .FirstOrDefaultAsync(x => x.Username == username && x.Email == email);
     }
 }

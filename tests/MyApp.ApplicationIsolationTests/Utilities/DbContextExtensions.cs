@@ -9,7 +9,7 @@ public static class DbContextExtensions
     {
         return await dbContext.Set<UserEntity>()
             .IgnoreQueryFilters()
-            .Include(u => u.EmailConfirmation)
+            .Include(u => u.UserConfirmation)
             .Include(u => u.PasswordResetConfirmation)
             .Where(u => u.Id == userId)
             .FirstOrDefaultAsync();
