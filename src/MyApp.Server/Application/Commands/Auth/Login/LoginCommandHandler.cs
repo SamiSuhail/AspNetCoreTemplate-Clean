@@ -38,7 +38,7 @@ public class LoginCommandHandler(IScopedDbContext dbContext, IJwtGenerator jwtGe
         if (!correctPassword)
             throw LoginInvalidFailure.Exception();
 
-        var accessToken = jwtGenerator.Create(user.Id, user.Username, user.Email);
+        var accessToken = jwtGenerator.CreateAccessToken(user.Id, user.Username, user.Email);
 
         return new(accessToken);
     }

@@ -21,6 +21,7 @@ public static class AuthStartupExtensions
         .AddJwtBearer(jwt =>
         {
             jwt.SaveToken = true;
+            jwt.MapInboundClaims = false;
             jwt.TokenValidationParameters = JwtValidationParametersProvider.Get(authSettings.Jwt.PublicKeyXml);
         });
         services.AddAuthorization();

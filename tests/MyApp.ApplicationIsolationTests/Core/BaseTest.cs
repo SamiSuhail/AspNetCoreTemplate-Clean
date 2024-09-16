@@ -23,6 +23,7 @@ public abstract class BaseTest(AppFactory appFactory) : IAsyncLifetime
     public ITransientDbContext ArrangeDbContext { get; private set; } = default!;
     public ITransientDbContext AssertDbContext { get; private set; } = default!;
     public UserEntity User { get; private set; } = default!;
+    public AppFactory AppFactory { get; private set; } = appFactory;
 
     public ITransientDbContext CreateDbContext() => ScopedServices.GetRequiredService<ITransientDbContext>();
 
