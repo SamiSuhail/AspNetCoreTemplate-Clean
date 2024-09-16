@@ -9,7 +9,7 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
     private readonly LoginRequest _request = new(TestUser.Username, TestUser.Password);
 
     [Fact]
-    public async Task GivenHappyPath_ReturnsValidAccessToken()
+    public async Task GivenHappyPath_ReturnsValidTokens()
     {
         // Act
         var response = await UnauthorizedAppClient.Login(_request);
@@ -18,13 +18,25 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
         response.AssertSuccess();
         response.Content.Should().NotBeNull();
         response.Content!.AccessToken.Should().NotBeNullOrEmpty();
+        response.Content!.RefreshToken.Should().NotBeNullOrEmpty();
 
         var jwtReader = ScopedServices.GetRequiredService<IJwtReader>();
         var user = jwtReader.ReadAccessToken(response.Content.AccessToken);
-        using var _ = new AssertionScope();
-        user.Id.Should().Be(User.Id);
-        user.Username.Should().Be(User.Username);
-        user.Email.Should().Be(User.Email);
+        var refreshToken = jwtReader.ReadRefreshToken(response.Content.RefreshToken);
+        using (new AssertionScope())
+        {
+            user.Id.Should().Be(User.Id);
+            user.Username.Should().Be(User.Username);
+            user.Email.Should().Be(User.Email);
+        }
+        refreshToken.Should().NotBeNull();
+        using (new AssertionScope())
+        {
+            refreshToken!.UserId.Should().Be(User.Id);
+            refreshToken.Username.Should().Be(User.Username);
+            refreshToken.Email.Should().Be(User.Email);
+            refreshToken.Version.Should().Be(User.RefreshTokenVersion);
+        }
     }
 
     [Fact]
