@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using MyApp.ApplicationIsolationTests.Clients;
 using MyApp.Server;
 using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Messaging;
@@ -29,7 +30,8 @@ public class AppFactory : WebApplicationFactory<ProgramApi>, IAsyncLifetime
         await _postgreSqlContainer.StartAsync();
         _connectionString = _postgreSqlContainer.GetConnectionString();
         DbDeployHelpers.DeployDatabase(_connectionString);
-        await Initialize(this);
+        await Services.InitializeTestUser();
+        ClientProvider.Initialize(this);
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)

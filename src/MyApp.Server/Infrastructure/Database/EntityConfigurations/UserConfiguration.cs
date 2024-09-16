@@ -38,6 +38,9 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
             .IsRequired();
         builder.HasIndex(x => x.IsEmailConfirmed);
 
+        builder.Property(x => x.RefreshTokenVersion)
+            .IsRequired();
+
         builder.Property(x => x.CreatedAt)
             .IsRequired();
 

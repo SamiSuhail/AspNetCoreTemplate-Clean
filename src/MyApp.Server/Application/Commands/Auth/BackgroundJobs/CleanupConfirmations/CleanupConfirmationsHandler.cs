@@ -8,7 +8,7 @@ namespace MyApp.Server.Application.Commands.Auth.BackgroundJobs.CleanupConfirmat
 
 public class CleanupConfirmationsRequest() : IRequest;
 
-public class CleanupConfirmationsHandler(IScopedDbContext dbContext) : IRequestHandler<CleanupConfirmationsRequest>
+public class CleanupConfirmationsHandler(IAppDbContextFactory dbContextFactory) : IRequestHandler<CleanupConfirmationsRequest>
 {
     public async Task Handle(CleanupConfirmationsRequest request, CancellationToken cancellationToken)
     {
@@ -20,6 +20,7 @@ public class CleanupConfirmationsHandler(IScopedDbContext dbContext) : IRequestH
 
     private async Task CleanupEmailConfirmations(CancellationToken cancellationToken)
     {
+        await using var dbContext = await dbContextFactory.CreateTransientDbContextAsync(cancellationToken);
         var expirationTime = DateTime.UtcNow.AddMinutes(-EmailConfirmationConstants.ExpirationTimeMinutes);
         await dbContext.Set<EmailConfirmationEntity>()
             .Where(ec => ec.CreatedAt < expirationTime)
@@ -28,6 +29,7 @@ public class CleanupConfirmationsHandler(IScopedDbContext dbContext) : IRequestH
 
     private async Task CleanupPasswordResetConfirmations(CancellationToken cancellationToken)
     {
+        await using var dbContext = await dbContextFactory.CreateTransientDbContextAsync(cancellationToken);
         var expirationTime = DateTime.UtcNow.AddMinutes(-PasswordResetConfirmationConstants.ExpirationTimeMinutes);
 
         await dbContext.Set<PasswordResetConfirmationEntity>()

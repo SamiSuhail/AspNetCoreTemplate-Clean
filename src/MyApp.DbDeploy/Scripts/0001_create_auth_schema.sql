@@ -1,11 +1,12 @@
 ﻿CREATE SCHEMA auth;
 CREATE TABLE auth.users (
-	id					INT				NOT NULL GENERATED ALWAYS AS IDENTITY,
-	username 			VARCHAR(30) 	NOT NULL,
-	password_hash 		CHAR(60) 		NOT NULL,
-	email 				VARCHAR(320) 	NOT NULL,
-	is_email_confirmed 	BOOLEAN 		NOT NULL,
-	created_at			TIMESTAMP		NOT NULL,
+	id						INT				NOT NULL GENERATED ALWAYS AS IDENTITY,
+	username 				VARCHAR(30) 	NOT NULL,
+	password_hash 			CHAR(60) 		NOT NULL,
+	email 					VARCHAR(320) 	NOT NULL,
+	is_email_confirmed 		BOOLEAN 		NOT NULL,
+	refresh_token_version 	INT 			NOT NULL,
+	created_at				TIMESTAMP		NOT NULL,
 	
 	CONSTRAINT pk_users_id 			PRIMARY KEY (id),
 	CONSTRAINT uq_users_username 	UNIQUE (username),

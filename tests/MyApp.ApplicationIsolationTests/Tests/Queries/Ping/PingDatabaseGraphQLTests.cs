@@ -1,4 +1,5 @@
-﻿using MyApp.Server.Application.Queries.Ping;
+﻿using MyApp.ApplicationIsolationTests.Clients;
+using MyApp.Server.Application.Queries.Ping;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Queries.Ping;
 
@@ -9,6 +10,35 @@ public class PingDatabaseGraphQLTests(AppFactory appFactory) : BaseTest(appFacto
     {
         // Act
         var response = await UnauthorizedGraphQLClient.PingDatabase.ExecuteAsync();
+
+        // Assert
+        response.AssertUnauthorized();
+    }
+
+    [Fact]
+    public async Task GivenTokenHasExpired_ReturnsError()
+    {
+        // Arrange
+        var accessToken = ScopedServices.ArrangeExpiredAccessToken();
+        var graphQlClient = AppFactory.CreateGraphQLClientWithToken(accessToken);
+
+        // Act
+        var response = await graphQlClient.PingDatabase.ExecuteAsync();
+
+        // Assert
+        response.AssertUnauthorized();
+    }
+
+    [Fact]
+    public async Task GivenTokenIsInvalid_ReturnsError()
+    {
+        // Arrange
+        var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
+        var accessToken = jwtGenerator.CreateAccessToken(User.Id, User.Username, User.Email);
+        var graphQlClient = AppFactory.CreateGraphQLClientWithToken(accessToken);
+
+        // Act
+        var response = await graphQlClient.PingDatabase.ExecuteAsync();
 
         // Assert
         response.AssertUnauthorized();

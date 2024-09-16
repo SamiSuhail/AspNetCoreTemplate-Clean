@@ -23,6 +23,6 @@ public static class TestUser
         CreatedAt = user.CreatedAt;
 
         var jwtGenerator = sp.GetRequiredService<IJwtGenerator>();
-        AccessToken = jwtGenerator.Create(Id, Username, Email);
+        AccessToken = jwtGenerator.CreateAccessToken(Id, Username, Email);
     }
 }

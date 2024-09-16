@@ -2,18 +2,24 @@
 
 public static class ClientProvider
 {
-    public static async Task Initialize(AppFactory appFactory)
+    public static void Initialize(AppFactory appFactory)
     {
-        await appFactory.Services.InitializeTestUser();
         UnauthorizedAppClient = RestService.For<IApplicationClient>(appFactory.CreateClient());
         UnauthorizedGraphQLClient = appFactory.CreateGraphQLClient();
-        var authorizedHttpClient = appFactory.CreateClient().SetAuthorizationHeader(TestUser.AccessToken);
-        AppClient = RestService.For<IApplicationClient>(authorizedHttpClient);
-        GraphQLClient = appFactory.CreateGraphQLClient(c => c.SetAuthorizationHeader(TestUser.AccessToken));
+        AppClient = appFactory.CreateClientWithToken(TestUser.AccessToken);
+        GraphQLClient = appFactory.CreateGraphQLClientWithToken(TestUser.AccessToken);
     }
 
-    public static IApplicationClient UnauthorizedAppClient = default!;
-    public static IApplicationClient AppClient = default!;
-    public static IApplicationGraphQLClient UnauthorizedGraphQLClient = default!;
-    public static IApplicationGraphQLClient GraphQLClient = default!;
+    public static IApplicationClient UnauthorizedAppClient { get; private set; } = default!;
+    public static IApplicationClient AppClient { get; private set; } = default!;
+    public static IApplicationGraphQLClient UnauthorizedGraphQLClient { get; private set; } = default!;
+    public static IApplicationGraphQLClient GraphQLClient { get; private set; } = default!;
+
+    public static IApplicationClient CreateClientWithToken(this AppFactory appFactory, string accessToken)
+    {
+        var httpClient = appFactory.CreateClient().SetAuthorizationHeader(accessToken);
+        return RestService.For<IApplicationClient>(httpClient);
+    }
+    public static IApplicationGraphQLClient CreateGraphQLClientWithToken(this AppFactory appFactory, string accessToken)
+        => appFactory.CreateGraphQLClient(c => c.SetAuthorizationHeader(accessToken));
 }

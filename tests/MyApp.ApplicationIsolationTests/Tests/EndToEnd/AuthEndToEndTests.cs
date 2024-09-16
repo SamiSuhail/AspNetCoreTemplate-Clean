@@ -1,6 +1,7 @@
 ﻿using MyApp.Server.Application.Commands.Auth.Login;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Server.Application.Commands.Auth.RefreshToken;
 using MyApp.Server.Application.Commands.Auth.Registration;
 using MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
@@ -25,7 +26,9 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         await TestConfirmEmail(emailConfirmationCode);
         var passwordResetConfirmationCode = await TestForgotPassword();
         await TestResetPassword(passwordResetConfirmationCode);
-        await TestLogin();
+        var loginResponse = await TestLogin();
+        await TestMe(loginResponse.AccessToken);
+        await TestRefreshToken(loginResponse.RefreshToken);
     }
 
     private static async Task TestRegister()
@@ -79,18 +82,25 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         response.AssertSuccess();
     }
 
-    private async Task TestLogin()
+    private async Task<LoginResponse> TestLogin()
     {
         var request = new LoginRequest(Username, Password);
         var response = await UnauthorizedAppClient.Login(request);
         response.AssertSuccess();
-        response.Content.Should().NotBeNull();
-        var accessToken = response.Content!.AccessToken;
-        accessToken.Should().NotBeNullOrWhiteSpace();
-        var userContext = ScopedServices.GetRequiredService<IJwtReader>()
-            .ReadAccessToken(accessToken);
-        using var _ = new AssertionScope();
-        userContext.Username.Should().Be(Username);
-        userContext.Email.Should().Be(Email);
+        return response.Content!;
+    }
+
+    private async Task TestMe(string accessToken)
+    {
+        var client = AppFactory.CreateGraphQLClientWithToken(accessToken);
+        var response = await client.Me.ExecuteAsync();
+        response.AssertSuccess();
+    }
+
+    private static async Task TestRefreshToken(string refreshToken)
+    {
+        var request = new RefreshTokenRequest(refreshToken);
+        var response = await UnauthorizedAppClient.RefreshToken(request);
+        response.AssertSuccess();
     }
 }

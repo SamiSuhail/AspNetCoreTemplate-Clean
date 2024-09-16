@@ -11,7 +11,7 @@ public record LoginRequest(
     string Username,
     string Password) : IRequest<LoginResponse>;
 
-public record LoginResponse(string AccessToken);
+public record LoginResponse(string AccessToken, string RefreshToken);
 
 public class LoginCommandHandler(IScopedDbContext dbContext, IJwtGenerator jwtGenerator) : IRequestHandler<LoginRequest, LoginResponse>
 {
@@ -27,6 +27,7 @@ public class LoginCommandHandler(IScopedDbContext dbContext, IJwtGenerator jwtGe
                 u.PasswordHash,
                 u.Email,
                 u.IsEmailConfirmed,
+                u.RefreshTokenVersion,
             })
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw LoginInvalidFailure.Exception();
@@ -38,8 +39,9 @@ public class LoginCommandHandler(IScopedDbContext dbContext, IJwtGenerator jwtGe
         if (!correctPassword)
             throw LoginInvalidFailure.Exception();
 
-        var accessToken = jwtGenerator.Create(user.Id, user.Username, user.Email);
+        var accessToken = jwtGenerator.CreateAccessToken(user.Id, user.Username, user.Email);
+        var refreshToken = jwtGenerator.CreateRefreshToken(user.Id, user.Username, user.Email, user.RefreshTokenVersion);
 
-        return new(accessToken);
+        return new(accessToken, refreshToken);
     }
 }

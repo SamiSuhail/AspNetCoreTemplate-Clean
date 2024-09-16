@@ -7,10 +7,10 @@ public class PasswordResetConfirmationEntity
 {
     public int Id { get; private set; }
     public int UserId { get; private set; }
-    public string Code { get; private set; } = null!;
+    public string Code { get; private set; } = default!;
     public DateTime CreatedAt { get; private set; }
 
-    public UserEntity User { get; private set; } = null!;
+    public UserEntity User { get; private set; } = default!;
 
     public static PasswordResetConfirmationEntity Create(int userId)
     {
