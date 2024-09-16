@@ -12,6 +12,22 @@ public abstract class BaseConfirmationEntity
 
     public UserEntity User { get; protected set; } = default!;
 
+    protected static TEntity Create<TEntity>(int userId) where TEntity : BaseConfirmationEntity, new()
+    {
+        var confirmation = Create<TEntity>();
+        confirmation.UserId = userId;
+        return confirmation;
+    }
+
+    protected static TEntity Create<TEntity>() where TEntity : BaseConfirmationEntity, new()
+    {
+        return new()
+        {
+            Code = GenerateCode(),
+            CreatedAt = DateTime.UtcNow,
+        };
+    }
+
     protected static string GenerateCode()
     {
         var codeMaxValueExclusive = (int)Math.Pow(10, CodeLength);
