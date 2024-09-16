@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MyApp.Server.Infrastructure.Auth;
+﻿using MyApp.Server.Infrastructure.Auth;
 
 namespace MyApp.ApplicationIsolationTests.Clients;
 
