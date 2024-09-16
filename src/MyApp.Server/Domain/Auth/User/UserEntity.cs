@@ -44,6 +44,7 @@ public class UserEntity : ICreationAudited
     public void ConfirmEmailChange()
     {
         Email = EmailChangeConfirmation!.NewEmail;
+        SignOutOnAllDevices();
     }
 
     public void SignOutOnAllDevices()

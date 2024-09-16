@@ -37,6 +37,9 @@ public class ChangeEmailCommandHandler(
 
         await dbContext.WrapInTransaction(async () =>
         {
+            await dbContext.Set<EmailChangeConfirmationEntity>()
+                .Where(ecc => ecc.UserId == userId)
+                .ExecuteDeleteAsync(cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
             await messageProducer.Send(
                 new ChangeEmailMessage(

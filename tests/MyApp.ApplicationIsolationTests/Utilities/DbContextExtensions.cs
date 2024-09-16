@@ -1,4 +1,5 @@
-﻿using MyApp.Server.Domain.Auth.User;
+﻿using MyApp.Server.Application.Utilities;
+using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Infrastructure.Database;
 
 namespace MyApp.ApplicationIsolationTests.Utilities;
@@ -11,7 +12,6 @@ public static class DbContextExtensions
             .IgnoreQueryFilters()
             .Include(u => u.UserConfirmation)
             .Include(u => u.PasswordResetConfirmation)
-            .Where(u => u.Id == userId)
-            .FirstOrDefaultAsync();
+            .FindUserOrDefault(userId, CancellationToken.None);
     }
 }
