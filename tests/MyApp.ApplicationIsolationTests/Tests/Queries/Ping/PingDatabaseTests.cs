@@ -12,7 +12,7 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.PingDatabase();
 
         // Assert
-        response.AssertError(HttpStatusCode.Unauthorized);
+        response.AssertUnauthorizedError();
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await client.PingDatabase();
 
         // Assert
-        response.AssertError(HttpStatusCode.Unauthorized);
+        response.AssertUnauthorizedError();
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await client.PingDatabase();
 
         // Assert
-        response.AssertError(HttpStatusCode.Unauthorized);
+        response.AssertUnauthorizedError();
     }
 
     [Fact]

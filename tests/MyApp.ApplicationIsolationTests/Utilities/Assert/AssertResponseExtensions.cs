@@ -57,7 +57,10 @@ public static class AssertResponseExtensions
         return problemDetails;
     }
 
-    public static void AssertError(this IApiResponse response, HttpStatusCode? statusCode = null)
+    public static void AssertUnauthorizedError(this IApiResponse response)
+        => response.AssertError(HttpStatusCode.Unauthorized);
+
+    private static void AssertError(this IApiResponse response, HttpStatusCode? statusCode = null)
     {
         using var _ = new AssertionScope();
         response.IsSuccessStatusCode.Should().BeFalse();

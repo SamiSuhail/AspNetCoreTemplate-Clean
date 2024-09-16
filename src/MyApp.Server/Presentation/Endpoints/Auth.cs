@@ -1,14 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MyApp.Server.Presentation.Endpoints.Core;
 using MyApp.Server.Application.Commands.Auth.Login;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Server.Application.Commands.Auth.RefreshToken;
 using MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
 using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Server.Presentation.Endpoints.Core;
 using MyApp.Server.Presentation.Startup.Filters;
-using MyApp.Server.Application.Commands.Auth.RefreshToken;
 
 namespace MyApp.Server.Presentation.Endpoints;
 

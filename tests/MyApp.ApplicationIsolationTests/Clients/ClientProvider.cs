@@ -20,6 +20,7 @@ public static class ClientProvider
         var httpClient = appFactory.CreateClient().SetAuthorizationHeader(accessToken);
         return RestService.For<IApplicationClient>(httpClient);
     }
+
     public static IApplicationGraphQLClient CreateGraphQLClientWithToken(this AppFactory appFactory, string accessToken)
         => appFactory.CreateGraphQLClient(c => c.SetAuthorizationHeader(accessToken));
 }

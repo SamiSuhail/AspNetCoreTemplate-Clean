@@ -67,7 +67,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await _client.RefreshToken(_request);
 
         // Assert
-        response.AssertSingleBadRequestError(UserSessionCouldNotBeRefreshedFailure.Key, UserSessionCouldNotBeRefreshedFailure.Message);
+        AssertInvalidFailure(response);
     }
 
     [Theory]
@@ -83,7 +83,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await _client.RefreshToken(_request);
 
         // Assert
-        response.AssertSingleBadRequestError(UserSessionCouldNotBeRefreshedFailure.Key, UserSessionCouldNotBeRefreshedFailure.Message);
+        AssertInvalidFailure(response);
     }
 
     [Theory]
@@ -100,7 +100,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await _client.RefreshToken(_request);
 
         // Assert
-        response.AssertSingleBadRequestError(UserSessionCouldNotBeRefreshedFailure.Key, UserSessionCouldNotBeRefreshedFailure.Message);
+        AssertInvalidFailure(response);
     }
 
     [Theory]
@@ -118,6 +118,11 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await _client.RefreshToken(_request);
 
         // Assert
+        AssertInvalidFailure(response);
+    }
+
+    private static void AssertInvalidFailure(IApiResponse<RefreshTokenResponse> response)
+    {
         response.AssertSingleBadRequestError(UserSessionCouldNotBeRefreshedFailure.Key, UserSessionCouldNotBeRefreshedFailure.Message);
     }
 

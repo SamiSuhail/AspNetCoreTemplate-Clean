@@ -1,4 +1,5 @@
-﻿using MyApp.Server.Application.Commands.Auth.Login;
+﻿using MyApp.ApplicationIsolationTests.Clients;
+using MyApp.Server.Application.Commands.Auth.Login;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
 using MyApp.Server.Application.Commands.Auth.RefreshToken;
@@ -6,17 +7,16 @@ using MyApp.Server.Application.Commands.Auth.Registration;
 using MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
 using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
-using MyApp.Server.Infrastructure.Auth;
 using MyApp.Server.Infrastructure.Messaging;
 
 namespace MyApp.ApplicationIsolationTests.Tests.EndToEnd;
 
 public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    // user
     private const string Email = "olduser@email.com";
     private const string Username = "OldUsername";
     private const string Password = "password1!";
+    private IApplicationGraphQLClient _graphqlClient = default!;
 
     [Fact]
     public async Task HappyPathTest()
@@ -27,7 +27,8 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         var passwordResetConfirmationCode = await TestForgotPassword();
         await TestResetPassword(passwordResetConfirmationCode);
         var loginResponse = await TestLogin();
-        await TestMe(loginResponse.AccessToken);
+        _graphqlClient = AppFactory.CreateGraphQLClientWithToken(loginResponse.AccessToken);
+        await TestMe();
         await TestRefreshToken(loginResponse.RefreshToken);
     }
 
@@ -82,7 +83,7 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         response.AssertSuccess();
     }
 
-    private async Task<LoginResponse> TestLogin()
+    private static async Task<LoginResponse> TestLogin()
     {
         var request = new LoginRequest(Username, Password);
         var response = await UnauthorizedAppClient.Login(request);
@@ -90,10 +91,9 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         return response.Content!;
     }
 
-    private async Task TestMe(string accessToken)
+    private async Task TestMe()
     {
-        var client = AppFactory.CreateGraphQLClientWithToken(accessToken);
-        var response = await client.Me.ExecuteAsync();
+        var response = await _graphqlClient.Me.ExecuteAsync();
         response.AssertSuccess();
     }
 

@@ -38,4 +38,7 @@ public interface IApplicationClient
 
     [Post("/api/auth/reset-password")]
     public Task<IApiResponse> ResetPassword(ResetPasswordRequest request);
+
+    [Post("/api/user-management/sign-out-on-all-devices")]
+    public Task<IApiResponse> SignOutOnAllDevices();
 }
