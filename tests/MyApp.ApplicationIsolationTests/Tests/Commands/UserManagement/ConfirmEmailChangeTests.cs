@@ -96,12 +96,7 @@ public class ConfirmEmailChangeTests(AppFactory appFactory) : BaseTest(appFactor
     public async Task GivenEmailChangeExpired_ReturnsInvalidFailure()
     {
         // Arrange
-        await ArrangeDbContext.Set<EmailChangeConfirmationEntity>()
-            .Where(ecc => ecc.Id == _emailChangeConfirmation.Id)
-            .ExecuteUpdateAsync(s => 
-                s.SetProperty(ecc => 
-                    ecc.CreatedAt,
-                    DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes - 1)));
+        await ArrangeDbContext.ArrangeExpireAllConfirmations(_user.Id);
 
         // Act
         var response = await _client.ConfirmEmailChange(_request);

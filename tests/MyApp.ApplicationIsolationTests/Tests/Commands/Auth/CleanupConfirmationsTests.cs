@@ -14,7 +14,7 @@ public class CleanupConfirmationsTests(AppFactory appFactory) : BaseTest(appFact
     {
         // Arrange
         int userId = await CreateUserAndConfirmations();
-        await ExpireConfirmations(userId);
+        await ArrangeDbContext.ArrangeExpireAllConfirmations(userId);
 
         // Act
         await InvokeCleanupConfirmationsHandler();
@@ -33,27 +33,6 @@ public class CleanupConfirmationsTests(AppFactory appFactory) : BaseTest(appFact
         await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
         var userId = user.Id;
         return userId;
-    }
-
-    private async Task ExpireConfirmations(int userId)
-    {
-        var timeFiveSecondsAgo = DateTime.UtcNow.AddSeconds(-5);
-        var expiredDatetime = timeFiveSecondsAgo.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
-
-        var results = await Task.WhenAll(
-            ExpireConfirmations<UserConfirmationEntity>(userId, expiredDatetime),
-            ExpireConfirmations<PasswordResetConfirmationEntity>(userId, expiredDatetime),
-            ExpireConfirmations<EmailChangeConfirmationEntity>(userId, expiredDatetime)
-            );
-
-        results.All(x => x == 1).Should().BeTrue();
-
-        async Task<int> ExpireConfirmations<TConfirmationEntity>(int userId, DateTime expiredDatetime) where TConfirmationEntity : class, IOwnedByUser, ICreationAudited
-        {
-            return await CreateDbContext().Set<TConfirmationEntity>()
-                .Where(uc => uc.UserId == userId)
-                .ExecuteUpdateAsync(x => x.SetProperty(uc => uc.CreatedAt, expiredDatetime));
-        }
     }
 
     private async Task InvokeCleanupConfirmationsHandler()

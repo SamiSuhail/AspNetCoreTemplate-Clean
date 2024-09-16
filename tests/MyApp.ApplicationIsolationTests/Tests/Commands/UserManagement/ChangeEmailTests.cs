@@ -10,7 +10,7 @@ namespace MyApp.ApplicationIsolationTests.Tests.Commands.UserManagement;
 public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 {
     private UserEntity _user = default!;
-    private ChangeEmailRequest _request = new(RandomData.Email);
+    private readonly ChangeEmailRequest _request = new(RandomData.Email);
     private IApplicationClient _client = default!;
 
     public override async Task InitializeAsync()

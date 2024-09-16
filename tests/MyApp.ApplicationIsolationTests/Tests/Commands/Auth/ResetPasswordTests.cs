@@ -79,11 +79,7 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         await ArrangePasswordResetAndRequest(userIsConfirmed);
-        await ArrangeDbContext.Set<PasswordResetConfirmationEntity>()
-            .Where(pr => pr.UserId == _userId)
-            .ExecuteUpdateAsync(s => 
-                s.SetProperty(pr => pr.CreatedAt, 
-                    DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes - 1)));
+        await ArrangeDbContext.ArrangeExpireAllConfirmations(_userId);
 
         // Act
         var response = await UnauthorizedAppClient.ResetPassword(_request);

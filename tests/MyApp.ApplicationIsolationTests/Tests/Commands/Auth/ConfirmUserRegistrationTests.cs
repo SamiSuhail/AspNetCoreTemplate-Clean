@@ -73,12 +73,7 @@ public class ConfirmUserRegistrationTests(AppFactory appFactory) : BaseTest(appF
     public async Task GivenCodeIsExpired_ReturnsInvalidFailure()
     {
         // Arrange
-        await ArrangeDbContext.Set<UserConfirmationEntity>()
-            .Where(uc => uc.Id == _user.UserConfirmation!.Id)
-            .ExecuteUpdateAsync(s =>
-                s.SetProperty(
-                    uc => uc.CreatedAt,
-                    DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes - 1)));
+        await ArrangeDbContext.ArrangeExpireAllConfirmations(_user.Id);
 
         // Act
         var response = await UnauthorizedAppClient.ConfirmUserRegistration(_request);
