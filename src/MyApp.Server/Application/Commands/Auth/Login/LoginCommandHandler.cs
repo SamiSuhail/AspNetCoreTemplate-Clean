@@ -33,7 +33,7 @@ public class LoginCommandHandler(IScopedDbContext dbContext, IJwtGenerator jwtGe
             ?? throw LoginInvalidFailure.Exception();
 
         if (!user.IsEmailConfirmed)
-            throw EmailNotConfirmedFailure.Exception();
+            throw UserRegistrationNotConfirmedFailure.Exception();
 
         var correctPassword = BC.EnhancedVerify(request.Password, user.PasswordHash);
         if (!correctPassword)

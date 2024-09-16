@@ -2,6 +2,7 @@
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
+using MyApp.Server.Domain.Shared.Confirmations;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
@@ -33,7 +34,6 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         // Assert
         response.AssertSuccess();
         var user = await AssertDbContext.GetUser(_userId);
-        user.Should().NotBeNull();
         _request.Password.Verify(user!.PasswordHash).Should().BeTrue();
     }
 
@@ -79,11 +79,7 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         await ArrangePasswordResetAndRequest(userIsConfirmed);
-        await ArrangeDbContext.Set<PasswordResetConfirmationEntity>()
-            .Where(pr => pr.UserId == _userId)
-            .ExecuteUpdateAsync(s => 
-                s.SetProperty(pr => pr.CreatedAt, 
-                    DateTime.UtcNow.AddMinutes(-PasswordResetConfirmationConstants.ExpirationTimeMinutes - 1)));
+        await ArrangeDbContext.ArrangeExpireAllConfirmations(_userId);
 
         // Act
         var response = await UnauthorizedAppClient.ResetPassword(_request);
@@ -107,9 +103,9 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         }
         else
         {
-            password = RandomData.Password;
-            var user = await ArrangeDbContext.ArrangeUnconfirmedUser(RandomData.Username, password, RandomData.Email);
-            _userId = user.Id;
+            var result = await ArrangeDbContext.ArrangeRandomUnconfirmedUserWithPassword();
+            password = result.Password;
+            _userId = result.User.Id;
         }
 
         _passwordReset = PasswordResetConfirmationEntity.Create(_userId);

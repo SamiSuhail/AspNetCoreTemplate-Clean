@@ -22,7 +22,7 @@ public class RegisterCommandHandler(IScopedDbContext dbContext, IMessageProducer
         var usernameTaken = await users.AnyAsync(u => u.Username == request.Username, cancellationToken);
         var emailTaken = await users.AnyAsync(u => u.Email == request.Email, cancellationToken);
 
-        RegisterConflictFailure.Create(usernameTaken, emailTaken)
+        UserConflictFailure.Create(usernameTaken, emailTaken)
             .ThrowOnError();
 
         var user = UserEntity.Create(request.Username, request.Password, request.Email);
@@ -31,7 +31,7 @@ public class RegisterCommandHandler(IScopedDbContext dbContext, IMessageProducer
         await dbContext.WrapInTransaction(async () =>
         {
             await dbContext.SaveChangesAsync(cancellationToken);
-            await messageProducer.Send(new SendEmailConfirmationMessage(user.Username, user.Email, user.EmailConfirmation!.Code), cancellationToken);
+            await messageProducer.Send(new SendUserConfirmationMessage(user.Username, user.Email, user.UserConfirmation!.Code), cancellationToken);
         }, cancellationToken);
     }
 }

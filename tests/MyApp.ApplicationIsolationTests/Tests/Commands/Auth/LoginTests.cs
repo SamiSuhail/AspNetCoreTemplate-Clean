@@ -43,8 +43,7 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenEmailNotConfirmed_ReturnsEmailNotConfirmedFailure()
     {
         // Arrange
-        var password = RandomData.Password;
-        var user = await ArrangeDbContext.ArrangeUnconfirmedUser(RandomData.Username, password, RandomData.Email);
+        var (user, password) = await ArrangeDbContext.ArrangeRandomUnconfirmedUserWithPassword();
         var request = _request with
         {
             Username = user.Username,
@@ -55,7 +54,7 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.Login(request);
 
         // Assert
-        response.AssertSingleBadRequestError(EmailNotConfirmedFailure.Key, EmailNotConfirmedFailure.Message);
+        response.AssertSingleBadRequestError(UserRegistrationNotConfirmedFailure.Key, UserRegistrationNotConfirmedFailure.Message);
     }
 
     [Fact]

@@ -34,6 +34,7 @@ public class AppDbContext(
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         builder.ApplyCustomNamingConvention();
+        builder.ApplyCustomConfigurations();
 
         base.OnModelCreating(builder);
     }

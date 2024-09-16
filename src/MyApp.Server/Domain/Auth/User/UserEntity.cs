@@ -1,9 +1,11 @@
-﻿using MyApp.Server.Domain.Auth.EmailConfirmation;
+﻿using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
+using MyApp.Server.Domain.Shared;
 
 namespace MyApp.Server.Domain.Auth.User;
 
-public class UserEntity
+public class UserEntity : ICreationAudited
 {
     public int Id { get; private set; }
     public string Username { get; private set; } = default!;
@@ -14,12 +16,8 @@ public class UserEntity
     public DateTime CreatedAt { get; private set; }
 
     public PasswordResetConfirmationEntity? PasswordResetConfirmation { get; private set; }
-    public EmailConfirmationEntity? EmailConfirmation { get; private set; }
-
-    public void ConfirmEmail()
-    {
-        IsEmailConfirmed = true;
-    }
+    public UserConfirmationEntity? UserConfirmation { get; private set; }
+    public EmailChangeConfirmationEntity? EmailChangeConfirmation { get; private set; }
 
     public static UserEntity Create(string username, string password, string email)
         => new()
@@ -30,16 +28,27 @@ public class UserEntity
             IsEmailConfirmed = false,
             RefreshTokenVersion = 1,
             CreatedAt = DateTime.UtcNow,
-            EmailConfirmation = EmailConfirmationEntity.Create(),
+            UserConfirmation = UserConfirmationEntity.Create(),
         };
 
-    public void SignOutOnAllDevices()
+    public void ConfirmUserRegistration()
     {
-        RefreshTokenVersion++;
+        IsEmailConfirmed = true;
     }
 
     public void UpdatePassword(string password)
     {
         PasswordHash = password.Hash();
+    }
+
+    public void ConfirmEmailChange()
+    {
+        Email = EmailChangeConfirmation!.NewEmail;
+        SignOutOnAllDevices();
+    }
+
+    public void SignOutOnAllDevices()
+    {
+        RefreshTokenVersion++;
     }
 }

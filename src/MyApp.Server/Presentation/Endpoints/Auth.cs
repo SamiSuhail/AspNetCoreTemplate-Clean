@@ -4,7 +4,7 @@ using MyApp.Server.Application.Commands.Auth.Login;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
 using MyApp.Server.Application.Commands.Auth.RefreshToken;
-using MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
+using MyApp.Server.Application.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
 using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Server.Presentation.Endpoints.Core;
@@ -21,7 +21,7 @@ public class Auth : EndpointGroupBase
             .AddEndpointFilter<AnonymousOnlyFilter>()
             .MapPost(Register, "register")
             .MapPost(ResendConfirmation, "resend-confirmation")
-            .MapPost(ConfirmEmail, "confirm-email")
+            .MapPost(ConfirmUserRegistration, "confirm-user-registration")
             .MapPost(Login, "login")
             .MapPost(ForgotPassword, "forgot-password")
             .MapPost(ResetPassword, "reset-password");
@@ -55,9 +55,9 @@ public class Auth : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task<IResult> ConfirmEmail(
+    public async Task<IResult> ConfirmUserRegistration(
         [FromServices] ISender sender,
-        [FromBody] ConfirmEmailRequest request,
+        [FromBody] ConfirmUserRegistrationRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);

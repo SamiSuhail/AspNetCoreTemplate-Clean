@@ -1,10 +1,9 @@
-﻿using MyApp.ApplicationIsolationTests.Clients;
-using MyApp.Server.Application.Commands.Auth.Login;
+﻿using MyApp.Server.Application.Commands.Auth.Login;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
 using MyApp.Server.Application.Commands.Auth.RefreshToken;
 using MyApp.Server.Application.Commands.Auth.Registration;
-using MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
+using MyApp.Server.Application.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
 using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Server.Infrastructure.Messaging;
@@ -22,8 +21,8 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task HappyPathTest()
     {
         await TestRegister();
-        var emailConfirmationCode = await TestResendConfirmation();
-        await TestConfirmEmail(emailConfirmationCode);
+        var userConfirmationCode = await TestResendConfirmation();
+        await TestConfirmUserRegistration(userConfirmationCode);
         var passwordResetConfirmationCode = await TestForgotPassword();
         await TestResetPassword(passwordResetConfirmationCode);
         var loginResponse = await TestLogin();
@@ -43,8 +42,8 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
-        mock.Setup(m => m.Send(It.IsAny<SendEmailConfirmationMessage>(), It.IsAny<CancellationToken>()))
-            .Callback<SendEmailConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
+        mock.Setup(m => m.Send(It.IsAny<SendUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<SendUserConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
             .Returns(Task.CompletedTask);
         var request = new ResendConfirmationRequest(Email);
         var response = await UnauthorizedAppClient.ResendConfirmation(request);
@@ -54,10 +53,10 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         return code;
     }
 
-    private static async Task TestConfirmEmail(string confirmationCode)
+    private static async Task TestConfirmUserRegistration(string confirmationCode)
     {
-        var request = new ConfirmEmailRequest(confirmationCode);
-        var response = await UnauthorizedAppClient.ConfirmEmail(request);
+        var request = new ConfirmUserRegistrationRequest(confirmationCode);
+        var response = await UnauthorizedAppClient.ConfirmUserRegistration(request);
         response.AssertSuccess();
     }
 

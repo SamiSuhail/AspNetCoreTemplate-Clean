@@ -1,5 +1,4 @@
 ﻿using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Infrastructure.Auth;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.UserManagement;
 
@@ -14,8 +13,7 @@ public class SignOutOnAllDevicesTests(AppFactory appFactory) : BaseTest(appFacto
         // Assert
         response.AssertSuccess();
         var user = await AssertDbContext.GetUser(User.Id);
-        user.Should().NotBeNull();
-        user!.RefreshTokenVersion.Should().Be(User.RefreshTokenVersion + 1);
+        user.RefreshTokenVersion.Should().Be(User.RefreshTokenVersion + 1);
     }
 
     [Fact]
@@ -31,9 +29,8 @@ public class SignOutOnAllDevicesTests(AppFactory appFactory) : BaseTest(appFacto
     [Fact]
     public async Task GivenUserIdNotFound_ReturnsUserNotFoundFailure()
     {
-        var accessToken = ScopedServices.GetRequiredService<IJwtGenerator>()
-            .CreateAccessToken(userId: int.MaxValue, User.Username, User.Email);
-        var client = AppFactory.CreateClientWithToken(accessToken);
+        // Arrange
+        var client = AppFactory.CreateClientWithCredentials(userId: int.MaxValue, User.Username, User.Email);
 
         // Act
         var response = await client.SignOutOnAllDevices();
