@@ -1,5 +1,6 @@
 ﻿using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
 
 namespace MyApp.Server.Domain.Auth.User;
 
@@ -15,6 +16,7 @@ public class UserEntity
 
     public PasswordResetConfirmationEntity? PasswordResetConfirmation { get; private set; }
     public UserConfirmationEntity? UserConfirmation { get; private set; }
+    public EmailChangeConfirmationEntity? EmailChangeConfirmation { get; private set; }
 
     public void ConfirmUserRegistration()
     {

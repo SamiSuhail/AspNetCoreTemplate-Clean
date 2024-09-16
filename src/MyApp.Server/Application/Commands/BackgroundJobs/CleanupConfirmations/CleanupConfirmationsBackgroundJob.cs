@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Quartz;
 
-namespace MyApp.Server.Application.Commands.Auth.BackgroundJobs.CleanupConfirmations;
+namespace MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
 
 public class CleanupConfirmationsBackgroundJob(ISender sender) : IJob
 {

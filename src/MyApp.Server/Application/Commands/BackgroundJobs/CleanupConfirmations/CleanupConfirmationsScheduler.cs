@@ -1,6 +1,6 @@
 ﻿using Quartz;
 
-namespace MyApp.Server.Application.Commands.Auth.BackgroundJobs.CleanupConfirmations;
+namespace MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
 
 public static class CleanupConfirmationsScheduler
 {

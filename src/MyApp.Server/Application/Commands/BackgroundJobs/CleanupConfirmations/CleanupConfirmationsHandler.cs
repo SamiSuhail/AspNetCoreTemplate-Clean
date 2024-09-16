@@ -4,8 +4,9 @@ using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Shared;
 using MyApp.Server.Infrastructure.Database;
+using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
 
-namespace MyApp.Server.Application.Commands.Auth.BackgroundJobs.CleanupConfirmations;
+namespace MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
 
 public class CleanupConfirmationsRequest() : IRequest;
 
@@ -14,27 +15,18 @@ public class CleanupConfirmationsHandler(IAppDbContextFactory dbContextFactory) 
     public async Task Handle(CleanupConfirmationsRequest request, CancellationToken cancellationToken)
     {
         await Task.WhenAll(
-            CleanupUserConfirmations(cancellationToken),
-            CleanupPasswordResetConfirmations(cancellationToken)
+            CleanupConfirmations<UserConfirmationEntity>(cancellationToken),
+            CleanupConfirmations<PasswordResetConfirmationEntity>(cancellationToken),
+            CleanupConfirmations<EmailChangeConfirmationEntity>(cancellationToken)
         );
     }
 
-    private async Task CleanupUserConfirmations(CancellationToken cancellationToken)
+    private async Task CleanupConfirmations<TConfirmationEntity>(CancellationToken cancellationToken) where TConfirmationEntity : BaseConfirmationEntity
     {
         await using var dbContext = await dbContextFactory.CreateTransientDbContextAsync(cancellationToken);
         var expirationTime = DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
-        await dbContext.Set<UserConfirmationEntity>()
+        await dbContext.Set<TConfirmationEntity>()
             .Where(uc => uc.CreatedAt < expirationTime)
-            .ExecuteDeleteAsync(cancellationToken);
-    }
-
-    private async Task CleanupPasswordResetConfirmations(CancellationToken cancellationToken)
-    {
-        await using var dbContext = await dbContextFactory.CreateTransientDbContextAsync(cancellationToken);
-        var expirationTime = DateTime.UtcNow.AddMinutes(-BaseConfirmationConstants.ExpirationTimeMinutes);
-
-        await dbContext.Set<PasswordResetConfirmationEntity>()
-            .Where(prc => prc.CreatedAt < expirationTime)
             .ExecuteDeleteAsync(cancellationToken);
     }
 }

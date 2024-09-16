@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Application.Commands.Auth.BackgroundJobs.CleanupConfirmations;
+﻿using MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
 using MyApp.Server.Infrastructure.Database;
 using Quartz;
 
