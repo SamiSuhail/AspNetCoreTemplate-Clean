@@ -13,7 +13,7 @@ public abstract class BaseTest(AppFactory appFactory) : IAsyncLifetime
         ScopedServices = _scope.ServiceProvider;
         ArrangeDbContext = CreateDbContext();
         AssertDbContext = CreateDbContext();
-        User = (await CreateDbContext().GetUser(TestUser.Id))!;
+        User = await CreateDbContext().GetUser(TestUser.Id);
         await Task.CompletedTask;
     }
     public IServiceProvider ScopedServices { get; private set; } = default!;

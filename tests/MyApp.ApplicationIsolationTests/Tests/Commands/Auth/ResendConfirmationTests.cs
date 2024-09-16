@@ -122,7 +122,6 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
     private async Task<UserConfirmationEntity> GetUserConfirmation()
     {
         var user = await AssertDbContext.GetUser(_user.Id);
-        user.Should().NotBeNull();
         return user!.UserConfirmation!;
     }
 

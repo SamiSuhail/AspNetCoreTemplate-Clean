@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Infrastructure.Database;
 
 namespace MyApp.Server.Application.Utilities;
 

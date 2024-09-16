@@ -1,4 +1,7 @@
-﻿namespace MyApp.ApplicationIsolationTests.Clients;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MyApp.Server.Infrastructure.Auth;
+
+namespace MyApp.ApplicationIsolationTests.Clients;
 
 public static class ClientProvider
 {
@@ -14,6 +17,13 @@ public static class ClientProvider
     public static IApplicationClient AppClient { get; private set; } = default!;
     public static IApplicationGraphQLClient UnauthorizedGraphQLClient { get; private set; } = default!;
     public static IApplicationGraphQLClient GraphQLClient { get; private set; } = default!;
+
+    public static IApplicationClient CreateClientWithCredentials(this AppFactory appFactory, int userId, string username, string email)
+    {
+        var jwtGenerator = appFactory.Services.GetRequiredService<IJwtGenerator>();
+        var accessToken = jwtGenerator.CreateAccessToken(userId, username, email);
+        return appFactory.CreateClientWithToken(accessToken);
+    }
 
     public static IApplicationClient CreateClientWithToken(this AppFactory appFactory, string accessToken)
     {

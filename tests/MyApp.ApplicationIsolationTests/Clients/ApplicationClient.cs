@@ -5,6 +5,8 @@ using MyApp.Server.Application.Commands.Auth.RefreshToken;
 using MyApp.Server.Application.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
 using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
+using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Server.Application.Queries.Ping;
 
 namespace MyApp.ApplicationIsolationTests.Clients;
@@ -41,4 +43,10 @@ public interface IApplicationClient
 
     [Post("/api/user-management/sign-out-on-all-devices")]
     public Task<IApiResponse> SignOutOnAllDevices();
+
+    [Post("/api/user-management/change-email")]
+    public Task<IApiResponse> ChangeEmail(ChangeEmailRequest request);
+
+    [Post("/api/user-management/confirm-email-change")]
+    public Task<IApiResponse> ConfirmEmailChange(ConfirmEmailChangeRequest request);
 }

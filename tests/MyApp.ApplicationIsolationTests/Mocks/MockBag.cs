@@ -24,4 +24,10 @@ public static class MockBag
         foreach (var (_, mock) in _mocks)
             mock.Reset();
     }
+
+    public static void VerifyAll()
+    {
+        foreach (var (_, mock) in _mocks)
+            mock.VerifyAll();
+    }
 }

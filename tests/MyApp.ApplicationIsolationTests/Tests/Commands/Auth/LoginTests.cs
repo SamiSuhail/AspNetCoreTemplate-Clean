@@ -43,8 +43,7 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenEmailNotConfirmed_ReturnsEmailNotConfirmedFailure()
     {
         // Arrange
-        var password = RandomData.Password;
-        var user = await ArrangeDbContext.ArrangeUnconfirmedUser(RandomData.Username, password, RandomData.Email);
+        var (user, password) = await ArrangeDbContext.ArrangeRandomUnconfirmedUserWithPassword();
         var request = _request with
         {
             Username = user.Username,

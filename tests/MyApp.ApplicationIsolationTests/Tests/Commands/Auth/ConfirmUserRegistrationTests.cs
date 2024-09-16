@@ -25,7 +25,7 @@ public class ConfirmUserRegistrationTests(AppFactory appFactory) : BaseTest(appF
 
         // Assert
         response.AssertSuccess();
-        var user = await GetUser();
+        var user = await AssertDbContext.GetUser(_user.Id);
         using var _ = new AssertionScope();
         user.IsEmailConfirmed.Should().BeTrue();
         user.UserConfirmation.Should().BeNull();
@@ -88,16 +88,9 @@ public class ConfirmUserRegistrationTests(AppFactory appFactory) : BaseTest(appF
         await AssertNotConfirmed();
     }
 
-    private async Task<UserEntity> GetUser()
-    {
-        var user = await AssertDbContext.GetUser(_user.Id);
-        user.Should().NotBeNull();
-        return user!;
-    }
-
     private async Task AssertNotConfirmed()
     {
-        var user = await GetUser();
+        var user = await AssertDbContext.GetUser(_user.Id);
         using var _ = new AssertionScope();
         user.IsEmailConfirmed.Should().BeFalse();
         user.UserConfirmation.Should().NotBeNull();

@@ -1,5 +1,4 @@
-﻿using MyApp.ApplicationIsolationTests.Clients;
-using MyApp.Server.Application.Commands.Auth.RefreshToken;
+﻿using MyApp.Server.Application.Commands.Auth.RefreshToken;
 using MyApp.Server.Domain.Auth.User.Failures;
 using MyApp.Server.Infrastructure.Auth;
 

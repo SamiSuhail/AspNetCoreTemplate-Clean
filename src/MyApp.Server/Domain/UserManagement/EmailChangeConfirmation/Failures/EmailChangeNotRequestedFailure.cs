@@ -1,6 +1,4 @@
-﻿using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
-
-namespace MyApp.Server.Domain.UserManagement.EmailChangeConfirmation.Failures;
+﻿namespace MyApp.Server.Domain.UserManagement.EmailChangeConfirmation.Failures;
 
 public class EmailChangeNotRequestedFailure : DomainFailure
 {

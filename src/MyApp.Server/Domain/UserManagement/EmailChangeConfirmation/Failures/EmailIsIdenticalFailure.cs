@@ -1,5 +1,4 @@
-﻿using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
-using MyApp.Server.Domain.Auth.User;
+﻿using MyApp.Server.Domain.Auth.User;
 
 namespace MyApp.Server.Domain.UserManagement.EmailChangeConfirmation.Failures;
 

@@ -35,6 +35,12 @@ public class ConfirmEmailChangeCommandHandler(
         if (oldEmailCode != user.EmailChangeConfirmation.OldEmailCode || newEmailCode != user.EmailChangeConfirmation.NewEmailCode)
             throw EmailChangeInvalidCodesFailure.Exception();
 
+        var emailAlreadyInUse = await dbContext.Set<UserEntity>()
+            .AnyAsync(u => u.Email == user.EmailChangeConfirmation.NewEmail, cancellationToken);
+
+        if (emailAlreadyInUse)
+            throw UserConflictFailure.EmailException();
+
         user.ConfirmEmailChange();
         dbContext.Remove(user.EmailChangeConfirmation);
         await dbContext.SaveChangesAsync(cancellationToken);

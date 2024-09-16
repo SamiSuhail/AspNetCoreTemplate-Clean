@@ -1,5 +1,4 @@
-﻿using MyApp.ApplicationIsolationTests.Clients;
-using MyApp.Server.Application.Commands.Auth.Login;
+﻿using MyApp.Server.Application.Commands.Auth.Login;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
 using MyApp.Server.Application.Commands.Auth.RefreshToken;
