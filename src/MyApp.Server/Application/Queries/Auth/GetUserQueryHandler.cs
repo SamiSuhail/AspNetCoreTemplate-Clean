@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Server.Infrastructure.Auth;
 using MyApp.Server.Infrastructure.Database;
+using MyApp.Server.Domain.Auth.User.Failures;
 
 namespace MyApp.Server.Application.Queries.Auth;
 
@@ -15,11 +16,15 @@ public class GetUserQueryHandler(IUserContextAccessor userReader, ITransientDbCo
     {
         var (id, username, email) = userReader.User;
 
-        var createdAt = await appDbContext.Set<UserEntity>()
+        var user = await appDbContext.Set<UserEntity>()
             .Where(u => u.Id == id)
-            .Select(u => u.CreatedAt)
-            .FirstAsync(cancellationToken);
+            .Select(u => new
+            {
+                u.CreatedAt,
+            })
+            .FirstOrDefaultAsync(cancellationToken)
+            ?? throw UserIdNotFoundFailure.Exception();
 
-        return new(id, username, email, createdAt);
+        return new(id, username, email, user.CreatedAt);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MyApp.Server.Application.Commands.Auth.Login;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Server.Application.Commands.Auth.RefreshToken;
 using MyApp.Server.Application.Commands.Auth.Registration.ConfirmEmail;
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
 using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
@@ -28,6 +29,9 @@ public interface IApplicationClient
 
     [Post("/api/auth/login")]
     public Task<IApiResponse<LoginResponse>> Login(LoginRequest request);
+
+    [Post("/api/auth/refresh-token")]
+    public Task<IApiResponse<RefreshTokenResponse>> RefreshToken(RefreshTokenRequest request);
 
     [Post("/api/auth/forgot-password")]
     public Task<IApiResponse> ForgotPassword(ForgotPasswordRequest request);

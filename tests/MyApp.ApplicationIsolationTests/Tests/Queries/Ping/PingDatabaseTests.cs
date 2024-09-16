@@ -30,6 +30,21 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
     }
 
     [Fact]
+    public async Task GivenTokenIsInvalid_ReturnsError()
+    {
+        // Arrange
+        var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
+        var accessToken = jwtGenerator.CreateAccessToken(User.Id, User.Username, User.Email);
+        var client = AppFactory.CreateClientWithToken(accessToken);
+
+        // Act
+        var response = await client.PingDatabase();
+
+        // Assert
+        response.AssertError(HttpStatusCode.Unauthorized);
+    }
+
+    [Fact]
     public async Task GivenUserIsAuthorized_ReturnsResponse()
     {
         // Act
