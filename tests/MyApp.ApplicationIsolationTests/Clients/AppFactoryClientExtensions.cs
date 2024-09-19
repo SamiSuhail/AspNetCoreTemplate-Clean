@@ -2,21 +2,8 @@
 
 namespace MyApp.ApplicationIsolationTests.Clients;
 
-public static class ClientProvider
+public static class AppFactoryClientExtensions
 {
-    public static void Initialize(AppFactory appFactory)
-    {
-        UnauthorizedAppClient = RestService.For<IApplicationClient>(appFactory.CreateClient());
-        UnauthorizedGraphQLClient = appFactory.CreateGraphQLClient();
-        AppClient = appFactory.CreateClientWithToken(TestUser.AccessToken);
-        GraphQLClient = appFactory.CreateGraphQLClientWithToken(TestUser.AccessToken);
-    }
-
-    public static IApplicationClient UnauthorizedAppClient { get; private set; } = default!;
-    public static IApplicationClient AppClient { get; private set; } = default!;
-    public static IApplicationGraphQLClient UnauthorizedGraphQLClient { get; private set; } = default!;
-    public static IApplicationGraphQLClient GraphQLClient { get; private set; } = default!;
-
     public static IApplicationClient CreateClientWithCredentials(this AppFactory appFactory, int userId, string username, string email)
     {
         var jwtGenerator = appFactory.Services.GetRequiredService<IJwtGenerator>();

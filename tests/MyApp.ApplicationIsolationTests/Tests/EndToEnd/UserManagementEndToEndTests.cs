@@ -36,7 +36,7 @@ public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFa
         response.AssertSuccess();
     }
 
-    private static async Task TestRefreshTokenFailure(string refreshToken)
+    private async Task TestRefreshTokenFailure(string refreshToken)
     {
         var response = await UnauthorizedAppClient.RefreshToken(new(refreshToken));
         response.AssertBadRequest();

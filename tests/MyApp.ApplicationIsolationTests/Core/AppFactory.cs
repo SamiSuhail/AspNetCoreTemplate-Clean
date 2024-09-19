@@ -4,55 +4,37 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using MyApp.Server;
 using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Messaging;
-using Testcontainers.PostgreSql;
-using DbDeployHelpers = MyApp.DbDeploy.Helpers;
 
 namespace MyApp.ApplicationIsolationTests.Core;
 
-public class AppFactory : WebApplicationFactory<ProgramApi>, IAsyncLifetime
+public class AppFactory : WebApplicationFactory<ProgramApi>
 {
-    private readonly PostgreSqlContainer _postgreSqlContainer;
-    private string _connectionString = default!;
-    public AppFactory()
-        : base()
-    {
-        _postgreSqlContainer = new PostgreSqlBuilder()
-            .WithCleanUp(true)
-            .WithDatabase($"test_run_{Guid.NewGuid()}")
-            .WithUsername("admin")
-            .WithPassword("admin")
-            .Build();
-    }
+    private IServiceScope _scope = default!;
+    public IServiceProvider ScopedServices { get; private set; } = default!;
+    public MockBag MockBag { get; } = new();
 
-    public async Task InitializeAsync()
+    public async Task InitializeServices()
     {
-        await _postgreSqlContainer.StartAsync();
-        _connectionString = _postgreSqlContainer.GetConnectionString();
-        DbDeployHelpers.DeployDatabase(_connectionString);
-        await Services.InitializeTestUser();
-        ClientProvider.Initialize(this);
+        await GlobalContext.InitializeAsync();
+        _scope = Services.CreateScope();
+        ScopedServices = _scope.ServiceProvider;
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseSetting($"{ConnectionStringsSettings.SectionName}:{nameof(ConnectionStringsSettings.Database)}", _connectionString);
+        builder.UseSetting($"{ConnectionStringsSettings.SectionName}:{nameof(ConnectionStringsSettings.Database)}", GlobalContext.ConnectionString);
         builder.ConfigureServices(services =>
         {
             services.AddMassTransitTestHarness();
-            services.ReplaceWithMock<IMessageProducer>(MockBehavior.Loose);
+            services.ReplaceWithMock<IMessageProducer>(MockBag, MockBehavior.Loose);
         });
     }
 
-    async Task IAsyncLifetime.DisposeAsync()
+    public Task DisposeServices()
     {
-        await _postgreSqlContainer.StopAsync();
+        _scope?.Dispose();
+        MockBag.VerifyAll();
+        MockBag.Reset();
+        return Task.CompletedTask;
     }
-}
-
-[CollectionDefinition(nameof(AppFactory), DisableParallelization = false)]
-public class DatabaseCollection : ICollectionFixture<AppFactory>
-{
-    // This class has no code, and is never created. Its purpose is simply
-    // to be the place to apply [CollectionDefinition] and all the
-    // ICollectionFixture<> interfaces.
 }

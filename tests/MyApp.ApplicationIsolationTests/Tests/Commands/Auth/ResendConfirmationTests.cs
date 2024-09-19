@@ -43,7 +43,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertSuccess();
-        AssertMessage.Produced<SendUserConfirmationMessage>();
+        MockBag.AssertProduced<SendUserConfirmationMessage>();
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertBadRequest();
-        AssertMessage.Produced<SendUserConfirmationMessage>(Times.Never());
+        MockBag.AssertProduced<SendUserConfirmationMessage>(Times.Never());
         await AssertUserConfirmationUnchanged();
     }
 

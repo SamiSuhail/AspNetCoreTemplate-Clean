@@ -43,7 +43,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        AssertMessage.Produced<SendUserConfirmationMessage>();
+        MockBag.AssertProduced<SendUserConfirmationMessage>();
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         var request = _request with
         {
-            Email = TestUser.Email
+            Email = User.Entity.Email
         };
 
         // Act
@@ -60,7 +60,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        AssertMessage.Produced<SendUserConfirmationMessage>(Times.Never());
+        MockBag.AssertProduced<SendUserConfirmationMessage>(Times.Never());
         await AssertUserNotExists(request.Username, request.Email);
     }
 
@@ -97,7 +97,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         var request = _request with
         {
-            Username = TestUser.Username,
+            Username = User.Entity.Username,
         };
 
         // Act
@@ -114,7 +114,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         var request = _request with
         {
-            Email = TestUser.Email,
+            Email = User.Entity.Email,
         };
 
         // Act

@@ -1,31 +1,31 @@
 ﻿namespace MyApp.ApplicationIsolationTests.Mocks;
 
-public static class MockBag
+public class MockBag
 {
-    private static readonly Dictionary<Type, Mock> _mocks = [];
+    private readonly Dictionary<Type, Mock> _mocks = [];
 
-    public static void Add(Type type, Mock mock)
+    public void Add(Type type, Mock mock)
     {
         _mocks.Add(type, mock);
     }
 
-    public static void Add<TService>(Mock<TService> mock) where TService : class
+    public void Add<TService>(Mock<TService> mock) where TService : class
     {
         _mocks.Add(typeof(TService), mock);
     }
 
-    public static Mock<T> Get<T>() where T : class
+    public Mock<T> Get<T>() where T : class
     {
         return (Mock<T>)_mocks[typeof(T)];
     }
 
-    public static void Reset()
+    public void Reset()
     {
         foreach (var (_, mock) in _mocks)
             mock.Reset();
     }
 
-    public static void VerifyAll()
+    public void VerifyAll()
     {
         foreach (var (_, mock) in _mocks)
             mock.VerifyAll();

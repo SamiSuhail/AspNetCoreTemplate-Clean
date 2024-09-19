@@ -61,7 +61,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        AssertMessage.Produced<ChangeEmailMessage>();
+        MockBag.AssertProduced<ChangeEmailMessage>();
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertInternalServerError();
-        AssertMessage.Produced<ChangeEmailMessage>(Times.Never());
+        MockBag.AssertProduced<ChangeEmailMessage>(Times.Never());
     }
 
     [Fact]
@@ -153,7 +153,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         var request = _request with
         {
-            Email = TestUser.Email,
+            Email = User.Entity.Email,
         };
 
         // Act
@@ -168,6 +168,6 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         var user = await AssertDbContext.GetUser(_user.Id);
         user.EmailChangeConfirmation.Should().BeNull();
-        AssertMessage.Produced<ChangeEmailMessage>(Times.Never());
+        MockBag.AssertProduced<ChangeEmailMessage>(Times.Never());
     }
 }

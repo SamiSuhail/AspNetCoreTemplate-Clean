@@ -31,14 +31,14 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         await TestRefreshToken(loginResponse.RefreshToken);
     }
 
-    private static async Task TestRegister()
+    private async Task TestRegister()
     {
         var request = new RegisterRequest(Email, Username, Password);
         var response = await UnauthorizedAppClient.Register(request);
         response.AssertSuccess();
     }
 
-    private static async Task<string> TestResendConfirmation()
+    private async Task<string> TestResendConfirmation()
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
@@ -53,14 +53,14 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         return code;
     }
 
-    private static async Task TestConfirmUserRegistration(string confirmationCode)
+    private async Task TestConfirmUserRegistration(string confirmationCode)
     {
         var request = new ConfirmUserRegistrationRequest(confirmationCode);
         var response = await UnauthorizedAppClient.ConfirmUserRegistration(request);
         response.AssertSuccess();
     }
 
-    private static async Task<string> TestForgotPassword()
+    private async Task<string> TestForgotPassword()
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
@@ -75,14 +75,14 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         return code;
     }
 
-    private static async Task TestResetPassword(string code)
+    private async Task TestResetPassword(string code)
     {
         var request = new ResetPasswordRequest(code, Password);
         var response = await UnauthorizedAppClient.ResetPassword(request);
         response.AssertSuccess();
     }
 
-    private static async Task<LoginResponse> TestLogin()
+    private async Task<LoginResponse> TestLogin()
     {
         var request = new LoginRequest(Username, Password);
         var response = await UnauthorizedAppClient.Login(request);
@@ -96,7 +96,7 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         response.AssertSuccess();
     }
 
-    private static async Task TestRefreshToken(string refreshToken)
+    private async Task TestRefreshToken(string refreshToken)
     {
         var request = new RefreshTokenRequest(refreshToken);
         var response = await UnauthorizedAppClient.RefreshToken(request);

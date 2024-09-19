@@ -53,7 +53,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        AssertMessage.Produced<ForgotPasswordMessage>();
+        MockBag.AssertProduced<ForgotPasswordMessage>();
     }
 
     [Theory]
@@ -95,7 +95,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        AssertMessage.Produced<ForgotPasswordMessage>(Times.Never());
+        MockBag.AssertProduced<ForgotPasswordMessage>(Times.Never());
     }
 
     [Theory]
@@ -174,7 +174,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     private async Task ArrangeUserAndRequest(bool userIsConfirmed)
     {
         _user = userIsConfirmed
-                    ? User
+                    ? User.Entity
                     : await ArrangeDbContext.ArrangeRandomUnconfirmedUser();
         _request = new ForgotPasswordRequest(_user.Email, _user.Username);
     }

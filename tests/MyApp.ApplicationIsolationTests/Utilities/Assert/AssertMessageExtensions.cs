@@ -2,11 +2,11 @@
 
 namespace MyApp.ApplicationIsolationTests.Utilities.Assert;
 
-public static class AssertMessage
+public static class AssertMessageExtensions
 {
-    public static void Produced<TMessage>(Times? times = null) where TMessage : class
+    public static void AssertProduced<TMessage>(this MockBag mockBag, Times? times = null) where TMessage : class
     {
-        MockBag.Get<IMessageProducer>()
+        mockBag.Get<IMessageProducer>()
             .Verify(x => x.Send(It.IsAny<TMessage>(), It.IsAny<CancellationToken>()),
                 times ?? Times.Once());
     }

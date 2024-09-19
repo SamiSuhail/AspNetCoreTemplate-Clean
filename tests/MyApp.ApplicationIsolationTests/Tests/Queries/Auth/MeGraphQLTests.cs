@@ -16,10 +16,10 @@ public class MeGraphQLTests(AppFactory appFactory) : BaseTest(appFactory)
         response.Data!.Me.Should().NotBeNull();
         var user = response.Data.Me.User;
         user.Should().NotBeNull();
-        user.Username.Should().Be(TestUser.Username);
-        user.Email.Should().Be(TestUser.Email);
-        user.Id.Should().Be(TestUser.Id);
-        user.CreatedAt.Should().BeCloseTo(TestUser.CreatedAt, TimeSpan.FromMilliseconds(1));
+        user.Username.Should().Be(User.Entity.Username);
+        user.Email.Should().Be(User.Entity.Email);
+        user.Id.Should().Be(User.Entity.Id);
+        user.CreatedAt.Should().BeCloseTo(User.Entity.CreatedAt, TimeSpan.FromMilliseconds(1));
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class MeGraphQLTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         var jwtGenerator = ScopedServices.GetRequiredService<IJwtGenerator>();
-        var accessToken = jwtGenerator.CreateAccessToken(userId: int.MaxValue, User.Username, User.Email);
+        var accessToken = jwtGenerator.CreateAccessToken(userId: int.MaxValue, User.Entity.Username, User.Entity.Email);
         var client = AppFactory.CreateGraphQLClientWithToken(accessToken);
 
         // Act

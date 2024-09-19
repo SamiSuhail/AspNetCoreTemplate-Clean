@@ -2,7 +2,6 @@
 using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Domain.Shared.Confirmations;
 using MyApp.Server.Domain.UserManagement.EmailChangeConfirmation.Failures;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.UserManagement;
@@ -150,7 +149,7 @@ public class ConfirmEmailChangeTests(AppFactory appFactory) : BaseTest(appFactor
             .ExecuteUpdateAsync(s =>
                 s.SetProperty(ecc =>
                     ecc.NewEmail,
-                    TestUser.Email));
+                    User.Entity.Email));
 
         // Act
         var response = await _client.ConfirmEmailChange(_request);
