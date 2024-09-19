@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using MyApp.Server;
+using MyApp.Server.Application.Startup;
 using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Messaging;
+using MyApp.Server.Shared;
 
 namespace MyApp.ApplicationIsolationTests.Core;
 
@@ -15,6 +17,7 @@ public class AppFactory : WebApplicationFactory<ProgramApi>
 
     public async Task InitializeServices()
     {
+        TestsHelper.RandomizeBackgroundJobNames = true; // Avoid race conditions on Quartz job scheduler
         await GlobalContext.InitializeAsync();
         _scope = Services.CreateScope();
         ScopedServices = _scope.ServiceProvider;
