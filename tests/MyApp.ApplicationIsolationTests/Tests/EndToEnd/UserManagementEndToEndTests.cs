@@ -1,38 +1,22 @@
-﻿using MyApp.Server.Application.Commands.Auth.Login;
-using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Server.Domain.Auth.User;
+﻿using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
 using MyApp.Server.Infrastructure.Messaging;
 
 namespace MyApp.ApplicationIsolationTests.Tests.EndToEnd;
 
 public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    private UserEntity _user = default!;
-    private string _password = default!;
-    private IApplicationClient _client = default!;
-
     [Fact]
     public async Task HappyPathTest()
     {
-        (_user, _password) = await ArrangeDbContext.ArrangeRandomConfirmedUserWithPassword();
-        var loginResponse = await TestLogin();
-        _client = AppFactory.ArrangeClientWithToken(loginResponse.AccessToken);
         await TestSignOutOnAllDevices();
-        await TestRefreshTokenFailure(loginResponse.RefreshToken);
+        await TestRefreshTokenFailure(User.RefreshToken);
         var (oldEmailCode, newEmailCode) = await TestChangeEmail();
         await TestConfirmEmailChange(oldEmailCode, newEmailCode);
     }
 
-    private async Task<LoginResponse> TestLogin()
-    {
-        var response = await UnauthorizedAppClient.Login(new(_user.Username, _password));
-        response.AssertSuccess();
-        return response.Content!;
-    }
-
     private async Task TestSignOutOnAllDevices()
     {
-        var response = await _client.SignOutOnAllDevices();
+        var response = await AppClient.SignOutOnAllDevices();
         response.AssertSuccess();
     }
 
@@ -50,7 +34,7 @@ public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFa
             .Callback<ChangeEmailMessage, CancellationToken>((m, _) => message = m)
             .Returns(Task.CompletedTask);
 
-        var response = await _client.ChangeEmail(new(RandomData.Email));
+        var response = await AppClient.ChangeEmail(new(RandomData.Email));
 
         response.AssertSuccess();
         message.Should().NotBeNull();
@@ -61,7 +45,7 @@ public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFa
 
     private async Task TestConfirmEmailChange(string oldEmailCode, string newEmailCode)
     {
-        var response = await _client.ConfirmEmailChange(new(oldEmailCode, newEmailCode));
+        var response = await AppClient.ConfirmEmailChange(new(oldEmailCode, newEmailCode));
         response.AssertSuccess();
     }
 }

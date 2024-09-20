@@ -3,7 +3,6 @@ using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
 using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation.Failures;
-using MyApp.Server.Infrastructure.Messaging;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.UserManagement;
 

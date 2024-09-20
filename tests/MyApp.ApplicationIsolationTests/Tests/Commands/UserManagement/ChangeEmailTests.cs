@@ -1,35 +1,23 @@
 ﻿using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
-using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
 using MyApp.Server.Domain.UserManagement.EmailChangeConfirmation.Failures;
-using MyApp.Server.Infrastructure.Messaging;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.UserManagement;
 
 public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    private UserEntity _user = default!;
     private readonly ChangeEmailRequest _request = new(RandomData.Email);
-    private IApplicationClient _client = default!;
-
-    public override async Task InitializeAsync()
-    {
-        await base.InitializeAsync();
-        _user = await ArrangeDbContext.ArrangeRandomConfirmedUser();
-        _client = AppFactory.ArrangeClientWithCredentials(_user.Id, _user.Username, _user.Email);
-    }
 
     [Fact]
     public async Task GivenHappyPath_ThenStoresChangeEmailConfirmation()
     {
         // Act
-        var response = await _client.ChangeEmail(_request);
+        var response = await AppClient.ChangeEmail(_request);
 
         // Assert
         response.AssertSuccess();
-        var user = await AssertDbContext.GetUser(_user.Id);
+        var user = await AssertDbContext.GetUser(User.Entity.Id);
         user.EmailChangeConfirmation.Should().NotBeNull();
         user.EmailChangeConfirmation!.NewEmail.Should().Be(_request.Email);
         user.EmailChangeConfirmation.CreatedAt.ShouldBeNow();
@@ -39,16 +27,16 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenHappyPath_ThenExistingConfirmationIsOverwritten()
     {
         // Arrange
-        var emailChangeConfirmation = EmailChangeConfirmationEntity.Create(_user.Id, RandomData.Email);
+        var emailChangeConfirmation = EmailChangeConfirmationEntity.Create(User.Entity.Id, RandomData.Email);
         ArrangeDbContext.Add(emailChangeConfirmation);
         await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
 
         // Act
-        var response = await _client.ChangeEmail(_request);
+        var response = await AppClient.ChangeEmail(_request);
 
         // Assert
         response.AssertSuccess();
-        var user = await AssertDbContext.GetUser(_user.Id);
+        var user = await AssertDbContext.GetUser(User.Entity.Id);
         user.EmailChangeConfirmation.Should().NotBeNull();
         user.EmailChangeConfirmation!.Id.Should().NotBe(emailChangeConfirmation.Id);
         user.EmailChangeConfirmation.NewEmail.Should().Be(_request.Email);
@@ -58,7 +46,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenHappyPath_ThenProducesMessage()
     {
         // Act
-        var response = await _client.ChangeEmail(_request);
+        var response = await AppClient.ChangeEmail(_request);
 
         // Assert
         response.AssertSuccess();
@@ -69,10 +57,10 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenDatabaseError_ThenNoMessageProduced()
     {
         // Arrange
-        _client = AppFactory.ArrangeClientWithCredentials(userId: int.MaxValue, _user.Username, _user.Email);
+        var client = AppFactory.ArrangeClientWithCredentials(userId: int.MaxValue, User.Entity.Username, User.Entity.Email);
 
         // Act
-        var response = await _client.ChangeEmail(_request);
+        var response = await client.ChangeEmail(_request);
 
         // Assert
         response.AssertInternalServerError();
@@ -86,11 +74,11 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
         MockBag.ArrangeMessageThrows<ChangeEmailMessage>();
 
         // Act
-        var response = await _client.ChangeEmail(_request);
+        var response = await AppClient.ChangeEmail(_request);
 
         // Assert
         response.AssertInternalServerError();
-        var user = await AssertDbContext.GetUser(_user.Id);
+        var user = await AssertDbContext.GetUser(User.Entity.Id);
         user.EmailChangeConfirmation.Should().BeNull();
     }
 
@@ -98,17 +86,17 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenMessageProducerError_ThenNoDataIsDeleted()
     {
         // Arrange
-        var emailChangeConfirmation = EmailChangeConfirmationEntity.Create(_user.Id, RandomData.Email);
+        var emailChangeConfirmation = EmailChangeConfirmationEntity.Create(User.Entity.Id, RandomData.Email);
         ArrangeDbContext.Add(emailChangeConfirmation);
         await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
         MockBag.ArrangeMessageThrows<ChangeEmailMessage>();
 
         // Act
-        var response = await _client.ChangeEmail(_request);
+        var response = await AppClient.ChangeEmail(_request);
 
         // Assert
         response.AssertInternalServerError();
-        var user = await AssertDbContext.GetUser(_user.Id);
+        var user = await AssertDbContext.GetUser(User.Entity.Id);
         user.EmailChangeConfirmation.Should().NotBeNull();
         user.EmailChangeConfirmation!.Id.Should().Be(emailChangeConfirmation.Id);
         user.EmailChangeConfirmation.NewEmail.Should().Be(emailChangeConfirmation.NewEmail);
@@ -133,28 +121,29 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         var request = _request with
         {
-            Email = _user.Email,
+            Email = User.Entity.Email,
         };
 
         // Act
-        var response = await _client.ChangeEmail(request);
+        var response = await AppClient.ChangeEmail(request);
 
         // Assert
         response.AssertSingleBadRequestError(EmailIsIdenticalFailure.Key, EmailIsIdenticalFailure.Message);
         await AssertNoChangesOccured();
     }
 
-    [Fact]
-    public async Task GivenEmailIsAlreadyInUse_ReturnsInvalidFailure()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task GivenEmailTaken_ReturnsInvalidFailure(bool existingUserIsConfirmed)
     {
         // Arrange
-        var request = _request with
-        {
-            Email = User.Entity.Email,
-        };
+        var _ = existingUserIsConfirmed 
+            ? await ArrangeDbContext.ArrangeConfirmedUser(RandomData.Username, RandomData.Password, _request.Email)
+            : await ArrangeDbContext.ArrangeUnconfirmedUser(RandomData.Username, RandomData.Password, _request.Email);
 
         // Act
-        var response = await _client.ChangeEmail(request);
+        var response = await AppClient.ChangeEmail(_request);
 
         // Assert
         response.AssertSingleBadRequestError(UserConflictFailure.EmailTakenKey, UserConflictFailure.EmailTakenMessage);
@@ -163,7 +152,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
     private async Task AssertNoChangesOccured()
     {
-        var user = await AssertDbContext.GetUser(_user.Id);
+        var user = await AssertDbContext.GetUser(User.Entity.Id);
         user.EmailChangeConfirmation.Should().BeNull();
         MockBag.AssertProduced<ChangeEmailMessage>(Times.Never());
     }

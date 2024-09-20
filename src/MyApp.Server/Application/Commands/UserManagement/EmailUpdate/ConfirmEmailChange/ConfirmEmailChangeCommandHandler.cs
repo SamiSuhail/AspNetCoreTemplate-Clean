@@ -23,6 +23,7 @@ public class ConfirmEmailChangeCommandHandler(
         var (oldEmailCode, newEmailCode) = request;
 
         var user = await dbContext.Set<UserEntity>()
+            .IgnoreQueryFilters()
             .Include(u => u.EmailChangeConfirmation)
             .FindUser(userId, cancellationToken);
 
@@ -36,6 +37,7 @@ public class ConfirmEmailChangeCommandHandler(
             throw EmailChangeInvalidCodesFailure.Exception();
 
         var emailAlreadyInUse = await dbContext.Set<UserEntity>()
+            .IgnoreQueryFilters()
             .AnyAsync(u => u.Email == user.EmailChangeConfirmation.NewEmail, cancellationToken);
 
         if (emailAlreadyInUse)

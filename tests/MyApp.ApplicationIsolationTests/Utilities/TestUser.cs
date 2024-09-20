@@ -9,6 +9,7 @@ public class TestUser
     private TestUser() { }
 
     public string AccessToken { get; private set; } = default!;
+    public string RefreshToken { get; private set; } = default!;
     public string Password { get; private set; } = default!;
     public UserEntity Entity { get; private set; } = default!;
 
@@ -18,11 +19,13 @@ public class TestUser
         var dbContext = scope.ServiceProvider.GetRequiredService<ITransientDbContext>();
         var (user, password) = await dbContext.ArrangeRandomConfirmedUserWithPassword();
 
-        var accessToken = sp.GetRequiredService<IJwtGenerator>()
-            .CreateAccessToken(user.Id, user.Username, user.Email);
+        var jwtGenerator = sp.GetRequiredService<IJwtGenerator>();
+        var accessToken = jwtGenerator.CreateAccessToken(user.Id, user.Username, user.Email);
+        var refreshToken = jwtGenerator.CreateRefreshToken(user.Id, user.Username, user.Email, user.RefreshTokenVersion);
         return new()
         {
             AccessToken = accessToken,
+            RefreshToken = refreshToken,
             Password = password,
             Entity = user,
         };

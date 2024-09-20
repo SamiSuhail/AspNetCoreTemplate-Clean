@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Server.Application.Utilities;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Shared.Confirmations;
-using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation.Failures;
 using MyApp.Server.Infrastructure.Auth;
 using MyApp.Server.Infrastructure.Database;
