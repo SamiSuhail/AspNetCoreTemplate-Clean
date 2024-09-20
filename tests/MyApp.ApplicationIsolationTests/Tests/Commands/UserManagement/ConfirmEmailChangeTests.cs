@@ -17,7 +17,7 @@ public class ConfirmEmailChangeTests(AppFactory appFactory) : BaseTest(appFactor
     {
         await base.InitializeAsync();
         _user = await ArrangeDbContext.ArrangeRandomConfirmedUser();
-        _client = AppFactory.CreateClientWithCredentials(_user.Id, _user.Username, _user.Email);
+        _client = AppFactory.ArrangeClientWithCredentials(_user.Id, _user.Username, _user.Email);
 
         _emailChangeConfirmation = EmailChangeConfirmationEntity.Create(_user.Id, RandomData.Email);
         ArrangeDbContext.Add(_emailChangeConfirmation);
@@ -66,7 +66,7 @@ public class ConfirmEmailChangeTests(AppFactory appFactory) : BaseTest(appFactor
     public async Task GivenUserNotExists_ReturnsInvalidFailure()
     {
         // Arrange
-        _client = AppFactory.CreateClientWithCredentials(userId: int.MaxValue, _user.Username, _user.Email);
+        _client = AppFactory.ArrangeClientWithCredentials(userId: int.MaxValue, _user.Username, _user.Email);
 
         // Act
         var response = await _client.ConfirmEmailChange(_request);

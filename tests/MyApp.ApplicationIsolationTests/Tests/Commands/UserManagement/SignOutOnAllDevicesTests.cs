@@ -30,7 +30,7 @@ public class SignOutOnAllDevicesTests(AppFactory appFactory) : BaseTest(appFacto
     public async Task GivenUserIdNotFound_ReturnsUserNotFoundFailure()
     {
         // Arrange
-        var client = AppFactory.CreateClientWithCredentials(userId: int.MaxValue, User.Entity.Username, User.Entity.Email);
+        var client = AppFactory.ArrangeClientWithCredentials(userId: int.MaxValue, User.Entity.Username, User.Entity.Email);
 
         // Act
         var response = await client.SignOutOnAllDevices();

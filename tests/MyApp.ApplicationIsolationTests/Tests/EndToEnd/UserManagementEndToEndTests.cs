@@ -16,7 +16,7 @@ public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFa
     {
         (_user, _password) = await ArrangeDbContext.ArrangeRandomConfirmedUserWithPassword();
         var loginResponse = await TestLogin();
-        _client = AppFactory.CreateClientWithToken(loginResponse.AccessToken);
+        _client = AppFactory.ArrangeClientWithToken(loginResponse.AccessToken);
         await TestSignOutOnAllDevices();
         await TestRefreshTokenFailure(loginResponse.RefreshToken);
         var (oldEmailCode, newEmailCode) = await TestChangeEmail();

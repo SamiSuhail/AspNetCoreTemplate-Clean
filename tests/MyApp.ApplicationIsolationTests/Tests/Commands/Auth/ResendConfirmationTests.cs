@@ -4,6 +4,7 @@ using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Infrastructure.Messaging;
+using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
@@ -68,9 +69,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
     public async Task GivenMessageProducerThrows_ThenNoDataIsPersisted()
     {
         // Arrange
-        MockBag.Get<IMessageProducer>()
-            .Setup(m => m.Send(It.IsAny<SendUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new Exception());
+        MockBag.ArrangeMessageThrows<SendUserConfirmationMessage>();
 
         // Act
         var response = await UnauthorizedAppClient.ResendConfirmation(_request);

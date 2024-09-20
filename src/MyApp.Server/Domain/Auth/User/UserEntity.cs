@@ -2,6 +2,7 @@
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Server.Domain.Shared;
+using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
 
 namespace MyApp.Server.Domain.Auth.User;
 
@@ -18,6 +19,7 @@ public class UserEntity : ICreationAudited
     public PasswordResetConfirmationEntity? PasswordResetConfirmation { get; private set; }
     public UserConfirmationEntity? UserConfirmation { get; private set; }
     public EmailChangeConfirmationEntity? EmailChangeConfirmation { get; private set; }
+    public PasswordChangeConfirmationEntity? PasswordChangeConfirmation { get; private set; }
 
     public static UserEntity Create(string username, string password, string email)
         => new()

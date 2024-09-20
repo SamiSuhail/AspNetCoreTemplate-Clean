@@ -2,6 +2,7 @@
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using static MyApp.Server.Infrastructure.Database.Constants;
 using MyApp.Server.Domain.Shared.Confirmations;
+using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
 
 namespace MyApp.Server.Infrastructure.Database.EntityConfigurations.Shared;
 
@@ -15,6 +16,7 @@ public static class ConfirmationConfigurations
     {
         { typeof(UserConfirmationEntity),  new(Schemas.Auth, Tables.UserConfirmations)},
         { typeof(PasswordResetConfirmationEntity),  new(Schemas.Auth, Tables.PasswordResetConfirmations)},
+        { typeof(PasswordChangeConfirmationEntity),  new(Schemas.UserManagement, Tables.PasswordChangeConfirmations)},
     };
 
     public static ConfirmationConfigurationValues Get<TConfirmationEntity>() where TConfirmationEntity : BaseConfirmationEntity

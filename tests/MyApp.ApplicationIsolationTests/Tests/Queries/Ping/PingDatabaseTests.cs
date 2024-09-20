@@ -19,7 +19,7 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         string accessToken = ScopedServices.ArrangeExpiredAccessToken(User);
-        var client = AppFactory.CreateClientWithToken(accessToken);
+        var client = AppFactory.ArrangeClientWithToken(accessToken);
 
         // Act
         var response = await client.PingDatabase();
@@ -34,7 +34,7 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
         var accessToken = jwtGenerator.CreateAccessToken(User.Entity.Id, User.Entity.Username, User.Entity.Email);
-        var client = AppFactory.CreateClientWithToken(accessToken);
+        var client = AppFactory.ArrangeClientWithToken(accessToken);
 
         // Act
         var response = await client.PingDatabase();

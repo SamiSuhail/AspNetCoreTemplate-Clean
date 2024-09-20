@@ -14,5 +14,6 @@ internal static class Constants
         public const string UserConfirmations = "user_confirmations";
         public const string PasswordResetConfirmations = "password_reset_confirmations";
         public const string EmailChangeConfirmations = "email_change_confirmations";
+        public const string PasswordChangeConfirmations = "password_change_confirmations";
     }
 }

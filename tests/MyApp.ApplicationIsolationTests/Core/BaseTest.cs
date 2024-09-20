@@ -14,9 +14,9 @@ public abstract class BaseTest(AppFactory appFactory) : IAsyncLifetime, IClassFi
         AssertDbContext = CreateDbContext();
         User = await TestUser.CreateTestUser(ScopedServices);
         UnauthorizedAppClient = RestService.For<IApplicationClient>(appFactory.CreateClient());
-        AppClient = appFactory.CreateClientWithToken(User.AccessToken);
+        AppClient = appFactory.ArrangeClientWithToken(User.AccessToken);
         UnauthorizedGraphQLClient = appFactory.CreateGraphQLClient();
-        GraphQLClient = appFactory.CreateGraphQLClientWithToken(User.AccessToken);
+        GraphQLClient = appFactory.ArrangeGraphQLClientWithToken(User.AccessToken);
     }
 
     public AppFactory AppFactory { get; private set; } = default!;

@@ -68,9 +68,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenMessageProducerThrows_ThenNoDataIsPersisted()
     {
         // Arrange
-        MockBag.Get<IMessageProducer>()
-            .Setup(m => m.Send(It.IsAny<SendUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new Exception());
+        MockBag.ArrangeMessageThrows<SendUserConfirmationMessage>();
 
         // Act
         var response = await UnauthorizedAppClient.Register(_request);

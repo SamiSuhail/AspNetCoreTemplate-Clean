@@ -26,7 +26,7 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         var passwordResetConfirmationCode = await TestForgotPassword();
         await TestResetPassword(passwordResetConfirmationCode);
         var loginResponse = await TestLogin();
-        _graphqlClient = AppFactory.CreateGraphQLClientWithToken(loginResponse.AccessToken);
+        _graphqlClient = AppFactory.ArrangeGraphQLClientWithToken(loginResponse.AccessToken);
         await TestMe();
         await TestRefreshToken(loginResponse.RefreshToken);
     }

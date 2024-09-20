@@ -20,6 +20,7 @@ public static class DbContextExtensions
             .Include(u => u.UserConfirmation)
             .Include(u => u.PasswordResetConfirmation)
             .Include(u => u.EmailChangeConfirmation)
+            .Include(u => u.PasswordChangeConfirmation)
             .FindUserOrDefault(userId, CancellationToken.None);
     }
 }

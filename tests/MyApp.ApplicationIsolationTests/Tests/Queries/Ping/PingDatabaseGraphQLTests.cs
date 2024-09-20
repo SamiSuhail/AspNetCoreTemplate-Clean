@@ -19,7 +19,7 @@ public class PingDatabaseGraphQLTests(AppFactory appFactory) : BaseTest(appFacto
     {
         // Arrange
         var accessToken = ScopedServices.ArrangeExpiredAccessToken(User);
-        var graphQlClient = AppFactory.CreateGraphQLClientWithToken(accessToken);
+        var graphQlClient = AppFactory.ArrangeGraphQLClientWithToken(accessToken);
 
         // Act
         var response = await graphQlClient.PingDatabase.ExecuteAsync();
@@ -34,7 +34,7 @@ public class PingDatabaseGraphQLTests(AppFactory appFactory) : BaseTest(appFacto
         // Arrange
         var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
         var accessToken = jwtGenerator.CreateAccessToken(User.Entity.Id, User.Entity.Username, User.Entity.Email);
-        var graphQlClient = AppFactory.CreateGraphQLClientWithToken(accessToken);
+        var graphQlClient = AppFactory.ArrangeGraphQLClientWithToken(accessToken);
 
         // Act
         var response = await graphQlClient.PingDatabase.ExecuteAsync();

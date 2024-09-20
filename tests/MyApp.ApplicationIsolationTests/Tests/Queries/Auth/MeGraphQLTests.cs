@@ -38,7 +38,7 @@ public class MeGraphQLTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         var jwtGenerator = ScopedServices.GetRequiredService<IJwtGenerator>();
         var accessToken = jwtGenerator.CreateAccessToken(userId: int.MaxValue, User.Entity.Username, User.Entity.Email);
-        var client = AppFactory.CreateGraphQLClientWithToken(accessToken);
+        var client = AppFactory.ArrangeGraphQLClientWithToken(accessToken);
 
         // Act
         var response = await client.Me.ExecuteAsync();

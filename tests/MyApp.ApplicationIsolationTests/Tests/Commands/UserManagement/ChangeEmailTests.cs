@@ -1,4 +1,5 @@
 ﻿using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
+using MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
@@ -17,7 +18,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         await base.InitializeAsync();
         _user = await ArrangeDbContext.ArrangeRandomConfirmedUser();
-        _client = AppFactory.CreateClientWithCredentials(_user.Id, _user.Username, _user.Email);
+        _client = AppFactory.ArrangeClientWithCredentials(_user.Id, _user.Username, _user.Email);
     }
 
     [Fact]
@@ -68,7 +69,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenDatabaseError_ThenNoMessageProduced()
     {
         // Arrange
-        _client = AppFactory.CreateClientWithCredentials(userId: int.MaxValue, _user.Username, _user.Email);
+        _client = AppFactory.ArrangeClientWithCredentials(userId: int.MaxValue, _user.Username, _user.Email);
 
         // Act
         var response = await _client.ChangeEmail(_request);
@@ -82,9 +83,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenMessageProducerError_ThenNoDataIsSaved()
     {
         // Arrange
-        MockBag.Get<IMessageProducer>()
-            .Setup(m => m.Send(It.IsAny<ChangeEmailMessage>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new Exception());
+        MockBag.ArrangeMessageThrows<ChangeEmailMessage>();
 
         // Act
         var response = await _client.ChangeEmail(_request);
@@ -102,9 +101,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
         var emailChangeConfirmation = EmailChangeConfirmationEntity.Create(_user.Id, RandomData.Email);
         ArrangeDbContext.Add(emailChangeConfirmation);
         await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
-        MockBag.Get<IMessageProducer>()
-            .Setup(m => m.Send(It.IsAny<ChangeEmailMessage>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new Exception());
+        MockBag.ArrangeMessageThrows<ChangeEmailMessage>();
 
         // Act
         var response = await _client.ChangeEmail(_request);
