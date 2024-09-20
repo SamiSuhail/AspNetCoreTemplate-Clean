@@ -8,6 +8,7 @@ using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
 using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
+using MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Server.Application.Queries.Ping;
 
 namespace MyApp.ApplicationIsolationTests.Clients;
@@ -53,4 +54,7 @@ public interface IApplicationClient
 
     [Post("/api/user-management/change-password")]
     public Task<IApiResponse> ChangePassword(ChangePasswordRequest request);
+
+    [Post("/api/user-management/confirm-password-change")]
+    public Task<IApiResponse> ConfirmPasswordChange(ConfirmPasswordChangeRequest request);
 }

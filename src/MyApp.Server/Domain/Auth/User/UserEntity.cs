@@ -43,6 +43,12 @@ public class UserEntity : ICreationAudited
         PasswordHash = password.Hash();
     }
 
+    public void ConfirmPasswordChange(string passwordHash)
+    {
+        PasswordHash = passwordHash;
+        SignOutOnAllDevices();
+    }
+
     public void ConfirmEmailChange()
     {
         Email = EmailChangeConfirmation!.NewEmail;

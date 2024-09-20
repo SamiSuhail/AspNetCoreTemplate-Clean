@@ -3,6 +3,7 @@ using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Shared;
+using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
@@ -25,10 +26,16 @@ public class CleanupConfirmationsTests(AppFactory appFactory) : BaseTest(appFact
     private async Task<int> CreateUserAndConfirmations()
     {
         var user = await ArrangeDbContext.ArrangeRandomUnconfirmedUser();
+
         var passwordResetConfirmation = PasswordResetConfirmationEntity.Create(user.Id);
         ArrangeDbContext.Add(passwordResetConfirmation);
-        var emailChangeConfirmationEntity = EmailChangeConfirmationEntity.Create(user.Id, RandomData.Email);
-        ArrangeDbContext.Add(emailChangeConfirmationEntity);
+
+        var emailChangeConfirmation = EmailChangeConfirmationEntity.Create(user.Id, RandomData.Email);
+        ArrangeDbContext.Add(emailChangeConfirmation);
+
+        var passwordChangeConfirmation = PasswordChangeConfirmationEntity.Create(user.Id, RandomData.Password);
+        ArrangeDbContext.Add(passwordChangeConfirmation);
+
         await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
         var userId = user.Id;
         return userId;
@@ -45,7 +52,8 @@ public class CleanupConfirmationsTests(AppFactory appFactory) : BaseTest(appFact
         var results = await Task.WhenAll(
             CheckIsDeleted<UserConfirmationEntity>(userId),
             CheckIsDeleted<PasswordResetConfirmationEntity>(userId),
-            CheckIsDeleted<EmailChangeConfirmationEntity>(userId));
+            CheckIsDeleted<EmailChangeConfirmationEntity>(userId),
+            CheckIsDeleted<PasswordChangeConfirmationEntity>(userId));
 
         results.All(r => r == true).Should().BeTrue();
 

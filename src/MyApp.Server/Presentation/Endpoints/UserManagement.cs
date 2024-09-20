@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
 using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
+using MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Server.Application.Commands.UserManagement.SignOutOnAllDevices;
 using MyApp.Server.Presentation.Endpoints.Core;
 
@@ -17,7 +18,8 @@ public class UserManagement : EndpointGroupBase
             .MapPost(SignOutOnAllDevices, "sign-out-on-all-devices")
             .MapPost(ChangeEmail, "change-email")
             .MapPost(ConfirmEmailChange, "confirm-email-change")
-            .MapPost(ChangePassword, "change-password");
+            .MapPost(ChangePassword, "change-password")
+            .MapPost(ConfirmPasswordChange, "confirm-password-change");
     }
 
     [ProducesResponseType(204)]
@@ -54,6 +56,16 @@ public class UserManagement : EndpointGroupBase
     public async Task ChangePassword(
         [FromServices] ISender sender,
         [FromBody] ChangePasswordRequest request,
+        CancellationToken cancellationToken)
+    {
+        await sender.Send(request, cancellationToken);
+    }
+
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    public async Task ConfirmPasswordChange(
+        [FromServices] ISender sender,
+        [FromBody] ConfirmPasswordChangeRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);
