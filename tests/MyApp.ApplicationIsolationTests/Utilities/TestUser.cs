@@ -1,28 +1,33 @@
-﻿using MyApp.Server.Infrastructure.Auth;
+﻿using MyApp.Server.Domain.Auth.User;
+using MyApp.Server.Infrastructure.Auth;
 using MyApp.Server.Infrastructure.Database;
 
 namespace MyApp.ApplicationIsolationTests.Utilities;
 
-public static class TestUser
+public class TestUser
 {
-    public static string AccessToken { get; private set; } = default!;
-    public static int Id { get; private set; } = default!;
-    public const string Username = "Username";
-    public const string Password = "Password1!";
-    public const string Email = "user@email.com";
-    public static DateTime CreatedAt { get; private set; } = default!;
+    private TestUser() { }
 
-    public static async Task InitializeTestUser(this IServiceProvider sp)
+    public string AccessToken { get; private set; } = default!;
+    public string RefreshToken { get; private set; } = default!;
+    public string Password { get; private set; } = default!;
+    public UserEntity Entity { get; private set; } = default!;
+
+    public static async Task<TestUser> CreateTestUser(IServiceProvider sp)
     {
-        if (Id > 0)
-            return;
         using var scope = sp.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ITransientDbContext>();
-        var user = await dbContext.ArrangeConfirmedUser(Username, Password, Email);
-        Id = user.Id;
-        CreatedAt = user.CreatedAt;
+        var (user, password) = await dbContext.ArrangeRandomConfirmedUserWithPassword();
 
         var jwtGenerator = sp.GetRequiredService<IJwtGenerator>();
-        AccessToken = jwtGenerator.CreateAccessToken(Id, Username, Email);
+        var accessToken = jwtGenerator.CreateAccessToken(user.Id, user.Username, user.Email);
+        var refreshToken = jwtGenerator.CreateRefreshToken(user.Id, user.Username, user.Email, user.RefreshTokenVersion);
+        return new()
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            Password = password,
+            Entity = user,
+        };
     }
 }

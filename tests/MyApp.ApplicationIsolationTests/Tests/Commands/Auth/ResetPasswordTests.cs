@@ -2,7 +2,6 @@
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Shared.Confirmations;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
@@ -98,8 +97,8 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         string password;
         if (userIsConfirmed)
         {
-            password = TestUser.Password;
-            _userId = TestUser.Id;
+            password = User.Password;
+            _userId = User.Entity.Id;
         }
         else
         {

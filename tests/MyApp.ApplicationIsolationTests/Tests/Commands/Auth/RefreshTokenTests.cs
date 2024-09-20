@@ -16,7 +16,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         ArrangeClient(userIsAuthenticated);
-        ArrangeRequest(User.Id, User.RefreshTokenVersion);
+        ArrangeRequest(User.Entity.Id, User.Entity.RefreshTokenVersion);
         await Task.Delay(TimeSpan.FromSeconds(1)); // waiting to guarantee the response will have different expiration
 
         // Act
@@ -35,19 +35,19 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
         user.Should().NotBeNull();
         using (new AssertionScope())
         {
-            user.Id.Should().Be(User.Id);
-            user.Username.Should().Be(User.Username);
-            user.Email.Should().Be(User.Email);
+            user.Id.Should().Be(User.Entity.Id);
+            user.Username.Should().Be(User.Entity.Username);
+            user.Email.Should().Be(User.Entity.Email);
         }
         var refreshToken = jwtReader.ReadRefreshToken(response.Content.RefreshToken);
         refreshToken.Should().NotBeNull();
         using (new AssertionScope())
         {
             response.Content.RefreshToken.Should().NotBe(_request.RefreshToken);
-            refreshToken!.UserId.Should().Be(User.Id);
-            refreshToken.Username.Should().Be(User.Username);
-            refreshToken.Email.Should().Be(User.Email);
-            refreshToken.Version.Should().Be(User.RefreshTokenVersion);
+            refreshToken!.UserId.Should().Be(User.Entity.Id);
+            refreshToken.Username.Should().Be(User.Entity.Username);
+            refreshToken.Email.Should().Be(User.Entity.Email);
+            refreshToken.Version.Should().Be(User.Entity.RefreshTokenVersion);
         }
     }
 
@@ -58,7 +58,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         ArrangeClient(userIsAuthenticated);
-        ArrangeRequest(userId: int.MaxValue, User.RefreshTokenVersion);
+        ArrangeRequest(userId: int.MaxValue, User.Entity.RefreshTokenVersion);
 
         // Act
         var response = await _client.RefreshToken(_request);
@@ -74,7 +74,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         ArrangeClient(userIsAuthenticated);
-        ArrangeRequest(User.Id, refreshTokenVersion: -1);
+        ArrangeRequest(User.Entity.Id, refreshTokenVersion: -1);
 
         // Act
         var response = await _client.RefreshToken(_request);
@@ -90,7 +90,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         ArrangeClient(userIsAuthenticated);
-        var expiredToken = ScopedServices.ArrangeExpiredRefreshToken(User.RefreshTokenVersion);
+        var expiredToken = ScopedServices.ArrangeExpiredRefreshToken(User);
         _request = new(expiredToken);
 
         // Act
@@ -108,7 +108,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         ArrangeClient(userIsAuthenticated);
         var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
-        var token = jwtGenerator.CreateRefreshToken(User.Id, User.Username, User.Email, User.RefreshTokenVersion);
+        var token = jwtGenerator.CreateRefreshToken(User.Entity.Id, User.Entity.Username, User.Entity.Email, User.Entity.RefreshTokenVersion);
         _request = new(token);
 
         // Act
@@ -133,7 +133,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
     private void ArrangeRequest(int userId, int refreshTokenVersion)
     {
         var requestRefreshToken = ScopedServices.GetRequiredService<IJwtGenerator>()
-            .CreateRefreshToken(userId, User.Username, User.Email, refreshTokenVersion);
+            .CreateRefreshToken(userId, User.Entity.Username, User.Entity.Email, refreshTokenVersion);
         _request = new(requestRefreshToken);
     }
 }

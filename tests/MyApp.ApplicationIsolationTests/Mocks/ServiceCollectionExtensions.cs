@@ -4,12 +4,13 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection ReplaceWithMock<TService>(
         this IServiceCollection services,
+        MockBag mockBag,
         MockBehavior mockBehavior = MockBehavior.Strict) 
         where TService : class
     {
         var mock = new Mock<TService>(mockBehavior);
-        MockBag.Add(mock);
         services.ReplaceService(mock.Object);
+        mockBag.Add(mock);
         return services;
     }
 

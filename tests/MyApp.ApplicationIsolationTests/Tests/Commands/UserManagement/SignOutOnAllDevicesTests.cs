@@ -12,8 +12,8 @@ public class SignOutOnAllDevicesTests(AppFactory appFactory) : BaseTest(appFacto
 
         // Assert
         response.AssertSuccess();
-        var user = await AssertDbContext.GetUser(User.Id);
-        user.RefreshTokenVersion.Should().Be(User.RefreshTokenVersion + 1);
+        var user = await AssertDbContext.GetUser(User.Entity.Id);
+        user.RefreshTokenVersion.Should().Be(User.Entity.RefreshTokenVersion + 1);
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class SignOutOnAllDevicesTests(AppFactory appFactory) : BaseTest(appFacto
     public async Task GivenUserIdNotFound_ReturnsUserNotFoundFailure()
     {
         // Arrange
-        var client = AppFactory.CreateClientWithCredentials(userId: int.MaxValue, User.Username, User.Email);
+        var client = AppFactory.ArrangeClientWithCredentials(userId: int.MaxValue, User.Entity.Username, User.Entity.Email);
 
         // Act
         var response = await client.SignOutOnAllDevices();

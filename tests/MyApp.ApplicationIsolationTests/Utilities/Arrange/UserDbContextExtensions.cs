@@ -5,6 +5,7 @@ using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Shared.Confirmations;
 using MyApp.Server.Domain.Shared;
 using MyApp.Server.Infrastructure.Database;
+using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
 
 namespace MyApp.ApplicationIsolationTests.Utilities.Arrange;
 
@@ -57,6 +58,7 @@ public static class UserDbContextExtensions
         await ExpireConfirmations<UserConfirmationEntity>(userId, expiredDatetime);
         await ExpireConfirmations<PasswordResetConfirmationEntity>(userId, expiredDatetime);
         await ExpireConfirmations<EmailChangeConfirmationEntity>(userId, expiredDatetime);
+        await ExpireConfirmations<PasswordChangeConfirmationEntity>(userId, expiredDatetime);
 
         async Task ExpireConfirmations<TConfirmationEntity>(int userId, DateTime expiredDatetime) where TConfirmationEntity : class, IOwnedByUser, ICreationAudited
         {

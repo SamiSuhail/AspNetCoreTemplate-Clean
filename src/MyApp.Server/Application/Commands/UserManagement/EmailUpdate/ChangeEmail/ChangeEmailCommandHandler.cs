@@ -27,6 +27,7 @@ public class ChangeEmailCommandHandler(
             throw EmailIsIdenticalFailure.Exception();
 
         var emailAlreadyInUse = await dbContext.Set<UserEntity>()
+            .IgnoreQueryFilters()
             .AnyAsync(u => u.Email == newEmail, cancellationToken);
 
         if (emailAlreadyInUse)

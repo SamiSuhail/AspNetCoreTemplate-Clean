@@ -18,8 +18,8 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenTokenHasExpired_ReturnsError()
     {
         // Arrange
-        string accessToken = ScopedServices.ArrangeExpiredAccessToken();
-        var client = AppFactory.CreateClientWithToken(accessToken);
+        string accessToken = ScopedServices.ArrangeExpiredAccessToken(User);
+        var client = AppFactory.ArrangeClientWithToken(accessToken);
 
         // Act
         var response = await client.PingDatabase();
@@ -33,8 +33,8 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
-        var accessToken = jwtGenerator.CreateAccessToken(User.Id, User.Username, User.Email);
-        var client = AppFactory.CreateClientWithToken(accessToken);
+        var accessToken = jwtGenerator.CreateAccessToken(User.Entity.Id, User.Entity.Username, User.Entity.Email);
+        var client = AppFactory.ArrangeClientWithToken(accessToken);
 
         // Act
         var response = await client.PingDatabase();

@@ -49,5 +49,7 @@ public class EmailChangeConfirmationConfiguration : IEntityTypeConfiguration<Ema
         builder.Property(x => x.NewEmail)
             .HasMaxLength(UserConstants.EmailMaxLength)
             .IsRequired();
+
+        builder.HasQueryFilter(x => x.User.IsEmailConfirmed == true);
     }
 }

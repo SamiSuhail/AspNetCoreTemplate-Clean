@@ -2,7 +2,6 @@
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Infrastructure.Messaging;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
@@ -53,7 +52,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        AssertMessage.Produced<ForgotPasswordMessage>();
+        MockBag.AssertProduced<ForgotPasswordMessage>();
     }
 
     [Theory]
@@ -95,7 +94,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        AssertMessage.Produced<ForgotPasswordMessage>(Times.Never());
+        MockBag.AssertProduced<ForgotPasswordMessage>(Times.Never());
     }
 
     [Theory]
@@ -105,9 +104,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         await ArrangeUserAndRequest(userIsConfirmed);
-        MockBag.Get<IMessageProducer>()
-            .Setup(m => m.Send(It.IsAny<ForgotPasswordMessage>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new Exception());
+        MockBag.ArrangeMessageThrows<ForgotPasswordMessage>();
 
         // Act
         await UnauthorizedAppClient.ForgotPassword(_request);
@@ -174,7 +171,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     private async Task ArrangeUserAndRequest(bool userIsConfirmed)
     {
         _user = userIsConfirmed
-                    ? User
+                    ? User.Entity
                     : await ArrangeDbContext.ArrangeRandomUnconfirmedUser();
         _request = new ForgotPasswordRequest(_user.Email, _user.Username);
     }

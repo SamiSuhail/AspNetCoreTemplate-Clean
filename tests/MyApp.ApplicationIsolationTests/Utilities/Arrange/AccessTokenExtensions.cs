@@ -6,25 +6,25 @@ namespace MyApp.ApplicationIsolationTests.Utilities.Arrange;
 
 public static class AccessTokenExtensions
 {
-    public static string ArrangeExpiredAccessToken(this IServiceProvider serviceProvider)
+    public static string ArrangeExpiredAccessToken(this IServiceProvider serviceProvider, TestUser user)
     {
         var authSettings = serviceProvider.GetRequiredService<AuthSettings>();
         var clockMock = new Mock<IClock>();
         var jwtGenerator = new JwtGenerator(authSettings, clockMock.Object);
         clockMock.Setup(x => x.UtcNow)
             .Returns(DateTime.UtcNow.AddMinutes(-authSettings.Jwt.AccessTokenExpirationMinutes - 1));
-        var accessToken = jwtGenerator.CreateAccessToken(TestUser.Id, TestUser.Username, TestUser.Email);
+        var accessToken = jwtGenerator.CreateAccessToken(user.Entity.Id, user.Entity.Username, user.Entity.Email);
         return accessToken;
     }
 
-    public static string ArrangeExpiredRefreshToken(this IServiceProvider serviceProvider, int refreshTokenVersion)
+    public static string ArrangeExpiredRefreshToken(this IServiceProvider serviceProvider, TestUser user)
     {
         var authSettings = serviceProvider.GetRequiredService<AuthSettings>();
         var clockMock = new Mock<IClock>();
         var jwtGenerator = new JwtGenerator(authSettings, clockMock.Object);
         clockMock.Setup(x => x.UtcNow)
             .Returns(DateTime.UtcNow.AddDays(-authSettings.Jwt.RefreshTokenExpirationDays - 1));
-        var accessToken = jwtGenerator.CreateRefreshToken(TestUser.Id, TestUser.Username, TestUser.Email, refreshTokenVersion);
+        var accessToken = jwtGenerator.CreateRefreshToken(user.Entity.Id, user.Entity.Username, user.Entity.Email, user.Entity.RefreshTokenVersion);
         return accessToken;
     }
 

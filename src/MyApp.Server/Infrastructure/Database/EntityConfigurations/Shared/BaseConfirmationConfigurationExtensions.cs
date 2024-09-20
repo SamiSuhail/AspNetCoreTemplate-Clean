@@ -40,5 +40,7 @@ public static class BaseConfirmationConfigurationExtensions
         builder.HasIndex(x => x.Code)
             .IsUnique()
             .HasDatabaseName($"uq_{tableName}_code");
+
+        builder.HasQueryFilter(x => x.User.IsEmailConfirmed == true);
     }
 }

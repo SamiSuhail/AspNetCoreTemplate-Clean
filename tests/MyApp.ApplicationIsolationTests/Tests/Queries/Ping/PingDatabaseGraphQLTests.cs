@@ -18,8 +18,8 @@ public class PingDatabaseGraphQLTests(AppFactory appFactory) : BaseTest(appFacto
     public async Task GivenTokenHasExpired_ReturnsError()
     {
         // Arrange
-        var accessToken = ScopedServices.ArrangeExpiredAccessToken();
-        var graphQlClient = AppFactory.CreateGraphQLClientWithToken(accessToken);
+        var accessToken = ScopedServices.ArrangeExpiredAccessToken(User);
+        var graphQlClient = AppFactory.ArrangeGraphQLClientWithToken(accessToken);
 
         // Act
         var response = await graphQlClient.PingDatabase.ExecuteAsync();
@@ -33,8 +33,8 @@ public class PingDatabaseGraphQLTests(AppFactory appFactory) : BaseTest(appFacto
     {
         // Arrange
         var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
-        var accessToken = jwtGenerator.CreateAccessToken(User.Id, User.Username, User.Email);
-        var graphQlClient = AppFactory.CreateGraphQLClientWithToken(accessToken);
+        var accessToken = jwtGenerator.CreateAccessToken(User.Entity.Id, User.Entity.Username, User.Entity.Email);
+        var graphQlClient = AppFactory.ArrangeGraphQLClientWithToken(accessToken);
 
         // Act
         var response = await graphQlClient.PingDatabase.ExecuteAsync();

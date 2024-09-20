@@ -13,4 +13,3 @@ global using MyApp.ApplicationIsolationTests.Utilities.Arrange;
 global using MyApp.ApplicationIsolationTests.Utilities.Assert;
 global using Refit;
 global using StrawberryShake;
-global using static MyApp.ApplicationIsolationTests.Clients.ClientProvider;

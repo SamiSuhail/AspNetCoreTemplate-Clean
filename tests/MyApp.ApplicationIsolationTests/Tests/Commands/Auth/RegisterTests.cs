@@ -2,7 +2,6 @@
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Infrastructure.Messaging;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
@@ -43,7 +42,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        AssertMessage.Produced<SendUserConfirmationMessage>();
+        MockBag.AssertProduced<SendUserConfirmationMessage>();
     }
 
     [Fact]
@@ -52,7 +51,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         var request = _request with
         {
-            Email = TestUser.Email
+            Email = User.Entity.Email
         };
 
         // Act
@@ -60,7 +59,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        AssertMessage.Produced<SendUserConfirmationMessage>(Times.Never());
+        MockBag.AssertProduced<SendUserConfirmationMessage>(Times.Never());
         await AssertUserNotExists(request.Username, request.Email);
     }
 
@@ -68,9 +67,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenMessageProducerThrows_ThenNoDataIsPersisted()
     {
         // Arrange
-        MockBag.Get<IMessageProducer>()
-            .Setup(m => m.Send(It.IsAny<SendUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new Exception());
+        MockBag.ArrangeMessageThrows<SendUserConfirmationMessage>();
 
         // Act
         var response = await UnauthorizedAppClient.Register(_request);
@@ -91,38 +88,40 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
         await AssertUserNotExists(_request.Username, _request.Email);
     }
 
-    [Fact]
-    public async Task GivenUsernameTaken_ReturnsUsernameConflictFailure()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task GivenUsernameTaken_ReturnsUsernameConflictFailure(bool existingUserIsConfirmed)
     {
         // Arrange
-        var request = _request with
-        {
-            Username = TestUser.Username,
-        };
+        var _ = existingUserIsConfirmed
+            ? await ArrangeDbContext.ArrangeConfirmedUser(_request.Username, RandomData.Password, RandomData.Email)
+            : await ArrangeDbContext.ArrangeUnconfirmedUser(_request.Username, RandomData.Password, RandomData.Email);
 
         // Act
-        var response = await UnauthorizedAppClient.Register(request);
+        var response = await UnauthorizedAppClient.Register(_request);
 
         // Assert
         response.AssertSingleBadRequestError(UserConflictFailure.UsernameTakenKey, UserConflictFailure.UsernameTakenMessage);
-        await AssertUserNotExists(request.Username, request.Email);
+        await AssertUserNotExists(_request.Username, _request.Email);
     }
 
-    [Fact]
-    public async Task GivenEmailTaken_ReturnsEmailConflictFailure()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task GivenEmailTaken_ReturnsEmailConflictFailure(bool existingUserIsConfirmed)
     {
         // Arrange
-        var request = _request with
-        {
-            Email = TestUser.Email,
-        };
+        var _ = existingUserIsConfirmed
+            ? await ArrangeDbContext.ArrangeConfirmedUser(RandomData.Username, RandomData.Password, _request.Email)
+            : await ArrangeDbContext.ArrangeUnconfirmedUser(RandomData.Username, RandomData.Password, _request.Email);
 
         // Act
-        var response = await UnauthorizedAppClient.Register(request);
+        var response = await UnauthorizedAppClient.Register(_request);
 
         // Assert
         response.AssertSingleBadRequestError(UserConflictFailure.EmailTakenKey, UserConflictFailure.EmailTakenMessage);
-        await AssertUserNotExists(request.Username, request.Email);
+        await AssertUserNotExists(_request.Username, _request.Email);
     }
 
     private async Task AssertUserNotExists(string username, string email)
