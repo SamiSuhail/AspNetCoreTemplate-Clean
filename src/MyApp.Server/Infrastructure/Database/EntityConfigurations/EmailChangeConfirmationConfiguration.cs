@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
-using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Shared.Confirmations;
+using MyApp.Domain.Auth.EmailChangeConfirmation;
+using MyApp.Domain.Auth.User;
+using MyApp.Domain.Shared.Confirmations;
 using static MyApp.Server.Infrastructure.Database.Constants;
 
 namespace MyApp.Server.Infrastructure.Database.EntityConfigurations;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
+using MyApp.Domain.Auth.User;
+using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Server.Infrastructure.Database.EntityConfigurations.Shared;
 
 namespace MyApp.Server.Infrastructure.Database.EntityConfigurations;

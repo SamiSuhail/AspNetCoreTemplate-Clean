@@ -1,7 +1,7 @@
 ﻿using MyApp.Server.Application.Commands.Auth.Registration;
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
-using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Auth.User.Failures;
+using MyApp.Domain.Auth.User;
+using MyApp.Domain.Auth.User.Failures;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 

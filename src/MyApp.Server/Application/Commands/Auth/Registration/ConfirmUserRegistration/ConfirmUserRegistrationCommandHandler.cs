@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Server.Domain.Auth.UserConfirmation;
-using MyApp.Server.Domain.Auth.UserConfirmation.Failures;
-using MyApp.Server.Domain.Shared.Confirmations;
+using MyApp.Domain.Auth.UserConfirmation;
+using MyApp.Domain.Auth.UserConfirmation.Failures;
+using MyApp.Domain.Shared.Confirmations;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Server.Application.Commands.Auth.Registration.ConfirmUserRegistration;

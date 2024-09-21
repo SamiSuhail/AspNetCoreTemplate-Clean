@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Domain.Auth.User.Failures;
+﻿using MyApp.Domain.Auth.User.Failures;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.UserManagement;
 

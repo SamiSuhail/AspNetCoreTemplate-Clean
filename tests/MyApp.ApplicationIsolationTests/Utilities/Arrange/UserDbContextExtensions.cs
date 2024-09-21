@@ -1,10 +1,10 @@
-﻿using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
-using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
-using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Auth.UserConfirmation;
-using MyApp.Server.Domain.Shared.Confirmations;
-using MyApp.Server.Domain.Shared;
-using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
+﻿using MyApp.Domain.Auth.EmailChangeConfirmation;
+using MyApp.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Domain.Auth.User;
+using MyApp.Domain.Auth.UserConfirmation;
+using MyApp.Domain.Shared.Confirmations;
+using MyApp.Domain.Shared;
+using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 
 namespace MyApp.ApplicationIsolationTests.Utilities.Arrange;

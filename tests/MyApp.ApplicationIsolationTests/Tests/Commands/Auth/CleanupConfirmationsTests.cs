@@ -1,8 +1,8 @@
 ﻿using MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
-using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
-using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
-using MyApp.Server.Domain.Auth.UserConfirmation;
-using MyApp.Server.Domain.Shared;
+using MyApp.Domain.Auth.EmailChangeConfirmation;
+using MyApp.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Domain.Auth.UserConfirmation;
+using MyApp.Domain.Shared;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 

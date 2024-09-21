@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Server.Domain.Auth.UserConfirmation;
-using MyApp.Server.Domain.Auth.UserConfirmation.Failures;
+using MyApp.Domain.Auth.UserConfirmation;
+using MyApp.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 

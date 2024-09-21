@@ -1,7 +1,7 @@
-﻿using MyApp.Server.Domain.Auth.User;
+﻿using MyApp.Domain.Auth.User;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Server.Domain.Auth.User.Failures;
+using MyApp.Domain.Auth.User.Failures;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 

@@ -1,7 +1,7 @@
 ﻿using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
-using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
-using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
-using MyApp.Server.Domain.Auth.User;
+using MyApp.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
+using MyApp.Domain.Auth.User;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 

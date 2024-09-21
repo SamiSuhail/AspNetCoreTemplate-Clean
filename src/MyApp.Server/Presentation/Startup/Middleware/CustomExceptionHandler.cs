@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Domain;
+﻿using MyApp.Domain;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Domain.Auth.UserConfirmation;
+﻿using MyApp.Domain.Auth.UserConfirmation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyApp.Server.Infrastructure.Database.EntityConfigurations.Shared;

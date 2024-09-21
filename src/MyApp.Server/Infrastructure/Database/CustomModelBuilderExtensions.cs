@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Server.Domain.Shared;
+using MyApp.Domain.Shared;
 
 namespace MyApp.Server.Infrastructure.Database;
 

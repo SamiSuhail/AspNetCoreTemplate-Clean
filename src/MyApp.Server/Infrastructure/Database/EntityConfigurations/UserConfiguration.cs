@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Domain.Auth.User;
+﻿using MyApp.Domain.Auth.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static MyApp.Server.Infrastructure.Database.Constants;

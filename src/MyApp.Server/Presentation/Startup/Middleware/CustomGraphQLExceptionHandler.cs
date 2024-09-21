@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Domain;
+﻿using MyApp.Domain;
 
 namespace MyApp.Server.Presentation.Startup.Middleware;
 

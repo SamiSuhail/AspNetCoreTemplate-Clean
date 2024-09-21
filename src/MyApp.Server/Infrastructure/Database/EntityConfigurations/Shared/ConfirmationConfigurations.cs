@@ -1,8 +1,8 @@
-﻿using MyApp.Server.Domain.Auth.UserConfirmation;
-using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
+﻿using MyApp.Domain.Auth.UserConfirmation;
+using MyApp.Domain.Auth.PasswordResetConfirmation;
 using static MyApp.Server.Infrastructure.Database.Constants;
-using MyApp.Server.Domain.Shared.Confirmations;
-using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
+using MyApp.Domain.Shared.Confirmations;
+using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 
 namespace MyApp.Server.Infrastructure.Database.EntityConfigurations.Shared;
 

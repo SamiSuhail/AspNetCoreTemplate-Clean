@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
-using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
-using MyApp.Server.Domain.Auth.User;
+using MyApp.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
+using MyApp.Domain.Auth.User;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 

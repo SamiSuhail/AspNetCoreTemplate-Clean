@@ -1,9 +1,9 @@
-﻿using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Auth.User.Failures;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Domain.Auth.User;
+using MyApp.Domain.Auth.User.Failures;
 
 namespace MyApp.Server.Application.Commands.Auth.Login;
 
@@ -35,7 +35,7 @@ public class LoginCommandHandler(IScopedDbContext dbContext, IJwtGenerator jwtGe
         if (!user.IsEmailConfirmed)
             throw UserRegistrationNotConfirmedFailure.Exception();
 
-        var correctPassword = BC.EnhancedVerify(request.Password, user.PasswordHash);
+        var correctPassword = request.Password.Verify(user.PasswordHash);
         if (!correctPassword)
             throw LoginInvalidFailure.Exception();
 

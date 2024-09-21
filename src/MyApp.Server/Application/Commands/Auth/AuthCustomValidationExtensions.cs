@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MyApp.Server.Application.Utilities;
-using static MyApp.Server.Domain.Auth.User.UserConstants;
+using static MyApp.Domain.Auth.User.UserConstants;
 
 namespace MyApp.Server.Application.Commands.Auth;
 

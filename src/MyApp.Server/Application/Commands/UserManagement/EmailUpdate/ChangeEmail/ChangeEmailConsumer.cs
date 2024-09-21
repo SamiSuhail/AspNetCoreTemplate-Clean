@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using MyApp.Server.Domain.Shared.Confirmations;
+using MyApp.Domain.Shared.Confirmations;
 using MyApp.Application.Infrastructure.Abstractions;
 
 namespace MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;

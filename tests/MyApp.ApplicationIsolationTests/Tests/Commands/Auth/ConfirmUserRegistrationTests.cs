@@ -1,6 +1,6 @@
 ﻿using MyApp.Server.Application.Commands.Auth.Registration.ConfirmUserRegistration;
-using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Auth.UserConfirmation.Failures;
+using MyApp.Domain.Auth.User;
+using MyApp.Domain.Auth.UserConfirmation.Failures;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 

@@ -1,7 +1,7 @@
 ﻿using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
-using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
-using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Domain.UserManagement.EmailChangeConfirmation.Failures;
+using MyApp.Domain.Auth.EmailChangeConfirmation;
+using MyApp.Domain.Auth.User.Failures;
+using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.UserManagement;
 

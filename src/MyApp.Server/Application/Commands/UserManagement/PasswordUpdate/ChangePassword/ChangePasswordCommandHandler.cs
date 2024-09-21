@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
-using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation.Failures;
+using MyApp.Domain.Auth.User;
+using MyApp.Domain.Auth.User.Failures;
+using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
+using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;

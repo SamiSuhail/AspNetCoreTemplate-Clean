@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
-using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Domain.UserManagement.EmailChangeConfirmation.Failures;
+using MyApp.Domain.Auth.EmailChangeConfirmation;
+using MyApp.Domain.Auth.User;
+using MyApp.Domain.Auth.User.Failures;
+using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;

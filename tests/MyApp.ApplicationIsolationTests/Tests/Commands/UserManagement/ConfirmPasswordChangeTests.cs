@@ -1,7 +1,7 @@
 ﻿using MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
-using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation.Failures;
-using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
+using MyApp.Domain.Auth.User.Failures;
+using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
+using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.UserManagement;
 

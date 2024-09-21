@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Infrastructure.Database.EntityConfigurations.Shared;
 
 namespace MyApp.Server.Infrastructure.Database.EntityConfigurations;

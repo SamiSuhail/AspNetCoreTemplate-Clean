@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MyApp.Server.Domain;
+using MyApp.Domain;
 using MediatR;
 
 namespace MyApp.Server.Application.Startup.Behaviours;

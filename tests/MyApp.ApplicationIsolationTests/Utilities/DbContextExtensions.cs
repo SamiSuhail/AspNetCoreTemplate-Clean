@@ -1,5 +1,5 @@
 ﻿using MyApp.Server.Application.Utilities;
-using MyApp.Server.Domain.Auth.User;
+using MyApp.Domain.Auth.User;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 
 namespace MyApp.ApplicationIsolationTests.Utilities;

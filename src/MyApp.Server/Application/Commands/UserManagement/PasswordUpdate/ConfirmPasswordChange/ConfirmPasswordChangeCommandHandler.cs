@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Server.Application.Utilities;
-using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Shared.Confirmations;
-using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation.Failures;
+using MyApp.Domain.Auth.User;
+using MyApp.Domain.Shared.Confirmations;
+using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 

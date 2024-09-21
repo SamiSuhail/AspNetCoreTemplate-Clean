@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Domain.Shared.Confirmations;
+using MyApp.Domain.Auth.User;
+using MyApp.Domain.Shared.Confirmations;
 
 namespace MyApp.Server.Infrastructure.Database.EntityConfigurations.Shared;
 
