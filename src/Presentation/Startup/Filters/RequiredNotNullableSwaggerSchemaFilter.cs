@@ -2,7 +2,7 @@
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
-namespace MyApp.Server.Presentation.Startup.Filters;
+namespace MyApp.Presentation.Startup.Filters;
 
 public class RequiredNotNullableSwaggerSchemaFilter : ISchemaFilter
 {

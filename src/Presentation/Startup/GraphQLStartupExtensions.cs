@@ -1,7 +1,7 @@
-﻿using MyApp.Server.Presentation.GraphQL;
-using MyApp.Server.Presentation.Startup.Middleware;
+﻿using MyApp.Presentation.GraphQL;
+using MyApp.Presentation.Startup.Middleware;
 
-namespace MyApp.Server.Presentation.Startup;
+namespace MyApp.Presentation.Startup;
 
 public static class GraphQLStartupExtensions
 {

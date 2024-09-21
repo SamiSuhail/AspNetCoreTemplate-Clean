@@ -2,7 +2,7 @@
 using MediatR;
 using MyApp.Application.Queries.Auth;
 
-namespace MyApp.Server.Presentation.GraphQL;
+namespace MyApp.Presentation.GraphQL;
 
 [Authorize]
 [ExtendObjectType<MeQuery>]

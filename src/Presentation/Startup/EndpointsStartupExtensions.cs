@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using MyApp.Server.Presentation.Endpoints.Core;
+using MyApp.Presentation.Endpoints.Core;
 
-namespace MyApp.Server.Presentation.Startup;
+namespace MyApp.Presentation.Startup;
 
 public static class EndpointsStartupExtensions
 {

@@ -1,4 +1,4 @@
-﻿namespace MyApp.Server.Presentation.Startup.Filters;
+﻿namespace MyApp.Presentation.Startup.Filters;
 
 public static class AnonymousOnlyConstants
 {

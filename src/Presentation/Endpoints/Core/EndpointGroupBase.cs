@@ -1,4 +1,4 @@
-﻿namespace MyApp.Server.Presentation.Endpoints.Core;
+﻿namespace MyApp.Presentation.Endpoints.Core;
 
 public abstract class EndpointGroupBase
 {

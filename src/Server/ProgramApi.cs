@@ -1,8 +1,8 @@
 using MyApp.Application;
 using MyApp.Infrastructure;
 using MyApp.Infrastructure.Startup;
-using MyApp.Server.Presentation;
-using MyApp.Server.Presentation.Startup;
+using MyApp.Presentation;
+using MyApp.Presentation.Startup;
 using static MyApp.Infrastructure.Startup.LoggingStartupExtensions;
 
 CreateCustomSerilogBootstrapLogger();

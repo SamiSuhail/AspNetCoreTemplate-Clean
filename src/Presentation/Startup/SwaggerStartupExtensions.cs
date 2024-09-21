@@ -1,8 +1,8 @@
 ﻿using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
-using MyApp.Server.Presentation.Startup.Filters;
+using MyApp.Presentation.Startup.Filters;
 
-namespace MyApp.Server.Presentation.Startup;
+namespace MyApp.Presentation.Startup;
 
 public static class SwaggerStartupExtensions
 {

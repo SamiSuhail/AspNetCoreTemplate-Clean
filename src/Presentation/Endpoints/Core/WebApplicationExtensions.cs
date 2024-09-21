@@ -1,6 +1,6 @@
 ﻿using MyApp.Application.Utilities;
 
-namespace MyApp.Server.Presentation.Endpoints.Core;
+namespace MyApp.Presentation.Endpoints.Core;
 
 public static class WebApplicationExtensions
 {

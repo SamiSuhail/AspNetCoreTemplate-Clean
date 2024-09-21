@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
-using MyApp.Server.Presentation.Endpoints.Core;
 
-namespace MyApp.Server.Presentation.Endpoints.Core;
+namespace MyApp.Presentation.Endpoints.Core;
 
 public static class IEndpointRouteBuilderExtensions
 {

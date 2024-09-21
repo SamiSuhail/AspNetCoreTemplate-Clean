@@ -1,4 +1,4 @@
-﻿namespace MyApp.Server.Presentation.GraphQL;
+﻿namespace MyApp.Presentation.GraphQL;
 
 public class Query
 {

@@ -7,10 +7,10 @@ using MyApp.Application.Commands.Auth.RefreshToken;
 using MyApp.Application.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Application.Commands.Auth.Registration.Register;
 using MyApp.Application.Commands.Auth.Registration.ResendConfirmation;
-using MyApp.Server.Presentation.Endpoints.Core;
-using MyApp.Server.Presentation.Startup.Filters;
+using MyApp.Presentation.Endpoints.Core;
+using MyApp.Presentation.Startup.Filters;
 
-namespace MyApp.Server.Presentation.Endpoints;
+namespace MyApp.Presentation.Endpoints;
 
 public class Auth : EndpointGroupBase
 {

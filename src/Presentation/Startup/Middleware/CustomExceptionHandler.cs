@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MyApp.Server.Presentation.Startup.Middleware;
+namespace MyApp.Presentation.Startup.Middleware;
 
 public static class UnhandledExceptionConstants
 {

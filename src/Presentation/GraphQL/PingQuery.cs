@@ -2,7 +2,7 @@
 using MediatR;
 using MyApp.Application.Queries.Ping;
 
-namespace MyApp.Server.Presentation.GraphQL;
+namespace MyApp.Presentation.GraphQL;
 
 public class PingQuery
 {

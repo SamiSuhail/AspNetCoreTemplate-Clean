@@ -1,7 +1,7 @@
-﻿using MyApp.Server.Presentation.Startup;
-using MyApp.Server.Presentation.Startup.Middleware;
+﻿using MyApp.Presentation.Startup;
+using MyApp.Presentation.Startup.Middleware;
 
-namespace MyApp.Server.Presentation;
+namespace MyApp.Presentation;
 
 public static class ServiceCollectionExtensions
 {

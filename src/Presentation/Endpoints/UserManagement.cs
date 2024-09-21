@@ -5,9 +5,9 @@ using MyApp.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Application.Commands.UserManagement.SignOutOnAllDevices;
-using MyApp.Server.Presentation.Endpoints.Core;
+using MyApp.Presentation.Endpoints.Core;
 
-namespace MyApp.Server.Presentation.Endpoints;
+namespace MyApp.Presentation.Endpoints;
 
 public class UserManagement : EndpointGroupBase
 {

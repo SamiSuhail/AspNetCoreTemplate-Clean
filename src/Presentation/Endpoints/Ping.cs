@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Queries.Ping;
-using MyApp.Server.Presentation.Endpoints.Core;
+using MyApp.Presentation.Endpoints.Core;
 
-namespace MyApp.Server.Presentation.Endpoints;
+namespace MyApp.Presentation.Endpoints;
 
 public class Ping : EndpointGroupBase
 {

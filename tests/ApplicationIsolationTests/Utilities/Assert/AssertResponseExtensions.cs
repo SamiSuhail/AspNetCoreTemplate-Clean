@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyApp.Server.Presentation.Startup.Filters;
-using MyApp.Server.Presentation.Startup.Middleware;
+using MyApp.Presentation.Startup.Filters;
+using MyApp.Presentation.Startup.Middleware;
 using Newtonsoft.Json;
 
 namespace MyApp.ApplicationIsolationTests.Utilities.Assert;

@@ -1,6 +1,6 @@
 ﻿using MyApp.Domain;
 
-namespace MyApp.Server.Presentation.Startup.Middleware;
+namespace MyApp.Presentation.Startup.Middleware;
 
 public class CustomGraphQLExceptionHandler : IErrorFilter
 {
