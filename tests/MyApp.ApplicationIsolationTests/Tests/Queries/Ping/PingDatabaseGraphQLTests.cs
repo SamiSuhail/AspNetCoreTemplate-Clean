@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Application.Queries.Ping;
+﻿using MyApp.Application.Queries.Ping;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Queries.Ping;
 
@@ -53,6 +53,6 @@ public class PingDatabaseGraphQLTests(AppFactory appFactory) : BaseTest(appFacto
         response.AssertSuccess();
         response.Data!.Ping.Should().NotBeNull();
         response.Data.Ping.Database.Should().NotBeNull();
-        response.Data.Ping.Database.Message.Should().Be(nameof(Pong));
+        response.Data.Ping.Database.Message.Should().Be(Pong.DefaultMessage);
     }
 }

@@ -1,5 +1,5 @@
-﻿using MyApp.Server.Application.BackgroundJobs.CleanupConfirmations;
-using MyApp.Server.Shared;
+﻿using MyApp.Application.BackgroundJobs.CleanupConfirmations;
+using MyApp.Application.Utilities;
 using Quartz;
 
 namespace MyApp.Server.Infrastructure.BackgroundJobs;

@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Application.Commands.Auth.RefreshToken;
+﻿using MyApp.Application.Commands.Auth.RefreshToken;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 

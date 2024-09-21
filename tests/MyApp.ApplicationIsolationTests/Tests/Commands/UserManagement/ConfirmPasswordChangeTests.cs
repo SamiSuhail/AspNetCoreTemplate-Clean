@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
+﻿using MyApp.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;

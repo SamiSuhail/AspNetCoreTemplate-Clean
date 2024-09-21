@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
+﻿using MyApp.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;

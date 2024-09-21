@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Application.Utilities;
+﻿using MyApp.Application.Utilities;
 using MyApp.Domain.Auth.User;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 

@@ -1,6 +1,6 @@
 ﻿using HotChocolate.Authorization;
 using MediatR;
-using MyApp.Server.Application.Queries.Auth;
+using MyApp.Application.Queries.Auth;
 
 namespace MyApp.Server.Presentation.GraphQL;
 

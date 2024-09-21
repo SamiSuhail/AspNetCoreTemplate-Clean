@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Application.Queries.Ping;
+﻿using MyApp.Application.Queries.Ping;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Queries.Ping;
 
@@ -52,6 +52,6 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
         // Assert
         response.AssertSuccess();
         response.Content.Should().NotBeNull();
-        response.Content!.Message.Should().Be(nameof(Pong));
+        response.Content!.Message.Should().Be(Pong.DefaultMessage);
     }
 }

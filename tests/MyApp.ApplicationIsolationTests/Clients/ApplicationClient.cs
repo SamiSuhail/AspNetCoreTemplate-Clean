@@ -1,15 +1,15 @@
-﻿using MyApp.Server.Application.Commands.Auth.Login;
-using MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Server.Application.Commands.Auth.PasswordManagement.ResetPassword;
-using MyApp.Server.Application.Commands.Auth.RefreshToken;
-using MyApp.Server.Application.Commands.Auth.Registration.ConfirmUserRegistration;
-using MyApp.Server.Application.Commands.Auth.Registration.Register;
-using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
-using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
-using MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
-using MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
-using MyApp.Server.Application.Queries.Ping;
+﻿using MyApp.Application.Commands.Auth.Login;
+using MyApp.Application.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Application.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Application.Commands.Auth.RefreshToken;
+using MyApp.Application.Commands.Auth.Registration.ConfirmUserRegistration;
+using MyApp.Application.Commands.Auth.Registration.Register;
+using MyApp.Application.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
+using MyApp.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
+using MyApp.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
+using MyApp.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
+using MyApp.Application.Queries.Ping;
 
 namespace MyApp.ApplicationIsolationTests.Clients;
 

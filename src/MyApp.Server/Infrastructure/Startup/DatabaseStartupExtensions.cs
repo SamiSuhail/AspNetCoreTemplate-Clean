@@ -27,6 +27,7 @@ public static class DatabaseStartupExtensions
             }, ServiceLifetime.Scoped)
             .AddScoped<IAppDbContextFactory, AppDbContextFactory>()
             .AddTransient(sp => sp.GetRequiredService<IAppDbContextFactory>().CreateTransientDbContext())
-            .AddScoped(sp => sp.GetRequiredService<IAppDbContextFactory>().CreateScopedDbContext());
+            .AddScoped(sp => sp.GetRequiredService<IAppDbContextFactory>().CreateScopedDbContext())
+            .AddSingleton<IDatabasePinger, DatabasePinger>();
     }
 }

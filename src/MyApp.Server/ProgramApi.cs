@@ -1,4 +1,4 @@
-using MyApp.Server.Application;
+using MyApp.Application;
 using MyApp.Server.Infrastructure;
 using MyApp.Server.Infrastructure.Startup;
 using MyApp.Server.Presentation;

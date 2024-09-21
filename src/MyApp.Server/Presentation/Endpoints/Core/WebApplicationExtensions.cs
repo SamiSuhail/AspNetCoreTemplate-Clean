@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Shared;
+﻿using MyApp.Application.Utilities;
 
 namespace MyApp.Server.Presentation.Endpoints.Core;
 

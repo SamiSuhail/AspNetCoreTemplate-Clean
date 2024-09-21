@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Application.Commands.Auth.Registration.ConfirmUserRegistration;
+﻿using MyApp.Application.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.UserConfirmation.Failures;
 
