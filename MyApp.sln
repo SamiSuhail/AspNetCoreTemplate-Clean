@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Server", "src\MyApp.S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{21378147-57C3-4DC6-8B11-AFA9A07F77D6}"
 	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
 		docker-compose-local.env = docker-compose-local.env
 		docker-compose-local.yaml = docker-compose-local.yaml
 		README.md = README.md
