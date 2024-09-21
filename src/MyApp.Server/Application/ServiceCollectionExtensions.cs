@@ -4,10 +4,9 @@ namespace MyApp.Server.Application;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        services.AddCustomBackgroundJobs(configuration)
-            .AddCustomMediatR()
+        services.AddCustomMediatR()
             .AddCustomRequestTransformers()
             .AddCustomValidators();
 

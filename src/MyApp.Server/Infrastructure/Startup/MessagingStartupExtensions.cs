@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
 using MassTransit;
+using MyApp.Server.Infrastructure.Messaging;
 
-namespace MyApp.Server.Infrastructure.Messaging;
+namespace MyApp.Server.Infrastructure.Startup;
 
 public static class MessagingStartupExtensions
 {
     public static IServiceCollection AddCustomMessaging(this IServiceCollection services, IConfiguration configuration)
     {
-        var settings = MessagingSettings.Get(configuration);
-        services.AddSingleton(settings);
+        services.AddCustomSettings<MessagingSettings>(configuration);
 
         services.AddOptions<MassTransitHostOptions>()
             .Configure(options =>

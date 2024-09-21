@@ -1,4 +1,4 @@
-﻿namespace MyApp.Server.Infrastructure;
+﻿namespace MyApp.Server.Infrastructure.Utilities;
 
 public interface IClock
 {

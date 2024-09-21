@@ -72,6 +72,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         // Assert
         response.AssertSuccess();
         var passwordResets = await AssertDbContext.Set<PasswordResetConfirmationEntity>()
+            .IgnoreQueryFilters()
             .Where(pr => pr.UserId == _user.Id)
             .ToArrayAsync();
         passwordResets.Should().HaveCount(1);
@@ -185,6 +186,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     private async Task<PasswordResetConfirmationEntity?> GetPasswordReset()
     {
         return await AssertDbContext.Set<PasswordResetConfirmationEntity>()
+            .IgnoreQueryFilters()
             .Where(pr => pr.UserId == _user.Id)
             .FirstOrDefaultAsync();
     }

@@ -1,29 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyApp.Server.Infrastructure.Database;
 
-namespace MyApp.Server.Infrastructure.Database;
+namespace MyApp.Server.Infrastructure.Startup;
 
 public static class DatabaseStartupExtensions
 {
     public static IServiceCollection AddCustomDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionStrings = ConnectionStringsSettings.Get(configuration);
-        var dbSettings = DatabaseSettings.Get(configuration);
-
-        services.AddSingleton(connectionStrings);
-        services.AddSingleton(dbSettings);
+        services.AddCustomSettings<ConnectionStringsSettings>(configuration);
+        services.AddCustomSettings<DatabaseSettings>(configuration);
 
         return services.AddDbContextFactory<AppDbContext>((sp, options) =>
             {
                 var connectionString = sp.GetRequiredService<ConnectionStringsSettings>().Database;
-                var settings = sp.GetRequiredService<DatabaseSettings>();
+                var dbSettings = sp.GetRequiredService<DatabaseSettings>();
+
                 options.UseNpgsql(connectionString, npgsqlOptions =>
                 {
-                    npgsqlOptions.EnableRetryOnFailure(settings.MaxRetryCount);
-                    npgsqlOptions.CommandTimeout(settings.CommandTimeout);
+                    npgsqlOptions.EnableRetryOnFailure(dbSettings.MaxRetryCount);
+                    npgsqlOptions.CommandTimeout(dbSettings.CommandTimeout);
                 });
 
-                options.EnableDetailedErrors(settings.EnableDetailedErrors);
-                options.EnableSensitiveDataLogging(settings.EnableSensitiveDataLogging);
+                options.EnableDetailedErrors(dbSettings.EnableDetailedErrors);
+                options.EnableSensitiveDataLogging(dbSettings.EnableSensitiveDataLogging);
             }, ServiceLifetime.Scoped)
             .AddScoped<IAppDbContextFactory, AppDbContextFactory>()
             .AddTransient(sp => sp.GetRequiredService<IAppDbContextFactory>().CreateTransientDbContext())

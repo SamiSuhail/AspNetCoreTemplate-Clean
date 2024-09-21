@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using MyApp.Server;
+using MyApp.Server.Infrastructure.BackgroundJobs;
 using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Infrastructure.Messaging;
-using MyApp.Server.Shared;
 
 namespace MyApp.ApplicationIsolationTests.Core;
 
@@ -16,7 +16,6 @@ public class AppFactory : WebApplicationFactory<ProgramApi>
 
     public async Task InitializeServices()
     {
-        TestsHelper.RandomizeBackgroundJobNames = true; // Avoid race conditions on Quartz job scheduler
         await GlobalContext.InitializeAsync();
         _scope = Services.CreateScope();
         ScopedServices = _scope.ServiceProvider;
@@ -25,6 +24,7 @@ public class AppFactory : WebApplicationFactory<ProgramApi>
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseSetting($"{ConnectionStringsSettings.SectionName}:{nameof(ConnectionStringsSettings.Database)}", GlobalContext.ConnectionString);
+        builder.UseSetting($"{BackgroundJobsSettings.SectionName}:{nameof(BackgroundJobsSettings.Enabled)}", "false");
         builder.ConfigureServices(services =>
         {
             services.AddMassTransitTestHarness();

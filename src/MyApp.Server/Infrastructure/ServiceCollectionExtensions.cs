@@ -1,8 +1,6 @@
 ﻿using MyApp.Server.Infrastructure.Auth;
-using MyApp.Server.Infrastructure.Database;
-using MyApp.Server.Infrastructure.Email;
-using MyApp.Server.Infrastructure.Logging;
-using MyApp.Server.Infrastructure.Messaging;
+using MyApp.Server.Infrastructure.Startup;
+using MyApp.Server.Infrastructure.Utilities;
 
 namespace MyApp.Server.Infrastructure;
 
@@ -16,7 +14,8 @@ public static class ServiceCollectionExtensions
             .AddCustomDatabase(configuration)
             .AddCustomEmail(configuration)
             .AddCustomMessaging(configuration)
-            .AddCustomLogging(configuration);
+            .AddCustomLogging(configuration)
+            .AddCustomBackgroundJobs(configuration);
 
         return services;
     }
