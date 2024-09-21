@@ -2,7 +2,7 @@
 using MyApp.Server.Shared;
 using Quartz;
 
-namespace MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
+namespace MyApp.Server.Application.BackgroundJobs.CleanupConfirmations;
 
 public class CleanupConfirmationsBackgroundJob(ISender sender) : BaseBackgroundJob<CleanupConfirmationsBackgroundJob>, IJob
 {

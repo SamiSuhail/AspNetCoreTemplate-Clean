@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
+﻿using MyApp.Server.Application.BackgroundJobs.CleanupConfirmations;
 using MyApp.Server.Infrastructure.Utilities;
 using MyApp.Server.Shared;
 

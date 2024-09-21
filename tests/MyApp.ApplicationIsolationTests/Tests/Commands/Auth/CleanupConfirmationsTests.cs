@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
+﻿using MyApp.Server.Application.BackgroundJobs.CleanupConfirmations;
 using MyApp.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.UserConfirmation;

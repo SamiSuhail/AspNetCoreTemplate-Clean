@@ -8,7 +8,7 @@ using MyApp.Domain.Shared;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 
-namespace MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
+namespace MyApp.Server.Application.BackgroundJobs.CleanupConfirmations;
 
 public class CleanupConfirmationsRequest() : IRequest;
 
