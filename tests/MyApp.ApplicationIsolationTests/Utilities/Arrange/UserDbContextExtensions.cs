@@ -63,6 +63,7 @@ public static class UserDbContextExtensions
         async Task ExpireConfirmations<TConfirmationEntity>(int userId, DateTime expiredDatetime) where TConfirmationEntity : class, IOwnedByUser, ICreationAudited
         {
             await dbContext.Set<TConfirmationEntity>()
+                .IgnoreQueryFilters()
                 .Where(uc => uc.UserId == userId)
                 .ExecuteUpdateAsync(x => x.SetProperty(uc => uc.CreatedAt, expiredDatetime));
         }
