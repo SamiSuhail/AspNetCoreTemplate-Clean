@@ -3,9 +3,9 @@ using MyApp.Infrastructure.Auth;
 using MyApp.Infrastructure.Startup;
 using MyApp.Infrastructure.Utilities;
 
-namespace MyApp.Infrastructure;
+namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ServiceCollectionExtensions
+public static class StartupExtensions
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
@@ -19,5 +19,14 @@ public static class ServiceCollectionExtensions
             .AddCustomBackgroundJobs(configuration);
 
         return services;
+    }
+
+    public static WebApplication UseCustomInfrastructure(this WebApplication app)
+    {
+        app.UseCustomSerilog()
+            .UseAuthentication()
+            .UseAuthorization();
+
+        return app;
     }
 }

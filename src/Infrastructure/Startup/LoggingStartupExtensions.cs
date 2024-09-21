@@ -5,16 +5,6 @@ namespace MyApp.Infrastructure.Startup;
 
 public static class LoggingStartupExtensions
 {
-    public static void CreateCustomSerilogBootstrapLogger()
-    {
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-            .MinimumLevel.Override("System", LogEventLevel.Warning)
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .CreateBootstrapLogger();
-    }
-
     public static IServiceCollection AddCustomLogging(this IServiceCollection services, IConfiguration configuration)
     {
         Log.Logger = new LoggerConfiguration()

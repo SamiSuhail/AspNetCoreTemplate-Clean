@@ -1,8 +1,8 @@
 ﻿using MyApp.Application.Startup;
 
-namespace MyApp.Application;
+namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ServiceCollectionExtensions
+public static class StartupExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {

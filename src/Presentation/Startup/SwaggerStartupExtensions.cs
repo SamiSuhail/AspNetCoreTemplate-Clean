@@ -44,7 +44,7 @@ public static class SwaggerStartupExtensions
         return services;
     }
 
-    public static IApplicationBuilder UseCustomSwagger(this WebApplication app)
+    public static WebApplication UseCustomSwagger(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {

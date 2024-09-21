@@ -1,11 +1,6 @@
-using MyApp.Application;
-using MyApp.Infrastructure;
-using MyApp.Infrastructure.Startup;
-using MyApp.Presentation;
-using MyApp.Presentation.Startup;
-using static MyApp.Infrastructure.Startup.LoggingStartupExtensions;
+using MyApp.Infrastructure.Logging;
 
-CreateCustomSerilogBootstrapLogger();
+CustomBootstrapLogger.Create();
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -15,15 +10,9 @@ builder.Services.AddInfrastructureServices(configuration)
     .AddPresentationServices(builder.Environment);
 
 var app = builder.Build();
-app.UseCustomSerilog();
-app.UseExceptionHandler(options => { });
-app.UseCustomSwagger();
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
 
-app.MapCustomEndpoints();
-app.MapCustomGraphQL();
+app.UseCustomInfrastructure()
+    .UseCustomPresentation();
 
 await app.RunAsync();
 
