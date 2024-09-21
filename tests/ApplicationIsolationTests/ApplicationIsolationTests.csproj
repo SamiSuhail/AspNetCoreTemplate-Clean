@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+	<RootNamespace>MyApp.ApplicationIsolationTests</RootNamespace>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -32,8 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MyApp.DbDeploy\MyApp.DbDeploy.csproj" />
-    <ProjectReference Include="..\..\src\MyApp.Server\MyApp.Server.csproj" />
+    <ProjectReference Include="..\..\src\DbDeploy\DbDeploy.csproj" />
+    <ProjectReference Include="..\..\src\Server\Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>
