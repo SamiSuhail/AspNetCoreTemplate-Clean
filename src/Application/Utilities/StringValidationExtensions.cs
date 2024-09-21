@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MyApp.Application.Utilities;
 
 namespace MyApp.Application.Utilities;
 

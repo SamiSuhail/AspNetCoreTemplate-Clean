@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using MyApp.Server;
 using MyApp.Application.Infrastructure.Abstractions;
-using MyApp.Server.Infrastructure.BackgroundJobs;
-using MyApp.Server.Infrastructure.Database;
+using MyApp.Infrastructure.BackgroundJobs;
+using MyApp.Infrastructure.Database;
 
 namespace MyApp.ApplicationIsolationTests.Core;
 
