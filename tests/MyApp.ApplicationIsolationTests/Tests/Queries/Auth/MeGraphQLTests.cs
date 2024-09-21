@@ -1,5 +1,5 @@
 ﻿using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Infrastructure.Abstractions.Auth;
+using MyApp.Application.Infrastructure.Abstractions.Auth;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Queries.Auth;
 

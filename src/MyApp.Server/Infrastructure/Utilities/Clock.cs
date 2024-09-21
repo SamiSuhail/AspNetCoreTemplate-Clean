@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Infrastructure.Abstractions;
+﻿using MyApp.Application.Infrastructure.Abstractions;
 
 namespace MyApp.Server.Infrastructure.Utilities;
 

@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Infrastructure.Abstractions;
+﻿using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Server.Infrastructure.Auth;
 using MyApp.Server.Infrastructure.Startup;
 using MyApp.Server.Infrastructure.Utilities;

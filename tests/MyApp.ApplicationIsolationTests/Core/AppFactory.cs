@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using MyApp.Server;
-using MyApp.Server.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Server.Infrastructure.BackgroundJobs;
 using MyApp.Server.Infrastructure.Database;
 

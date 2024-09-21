@@ -4,9 +4,9 @@ using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
 using MyApp.Server.Domain.UserManagement.EmailChangeConfirmation.Failures;
-using MyApp.Server.Infrastructure.Abstractions;
-using MyApp.Server.Infrastructure.Abstractions.Auth;
-using MyApp.Server.Infrastructure.Abstractions.Database;
+using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Application.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
 

@@ -2,8 +2,8 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
-using MyApp.Server.Infrastructure.Abstractions;
-using MyApp.Server.Infrastructure.Abstractions.Auth;
+using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions.Auth;
 
 namespace MyApp.Server.Infrastructure.Auth;
 

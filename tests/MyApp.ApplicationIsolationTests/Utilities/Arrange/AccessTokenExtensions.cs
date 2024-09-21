@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
-using MyApp.Server.Infrastructure.Abstractions;
-using MyApp.Server.Infrastructure.Abstractions.Auth;
+using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Server.Infrastructure.Auth;
 
 namespace MyApp.ApplicationIsolationTests.Utilities.Arrange;

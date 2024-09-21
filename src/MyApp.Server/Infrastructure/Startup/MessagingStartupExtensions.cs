@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using MassTransit;
-using MyApp.Server.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Server.Infrastructure.Messaging;
 
 namespace MyApp.Server.Infrastructure.Startup;

@@ -6,7 +6,7 @@ using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Server.Domain.Shared.Confirmations;
 using MyApp.Server.Domain.Shared;
 using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
-using MyApp.Server.Infrastructure.Abstractions.Database;
+using MyApp.Application.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
 

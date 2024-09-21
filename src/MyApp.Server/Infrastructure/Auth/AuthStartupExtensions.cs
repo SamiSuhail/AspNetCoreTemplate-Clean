@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using MyApp.Server.Infrastructure.Abstractions.Auth;
+using MyApp.Application.Infrastructure.Abstractions.Auth;
 
 namespace MyApp.Server.Infrastructure.Auth;
 

@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
-using MyApp.Server.Infrastructure.Abstractions;
-using MyApp.Server.Infrastructure.Abstractions.Database;
+using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Server.Application.Commands.Auth.Registration.Register;
 

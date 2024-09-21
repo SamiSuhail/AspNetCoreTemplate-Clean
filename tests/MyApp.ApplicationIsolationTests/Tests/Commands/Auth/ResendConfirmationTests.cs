@@ -3,7 +3,7 @@ using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 

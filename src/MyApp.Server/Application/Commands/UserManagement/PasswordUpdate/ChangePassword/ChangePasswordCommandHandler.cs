@@ -5,9 +5,9 @@ using MyApp.Server.Domain.Auth.User;
 using MyApp.Server.Domain.Auth.User.Failures;
 using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation.Failures;
-using MyApp.Server.Infrastructure.Abstractions;
-using MyApp.Server.Infrastructure.Abstractions.Auth;
-using MyApp.Server.Infrastructure.Abstractions.Database;
+using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Application.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
 
@@ -29,11 +29,11 @@ public class ChangePasswordCommandHandler(IUserContextAccessor userContextAccess
             .FirstOrDefaultAsync(cancellationToken)
             ?? throw UserIdNotFoundFailure.Exception();
 
-        var newPasswordChangeConfirmation = PasswordChangeConfirmationEntity.Create(userId, request.NewPassword);
-        dbContext.Add(newPasswordChangeConfirmation);
-
         if (request.NewPassword.Verify(userData.PasswordHash))
             throw PasswordIsIdenticalFailure.Exception();
+
+        var newPasswordChangeConfirmation = PasswordChangeConfirmationEntity.Create(userId, request.NewPassword);
+        dbContext.Add(newPasswordChangeConfirmation);
 
         if (userData.PasswordChangeConfirmation != null)
             dbContext.Remove(userData.PasswordChangeConfirmation);

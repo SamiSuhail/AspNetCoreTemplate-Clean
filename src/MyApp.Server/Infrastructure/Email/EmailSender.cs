@@ -1,7 +1,7 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
 using MimeKit.Text;
-using MyApp.Server.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions;
 
 namespace MyApp.Server.Infrastructure.Email;
 

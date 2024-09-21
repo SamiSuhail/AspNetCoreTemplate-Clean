@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Infrastructure.Abstractions.Auth;
+﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Server.Shared;
 
 namespace MyApp.Server.Infrastructure.Auth;

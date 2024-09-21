@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyApp.Server.Infrastructure.Abstractions.Database;
+using MyApp.Application.Infrastructure.Abstractions.Database;
 using MyApp.Server.Infrastructure.Database;
 
 namespace MyApp.Server.Infrastructure.Startup;

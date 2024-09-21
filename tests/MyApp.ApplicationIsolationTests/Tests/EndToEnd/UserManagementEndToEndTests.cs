@@ -1,5 +1,5 @@
 ﻿using MyApp.Server.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Server.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions;
 
 namespace MyApp.ApplicationIsolationTests.Tests.EndToEnd;
 
