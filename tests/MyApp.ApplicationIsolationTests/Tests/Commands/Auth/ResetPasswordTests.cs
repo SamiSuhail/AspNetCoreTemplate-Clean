@@ -97,8 +97,8 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         string password;
         if (userIsConfirmed)
         {
-            password = User.Password;
-            _userId = User.Entity.Id;
+            password = TestUser.Password;
+            _userId = TestUser.Id;
         }
         else
         {

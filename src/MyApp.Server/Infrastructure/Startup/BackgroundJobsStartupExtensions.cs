@@ -1,18 +1,21 @@
-﻿using MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
+﻿using MyApp.Server.Infrastructure.BackgroundJobs;
 using MyApp.Server.Infrastructure.Database;
 using Quartz;
 
-namespace MyApp.Server.Application.Startup;
+namespace MyApp.Server.Infrastructure.Startup;
 
 public static class BackgroundJobsStartupExtensions
 {
     public static IServiceCollection AddCustomBackgroundJobs(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionStrings = ConnectionStringsSettings.Get(configuration);
+        var backgroundJobsSettings = services.AddCustomSettings<BackgroundJobsSettings>(configuration);
+        if (!backgroundJobsSettings.Enabled)
+            return services;
 
+        var connectionStrings = ConnectionStringsSettings.Get(configuration);
         services.AddQuartz(c =>
         {
-            CleanupConfirmationsScheduler.Start(c);
+            BackgroundScheduleStarter.StartAll(c, backgroundJobsSettings);
 
             c.UsePersistentStore(o =>
             {

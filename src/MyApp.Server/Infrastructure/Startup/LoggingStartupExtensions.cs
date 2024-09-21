@@ -1,7 +1,7 @@
 ﻿using Serilog.Events;
 using Serilog;
 
-namespace MyApp.Server.Infrastructure.Logging;
+namespace MyApp.Server.Infrastructure.Startup;
 
 public static class LoggingStartupExtensions
 {

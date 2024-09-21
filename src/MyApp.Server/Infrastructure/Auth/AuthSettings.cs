@@ -1,13 +1,10 @@
-﻿namespace MyApp.Server.Infrastructure.Auth;
+﻿using MyApp.Server.Infrastructure.Utilities;
 
-public class AuthSettings
+namespace MyApp.Server.Infrastructure.Auth;
+
+public class AuthSettings : BaseSettings<AuthSettings>
 {
-    public const string SectionName = "Auth";
     public required JwtSettings Jwt { get; set; }
-
-    public static AuthSettings Get(IConfiguration configuration)
-        => configuration.GetSection(SectionName)
-            .Get<AuthSettings>()!;
 }
 
 public class JwtSettings

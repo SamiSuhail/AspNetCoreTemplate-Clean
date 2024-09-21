@@ -1,9 +1,9 @@
 using MyApp.Server.Application;
 using MyApp.Server.Infrastructure;
-using MyApp.Server.Infrastructure.Logging;
+using MyApp.Server.Infrastructure.Startup;
 using MyApp.Server.Presentation;
 using MyApp.Server.Presentation.Startup;
-using static MyApp.Server.Infrastructure.Logging.LoggingStartupExtensions;
+using static MyApp.Server.Infrastructure.Startup.LoggingStartupExtensions;
 
 CreateCustomSerilogBootstrapLogger();
 
@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.AddInfrastructureServices(configuration)
-    .AddApplicationServices(configuration)
+    .AddApplicationServices()
     .AddPresentationServices(builder.Environment);
 
 var app = builder.Build();
