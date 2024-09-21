@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Infrastructure.Database;
-using MyApp.Server.Infrastructure.Messaging;
+using MyApp.Server.Infrastructure.Abstractions;
+using MyApp.Server.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Server.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 

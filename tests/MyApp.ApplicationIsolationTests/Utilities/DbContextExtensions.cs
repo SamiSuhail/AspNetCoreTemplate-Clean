@@ -1,6 +1,6 @@
 ﻿using MyApp.Server.Application.Utilities;
 using MyApp.Server.Domain.Auth.User;
-using MyApp.Server.Infrastructure.Database;
+using MyApp.Server.Infrastructure.Abstractions.Database;
 
 namespace MyApp.ApplicationIsolationTests.Utilities;
 
@@ -20,7 +20,6 @@ public static class DbContextExtensions
             .Include(u => u.UserConfirmation)
             .Include(u => u.PasswordResetConfirmation)
             .Include(u => u.EmailChangeConfirmation)
-            .Include(u => u.PasswordChangeConfirmation)
             .FindUserOrDefault(userId, CancellationToken.None);
     }
 }

@@ -1,4 +1,5 @@
-﻿using MyApp.Server.Infrastructure.Email;
+﻿using MyApp.Server.Infrastructure.Abstractions;
+using MyApp.Server.Infrastructure.Email;
 
 namespace MyApp.Server.Infrastructure.Startup;
 

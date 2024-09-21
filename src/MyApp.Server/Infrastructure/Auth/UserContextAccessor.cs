@@ -1,11 +1,7 @@
-﻿using MyApp.Server.Shared;
+﻿using MyApp.Server.Infrastructure.Abstractions.Auth;
+using MyApp.Server.Shared;
 
 namespace MyApp.Server.Infrastructure.Auth;
-
-public interface IUserContextAccessor
-{
-    UserContext User { get; }
-}
 
 public class UserContextAccessor : IUserContextAccessor
 {

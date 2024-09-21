@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.PasswordResetConfirmation;
-using MyApp.Server.Infrastructure.Database;
 using MyApp.Server.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Server.Domain.Shared.Confirmations;
 using MyApp.Server.Domain.Shared;
 using MyApp.Server.Domain.UserManagement.PasswordChangeConfirmation;
+using MyApp.Server.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Server.Application.Commands.BackgroundJobs.CleanupConfirmations;
 

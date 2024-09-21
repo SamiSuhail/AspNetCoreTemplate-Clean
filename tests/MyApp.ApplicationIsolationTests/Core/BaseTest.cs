@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Infrastructure.Database;
+﻿using MyApp.Server.Infrastructure.Abstractions.Database;
 
 namespace MyApp.ApplicationIsolationTests.Core;
 

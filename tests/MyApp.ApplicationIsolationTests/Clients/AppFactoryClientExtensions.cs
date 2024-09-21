@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Infrastructure.Auth;
+﻿using MyApp.Server.Infrastructure.Abstractions.Auth;
 
 namespace MyApp.ApplicationIsolationTests.Clients;
 

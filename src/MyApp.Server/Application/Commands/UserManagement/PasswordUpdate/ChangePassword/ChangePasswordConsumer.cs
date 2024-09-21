@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using MyApp.Server.Domain.Shared.Confirmations;
-using MyApp.Server.Infrastructure.Email;
+using MyApp.Server.Infrastructure.Abstractions;
 
 namespace MyApp.Server.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
 

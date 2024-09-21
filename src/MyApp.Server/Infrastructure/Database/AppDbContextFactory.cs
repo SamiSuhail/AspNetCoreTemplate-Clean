@@ -1,14 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyApp.Server.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Server.Infrastructure.Database;
-
-public interface IAppDbContextFactory : IDisposable
-{
-    IScopedDbContext CreateScopedDbContext();
-    Task<IScopedDbContext> CreateScopedDbContextAsync(CancellationToken cancellationToken);
-    ITransientDbContext CreateTransientDbContext();
-    Task<ITransientDbContext> CreateTransientDbContextAsync(CancellationToken cancellationToken);
-}
 
 public sealed class AppDbContextFactory(IDbContextFactory<AppDbContext> factory) : IAppDbContextFactory
 {

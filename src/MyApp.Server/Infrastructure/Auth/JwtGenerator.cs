@@ -2,15 +2,10 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
-using MyApp.Server.Infrastructure.Utilities;
+using MyApp.Server.Infrastructure.Abstractions;
+using MyApp.Server.Infrastructure.Abstractions.Auth;
 
 namespace MyApp.Server.Infrastructure.Auth;
-
-public interface IJwtGenerator
-{
-    string CreateAccessToken(int userId, string username, string email);
-    string CreateRefreshToken(int userId, string username, string email, int version);
-}
 
 public class JwtGenerator(AuthSettings authSettings, IClock clock) : IJwtGenerator
 {

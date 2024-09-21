@@ -1,9 +1,6 @@
-﻿namespace MyApp.Server.Infrastructure.Utilities;
+﻿using MyApp.Server.Infrastructure.Abstractions;
 
-public interface IClock
-{
-    public DateTime UtcNow { get; }
-}
+namespace MyApp.Server.Infrastructure.Utilities;
 
 public class Clock : IClock
 {

@@ -3,6 +3,7 @@ using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Server.Domain.Auth.UserConfirmation;
 using MyApp.Server.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Server.Domain.Auth.User;
+using MyApp.Server.Infrastructure.Abstractions;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
@@ -42,7 +43,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertSuccess();
-        MockBag.AssertProduced<SendUserConfirmationMessage>();
+        AssertMessage.Produced<SendUserConfirmationMessage>();
     }
 
     [Fact]
@@ -59,7 +60,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertBadRequest();
-        MockBag.AssertProduced<SendUserConfirmationMessage>(Times.Never());
+        AssertMessage.Produced<SendUserConfirmationMessage>(Times.Never());
         await AssertUserConfirmationUnchanged();
     }
 
@@ -67,7 +68,9 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
     public async Task GivenMessageProducerThrows_ThenNoDataIsPersisted()
     {
         // Arrange
-        MockBag.ArrangeMessageThrows<SendUserConfirmationMessage>();
+        MockBag.Get<IMessageProducer>()
+            .Setup(m => m.Send(It.IsAny<SendUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new Exception());
 
         // Act
         var response = await UnauthorizedAppClient.ResendConfirmation(_request);

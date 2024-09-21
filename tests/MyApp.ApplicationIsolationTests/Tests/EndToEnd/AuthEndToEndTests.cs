@@ -6,7 +6,7 @@ using MyApp.Server.Application.Commands.Auth.Registration;
 using MyApp.Server.Application.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Server.Application.Commands.Auth.Registration.Register;
 using MyApp.Server.Application.Commands.Auth.Registration.ResendConfirmation;
-using MyApp.Server.Infrastructure.Messaging;
+using MyApp.Server.Infrastructure.Abstractions;
 
 namespace MyApp.ApplicationIsolationTests.Tests.EndToEnd;
 
@@ -26,19 +26,19 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         var passwordResetConfirmationCode = await TestForgotPassword();
         await TestResetPassword(passwordResetConfirmationCode);
         var loginResponse = await TestLogin();
-        _graphqlClient = AppFactory.ArrangeGraphQLClientWithToken(loginResponse.AccessToken);
+        _graphqlClient = AppFactory.CreateGraphQLClientWithToken(loginResponse.AccessToken);
         await TestMe();
         await TestRefreshToken(loginResponse.RefreshToken);
     }
 
-    private async Task TestRegister()
+    private static async Task TestRegister()
     {
         var request = new RegisterRequest(Email, Username, Password);
         var response = await UnauthorizedAppClient.Register(request);
         response.AssertSuccess();
     }
 
-    private async Task<string> TestResendConfirmation()
+    private static async Task<string> TestResendConfirmation()
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
@@ -53,14 +53,14 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         return code;
     }
 
-    private async Task TestConfirmUserRegistration(string confirmationCode)
+    private static async Task TestConfirmUserRegistration(string confirmationCode)
     {
         var request = new ConfirmUserRegistrationRequest(confirmationCode);
         var response = await UnauthorizedAppClient.ConfirmUserRegistration(request);
         response.AssertSuccess();
     }
 
-    private async Task<string> TestForgotPassword()
+    private static async Task<string> TestForgotPassword()
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
@@ -75,14 +75,14 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         return code;
     }
 
-    private async Task TestResetPassword(string code)
+    private static async Task TestResetPassword(string code)
     {
         var request = new ResetPasswordRequest(code, Password);
         var response = await UnauthorizedAppClient.ResetPassword(request);
         response.AssertSuccess();
     }
 
-    private async Task<LoginResponse> TestLogin()
+    private static async Task<LoginResponse> TestLogin()
     {
         var request = new LoginRequest(Username, Password);
         var response = await UnauthorizedAppClient.Login(request);
@@ -96,7 +96,7 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         response.AssertSuccess();
     }
 
-    private async Task TestRefreshToken(string refreshToken)
+    private static async Task TestRefreshToken(string refreshToken)
     {
         var request = new RefreshTokenRequest(refreshToken);
         var response = await UnauthorizedAppClient.RefreshToken(request);

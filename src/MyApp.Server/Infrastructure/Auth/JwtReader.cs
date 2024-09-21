@@ -1,16 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using MyApp.Server.Infrastructure.Abstractions.Auth;
 
 namespace MyApp.Server.Infrastructure.Auth;
-
-public record UserContext(int Id, string Username, string Email);
-public record RefreshToken(int UserId, string Username, string Email, int Version);
-
-public interface IJwtReader
-{
-    UserContext ReadAccessToken(string jwtBearer);
-    RefreshToken? ReadRefreshToken(string jwtBearer);
-}
 
 public class JwtReader(AuthSettings settings) : IJwtReader
 {

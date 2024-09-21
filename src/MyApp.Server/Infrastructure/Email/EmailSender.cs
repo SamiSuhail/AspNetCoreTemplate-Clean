@@ -1,13 +1,9 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
 using MimeKit.Text;
+using MyApp.Server.Infrastructure.Abstractions;
 
 namespace MyApp.Server.Infrastructure.Email;
-
-public interface IEmailSender
-{
-    Task Send(string name, string email, string subject, string text, CancellationToken cancellationToken);
-}
 
 public class EmailSender(EmailSettings settings) : IEmailSender
 {

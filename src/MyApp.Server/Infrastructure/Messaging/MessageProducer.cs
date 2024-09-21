@@ -1,13 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using MassTransit;
+using MyApp.Server.Infrastructure.Abstractions;
 using MyApp.Server.Shared;
 
 namespace MyApp.Server.Infrastructure.Messaging;
-
-public interface IMessageProducer
-{
-    Task Send<TMessage>(TMessage message, CancellationToken cancellationToken) where TMessage : class;
-}
 
 public class MessageProducer(ISendEndpointProvider bus) : IMessageProducer
 {

@@ -1,4 +1,4 @@
-﻿using MyApp.Server.Infrastructure.Messaging;
+﻿using MyApp.Server.Infrastructure.Abstractions;
 
 namespace MyApp.ApplicationIsolationTests.Utilities.Arrange;
 
