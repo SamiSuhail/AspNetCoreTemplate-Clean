@@ -6,7 +6,13 @@ namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
 public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    private readonly LoginRequest _request = new(TestUser.Username, TestUser.Password);
+    private LoginRequest _request = default!;
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+        _request = new(User.Entity.Username, User.Password);
+    }
 
     [Fact]
     public async Task GivenHappyPath_ReturnsValidTokens()
@@ -25,17 +31,17 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
         var refreshToken = jwtReader.ReadRefreshToken(response.Content.RefreshToken);
         using (new AssertionScope())
         {
-            user.Id.Should().Be(User.Id);
-            user.Username.Should().Be(User.Username);
-            user.Email.Should().Be(User.Email);
+            user.Id.Should().Be(User.Entity.Id);
+            user.Username.Should().Be(User.Entity.Username);
+            user.Email.Should().Be(User.Entity.Email);
         }
         refreshToken.Should().NotBeNull();
         using (new AssertionScope())
         {
-            refreshToken!.UserId.Should().Be(User.Id);
-            refreshToken.Username.Should().Be(User.Username);
-            refreshToken.Email.Should().Be(User.Email);
-            refreshToken.Version.Should().Be(User.RefreshTokenVersion);
+            refreshToken!.UserId.Should().Be(User.Entity.Id);
+            refreshToken.Username.Should().Be(User.Entity.Username);
+            refreshToken.Email.Should().Be(User.Entity.Email);
+            refreshToken.Version.Should().Be(User.Entity.RefreshTokenVersion);
         }
     }
 
