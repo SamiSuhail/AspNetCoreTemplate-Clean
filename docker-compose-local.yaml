@@ -7,17 +7,34 @@ volumes:
 services: 
     postgres:
         image: postgres
+        container_name: postgres
         ports:
-          - 5432:5432
+            - 5432:5432
         volumes:
-          - pg_volume:/var/lib/postgresql/data
+            - pg_volume:/var/lib/postgresql/data
         environment:
             POSTGRES_DB: ${PG_NAME}
             POSTGRES_USER: ${PG_USERNAME}
             POSTGRES_PASSWORD: ${PG_PASSWORD}
 
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgadmin
+        restart: always
+        ports:
+            - 8888:80
+        environment:
+            PGADMIN_DEFAULT_EMAIL: postgres@example.com
+            PGADMIN_DEFAULT_PASSWORD: postgres
+            PGADMIN_CONFIG_SERVER_MODE: 'False'
+            PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+        configs:
+            - source: servers.json
+              target: /pgadmin4/servers.json
+
     mailhog:
         image: mailhog/mailhog
+        container_name: mailhog
         ports:
           - 1025:1025
           - 8025:8025
@@ -26,10 +43,28 @@ services:
         image: rabbitmq:3-management
         container_name: rabbitmq
         ports:
-          - 5672:5672
-          - 15672:15672
+            - 5672:5672
+            - 15672:15672
         volumes:
-          - rabbitmq_volume:/var/lib/rabbitmq/data
+            - rabbitmq_volume:/var/lib/rabbitmq/data
         environment:
             RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
             RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+
+
+configs:
+    servers.json:
+        content: |
+            {
+                "Servers": {
+                    "1": {
+                        "Group": "Servers",
+                        "Name": "docker",
+                        "Host": "postgres",
+                        "Port": 5432,
+                        "MaintenanceDB": "postgres",
+                        "Username": "${PG_USERNAME}",
+                        "SSLMode": "prefer"
+                    }
+                }
+            }

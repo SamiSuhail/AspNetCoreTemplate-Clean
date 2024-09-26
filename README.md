@@ -11,6 +11,7 @@ You can make changes in the docker-compose-local.yaml in case you want to use di
 Afterwards you can run the MyApp.DbDeploy project, and the server is ready to be started and used.
 For emails, you can access the MailHog SMTP UI locally at localhost:8025.
 For messaging, you can access the RabbitMQ Management UI locally at localhost:15672
+For database administration, you can access the PgAdmin UI locally at localhost:8888
 
 All credentials can be found in the docker-compose-local.env file.
 
