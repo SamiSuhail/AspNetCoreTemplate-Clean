@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DbDeploy": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

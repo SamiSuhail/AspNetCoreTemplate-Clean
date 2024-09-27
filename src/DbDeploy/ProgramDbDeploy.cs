@@ -24,4 +24,7 @@ Console.WriteLine("Success!");
 Console.ResetColor();
 return 0;
 
-public partial class ProgramDbDeploy { }
+namespace MyApp.DbDeploy
+{
+    public partial class ProgramDbDeploy { }
+}

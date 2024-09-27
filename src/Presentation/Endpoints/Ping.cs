@@ -16,13 +16,13 @@ public class Ping : EndpointGroupBase
     }
 
     [AllowAnonymous]
-    public Pong Default()
+    public static Pong Default()
     {
         return new Pong();
     }
 
     [ProducesResponseType(401)]
-    public async Task<Pong> Database(
+    public static async Task<Pong> Database(
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {

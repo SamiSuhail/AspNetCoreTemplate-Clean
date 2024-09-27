@@ -12,7 +12,8 @@ public static class Helpers
     {
         var builder = new ConfigurationBuilder()
                         .SetBasePath(Directory.GetParent(Assembly.GetExecutingAssembly().Location)!.FullName)
-                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                        .AddEnvironmentVariables();
 
         var configuration = builder.Build();
 

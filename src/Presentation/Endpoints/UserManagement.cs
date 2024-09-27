@@ -24,7 +24,7 @@ public class UserManagement : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task SignOutOnAllDevices(
+    public static async Task SignOutOnAllDevices(
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
@@ -33,7 +33,7 @@ public class UserManagement : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task ChangeEmail(
+    public static async Task ChangeEmail(
         [FromServices] ISender sender,
         [FromBody] ChangeEmailRequest request,
         CancellationToken cancellationToken)
@@ -43,7 +43,7 @@ public class UserManagement : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task ConfirmEmailChange(
+    public static async Task ConfirmEmailChange(
         [FromServices] ISender sender,
         [FromBody] ConfirmEmailChangeRequest request,
         CancellationToken cancellationToken)
@@ -53,7 +53,7 @@ public class UserManagement : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task ChangePassword(
+    public static async Task ChangePassword(
         [FromServices] ISender sender,
         [FromBody] ChangePasswordRequest request,
         CancellationToken cancellationToken)
@@ -63,7 +63,7 @@ public class UserManagement : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task ConfirmPasswordChange(
+    public static async Task ConfirmPasswordChange(
         [FromServices] ISender sender,
         [FromBody] ConfirmPasswordChangeRequest request,
         CancellationToken cancellationToken)

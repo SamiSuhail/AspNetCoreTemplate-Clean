@@ -17,6 +17,24 @@ services:
             POSTGRES_USER: ${PG_USERNAME}
             POSTGRES_PASSWORD: ${PG_PASSWORD}
 
+    dbdeploy:
+        image: ${DOCKER_REGISTRY-}dbdeploy
+        container_name: dbdeploy
+        restart: on-failure
+        build:
+            context: ../
+            dockerfile: ./src/DbDeploy/Dockerfile
+
+    api:
+        image: ${DOCKER_REGISTRY-}api
+        container_name: api
+        depends_on:
+            dbdeploy:
+                condition: service_completed_successfully
+        build:
+            context: ../
+            dockerfile: ./src/Server/Dockerfile
+
     pgadmin:
         image: dpage/pgadmin4
         container_name: pgadmin

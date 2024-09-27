@@ -1,4 +1,5 @@
 using MyApp.Infrastructure.Logging;
+using MyApp.Presentation;
 
 CustomBootstrapLogger.Create();
 

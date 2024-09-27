@@ -1,7 +1,7 @@
 ﻿using MyApp.Presentation.Startup;
 using MyApp.Presentation.Startup.Middleware;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace MyApp.Presentation;
 
 public static class StartupExtensions
 {
