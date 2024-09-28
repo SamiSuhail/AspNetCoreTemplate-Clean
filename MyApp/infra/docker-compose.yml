@@ -30,13 +30,13 @@ services:
         depends_on:
             base:
                 condition: service_completed_successfully
-        working_dir: $PWD
         volumes:
-            - $PWD:$PWD
             - /var/run/docker.sock:/var/run/docker.sock
         build:
             context: ../
             dockerfile: ./infra/Dockerfile.aits
+        environment:
+            TESTCONTAINERS_HOST_OVERRIDE: host.docker.internal
 
     dbdeploy:
         image: ${DOCKER_REGISTRY-}dbdeploy
