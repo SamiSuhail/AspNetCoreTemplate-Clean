@@ -17,23 +17,47 @@ services:
             POSTGRES_USER: ${PG_USERNAME}
             POSTGRES_PASSWORD: ${PG_PASSWORD}
 
+    base:
+        image: ${DOCKER_REGISTRY-}base
+        container_name: base
+        build:
+            context: ../
+            dockerfile: ./infra/Dockerfile.base
+
+    aits:
+        image: ${DOCKER_REGISTRY-}aits
+        container_name: aits
+        depends_on:
+            base:
+                condition: service_completed_successfully
+        working_dir: $PWD
+        volumes:
+            - $PWD:$PWD
+            - /var/run/docker.sock:/var/run/docker.sock
+        build:
+            context: ../
+            dockerfile: ./infra/Dockerfile.aits
+
     dbdeploy:
         image: ${DOCKER_REGISTRY-}dbdeploy
         container_name: dbdeploy
         restart: on-failure
+        depends_on:
+            base:
+                condition: service_completed_successfully
         build:
             context: ../
-            dockerfile: ./src/DbDeploy/Dockerfile
+            dockerfile: ./infra/Dockerfile.dbdeploy
 
-    api:
-        image: ${DOCKER_REGISTRY-}api
-        container_name: api
+    server:
+        image: ${DOCKER_REGISTRY-}server
+        container_name: server
         depends_on:
             dbdeploy:
                 condition: service_completed_successfully
         build:
             context: ../
-            dockerfile: ./src/Server/Dockerfile
+            dockerfile: ./infra/Dockerfile.server
 
     pgadmin:
         image: dpage/pgadmin4

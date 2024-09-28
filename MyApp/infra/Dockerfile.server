@@ -1,0 +1,6 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final-server
+WORKDIR /app
+COPY --from=base /app/server .
+EXPOSE 8080
+EXPOSE 8081
+ENTRYPOINT dotnet Server.dll

@@ -5,6 +5,7 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{21378147-57C3-4DC6-8B11-AFA9A07F77D6}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 	EndProjectSection
@@ -27,7 +28,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "src\Present
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationIsolationTests", "tests\ApplicationIsolationTests\ApplicationIsolationTests.csproj", "{68FDB4EE-352E-43A9-B8A0-6430DB75EFF0}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{D09527FC-7BB4-4230-AE4F-3AFD409960AF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{0E28FF4B-2043-4554-9C77-251A98DD16BC}"
+	ProjectSection(SolutionItems) = preProject
+		infra\docker-compose.env = infra\docker-compose.env
+		infra\docker-compose.yml = infra\docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,8 +68,6 @@ Global
 		{68FDB4EE-352E-43A9-B8A0-6430DB75EFF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68FDB4EE-352E-43A9-B8A0-6430DB75EFF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68FDB4EE-352E-43A9-B8A0-6430DB75EFF0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D09527FC-7BB4-4230-AE4F-3AFD409960AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D09527FC-7BB4-4230-AE4F-3AFD409960AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
