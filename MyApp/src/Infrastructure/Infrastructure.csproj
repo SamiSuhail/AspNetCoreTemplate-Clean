@@ -5,6 +5,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="appsettings.infrastructure.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="appsettings.infrastructure.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="MailKit" Version="4.7.1.1" />
 		<PackageReference Include="MassTransit.RabbitMQ" Version="8.2.5" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />

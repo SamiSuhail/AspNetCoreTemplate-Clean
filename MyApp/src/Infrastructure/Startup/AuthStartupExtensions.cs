@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Infrastructure.Auth;
 
-namespace MyApp.Infrastructure.Auth;
+namespace MyApp.Infrastructure.Startup;
 
 public static class AuthStartupExtensions
 {

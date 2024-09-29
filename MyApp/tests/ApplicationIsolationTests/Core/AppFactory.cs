@@ -5,6 +5,7 @@ using MyApp.Server;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure.BackgroundJobs;
 using MyApp.Infrastructure.Database;
+using Microsoft.Extensions.Configuration;
 
 namespace MyApp.ApplicationIsolationTests.Core;
 
@@ -17,14 +18,15 @@ public class AppFactory : WebApplicationFactory<ProgramApi>
     public async Task InitializeServices()
     {
         await GlobalContext.InitializeAsync();
+        ProgramApi.ConfigurationOverrides ??= [
+            new($"{ConnectionStringsSettings.SectionName}:{nameof(ConnectionStringsSettings.Database)}", GlobalContext.ConnectionString),
+            new($"{BackgroundJobsSettings.SectionName}:{nameof(BackgroundJobsSettings.Enabled)}", "false"),
+        ];
         _scope = Services.CreateScope();
         ScopedServices = _scope.ServiceProvider;
     }
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseSetting($"{ConnectionStringsSettings.SectionName}:{nameof(ConnectionStringsSettings.Database)}", GlobalContext.ConnectionString);
-        builder.UseSetting($"{BackgroundJobsSettings.SectionName}:{nameof(BackgroundJobsSettings.Enabled)}", "false");
         builder.ConfigureServices(services =>
         {
             services.AddMassTransitTestHarness();

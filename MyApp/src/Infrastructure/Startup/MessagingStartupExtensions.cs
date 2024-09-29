@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using MassTransit;
+﻿using MassTransit;
 using MyApp.Application;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure.Messaging;
