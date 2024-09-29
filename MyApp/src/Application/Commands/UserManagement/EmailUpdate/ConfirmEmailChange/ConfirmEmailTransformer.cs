@@ -7,7 +7,7 @@ public class ConfirmEmailTransformer : IRequestTransformer<ConfirmEmailChangeReq
     public ConfirmEmailChangeRequest Transform(ConfirmEmailChangeRequest request)
         => request with
         {
-            OldEmailCode = request.OldEmailCode.Trim(),
-            NewEmailCode = request.NewEmailCode.Trim(),
+            OldEmailCode = request.OldEmailCode.RemoveWhitespace(),
+            NewEmailCode = request.NewEmailCode.RemoveWhitespace(),
         };
 }
