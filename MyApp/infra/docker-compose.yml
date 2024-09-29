@@ -9,7 +9,7 @@ services:
         image: postgres
         container_name: postgres
         ports:
-            - 5432:5432
+            - ${PG_PORT}:${PG_PORT}
         volumes:
             - pg_volume:/var/lib/postgresql/data
         environment:
@@ -48,6 +48,8 @@ services:
         build:
             context: ../
             dockerfile: ./infra/Dockerfile.dbdeploy
+        environment:
+            ConnectionStrings__Default: Server=${PG_INTERNAL_HOST};Port=${PG_PORT};Database=${PG_NAME};User Id=${PG_USERNAME};Password=${PG_PASSWORD};
 
     server:
         image: ${DOCKER_REGISTRY-}server
@@ -58,6 +60,15 @@ services:
         build:
             context: ../
             dockerfile: ./infra/Dockerfile.server
+        environment:
+            ConnectionStrings__Database: Server=${PG_INTERNAL_HOST};Port=${PG_PORT};Database=${PG_NAME};User Id=${PG_USERNAME};Password=${PG_PASSWORD};
+            Email__SMTPHost: ${MAILHOG_INTERNAL_HOST}
+            Email__SMTPPort: ${MAILHOG_PORT}
+            Messaging__Host: ${RABBITMQ_INTERNAL_HOST}
+            Messaging__Port: ${RABBITMQ_PORT}
+            Messaging__ManagementPort: ${RABBITMQ_PORT_MANAGEMENT}
+            Messaging__User: ${RABBITMQ_USERNAME}
+            Messaging__Pass: ${RABBITMQ_PASSWORD}
 
     pgadmin:
         image: dpage/pgadmin4
@@ -78,15 +89,15 @@ services:
         image: mailhog/mailhog
         container_name: mailhog
         ports:
-          - 1025:1025
-          - 8025:8025
+            - ${MAILHOG_PORT}:${MAILHOG_PORT}
+            - 8025:8025
     
     rabbitmq:
         image: rabbitmq:3-management
         container_name: rabbitmq
         ports:
-            - 5672:5672
-            - 15672:15672
+            - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
+            - ${RABBITMQ_PORT_MANAGEMENT}:${RABBITMQ_PORT_MANAGEMENT}
         volumes:
             - rabbitmq_volume:/var/lib/rabbitmq/data
         environment:
