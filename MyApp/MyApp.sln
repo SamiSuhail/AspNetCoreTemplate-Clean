@@ -32,6 +32,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{0E28FF4B
 	ProjectSection(SolutionItems) = preProject
 		infra\docker-compose.env = infra\docker-compose.env
 		infra\docker-compose.yml = infra\docker-compose.yml
+		infra\Dockerfile.aits = infra\Dockerfile.aits
+		infra\Dockerfile.base = infra\Dockerfile.base
+		infra\Dockerfile.dbdeploy = infra\Dockerfile.dbdeploy
+		infra\Dockerfile.server = infra\Dockerfile.server
 	EndProjectSection
 EndProject
 Global

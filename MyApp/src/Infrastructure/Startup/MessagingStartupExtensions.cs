@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using MassTransit;
+using MyApp.Application;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure.Messaging;
 
@@ -25,7 +26,8 @@ public static class MessagingStartupExtensions
         services.AddMassTransit(x =>
         {
             x.SetKebabCaseEndpointNameFormatter();
-            x.AddConsumers(Assembly.GetExecutingAssembly());
+            x.AddConsumersFromNamespaceContaining<IApplicationAssemblyMarker>();
+            x.AddConsumersFromNamespaceContaining<IInfrastructureAssemblyMarker>();
 
             x.UsingRabbitMq((context, cfg) =>
             {
