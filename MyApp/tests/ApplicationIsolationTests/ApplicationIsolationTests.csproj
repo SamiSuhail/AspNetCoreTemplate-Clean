@@ -25,6 +25,7 @@
 	<PackageReference Include="Refit.HttpClientFactory" Version="7.1.2" />
 	<PackageReference Include="StrawberryShake.Server" Version="13.9.12" />
     <PackageReference Include="Testcontainers.PostgreSql" Version="3.10.0" />
+    <PackageReference Include="Verify.Xunit" Version="26.6.0" />
     <PackageReference Include="xunit" Version="2.9.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
       <PrivateAssets>all</PrivateAssets>
