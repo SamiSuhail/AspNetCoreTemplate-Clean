@@ -5,7 +5,6 @@ using MyApp.Server;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure.BackgroundJobs;
 using MyApp.Infrastructure.Database;
-using Microsoft.Extensions.Configuration;
 
 namespace MyApp.ApplicationIsolationTests.Core;
 
