@@ -33,7 +33,7 @@ public class Auth : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task<IResult> Register(
+    public static async Task<IResult> Register(
         [FromServices] ISender sender,
         [FromBody] RegisterRequest request,
         CancellationToken cancellationToken)
@@ -44,7 +44,7 @@ public class Auth : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task<IResult> ResendConfirmation(
+    public static async Task<IResult> ResendConfirmation(
         [FromServices] ISender sender,
         [FromBody] ResendConfirmationRequest request,
         CancellationToken cancellationToken)
@@ -55,7 +55,7 @@ public class Auth : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task<IResult> ConfirmUserRegistration(
+    public static async Task<IResult> ConfirmUserRegistration(
         [FromServices] ISender sender,
         [FromBody] ConfirmUserRegistrationRequest request,
         CancellationToken cancellationToken)
@@ -66,7 +66,7 @@ public class Auth : EndpointGroupBase
 
     [ProducesResponseType<LoginResponse>(200)]
     [ProducesResponseType(400)]
-    public async Task<LoginResponse> Login(
+    public static async Task<LoginResponse> Login(
         [FromServices] ISender sender,
         [FromBody] LoginRequest request,
         CancellationToken cancellationToken)
@@ -76,7 +76,7 @@ public class Auth : EndpointGroupBase
 
     [ProducesResponseType<RefreshTokenResponse>(200)]
     [ProducesResponseType(400)]
-    public async Task<RefreshTokenResponse> RefreshToken(
+    public static async Task<RefreshTokenResponse> RefreshToken(
         [FromServices] ISender sender,
         [FromBody] RefreshTokenRequest request,
         CancellationToken cancellationToken)
@@ -86,7 +86,7 @@ public class Auth : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task ForgotPassword(
+    public static async Task ForgotPassword(
         [FromServices] ISender sender,
         [FromBody] ForgotPasswordRequest request,
         CancellationToken cancellationToken)
@@ -96,7 +96,7 @@ public class Auth : EndpointGroupBase
 
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task ResetPassword(
+    public static async Task ResetPassword(
         [FromServices] ISender sender,
         [FromBody] ResetPasswordRequest request,
         CancellationToken cancellationToken)
