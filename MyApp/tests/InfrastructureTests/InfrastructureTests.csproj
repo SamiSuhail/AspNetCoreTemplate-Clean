@@ -15,6 +15,7 @@
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.8" />
 	  <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
 	  <PackageReference Include="Moq" Version="4.20.72" />
+	  <PackageReference Include="Testcontainers.PostgreSql" Version="3.10.0" />
 	  <PackageReference Include="xunit" Version="2.9.0" />
 	  <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
 		  <PrivateAssets>all</PrivateAssets>
@@ -23,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\DbDeploy\DbDeploy.csproj" />
     <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 

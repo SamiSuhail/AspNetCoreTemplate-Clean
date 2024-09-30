@@ -11,7 +11,12 @@ public class BackgroundJobsSettings : BaseSettings<BackgroundJobsSettings>
     public BackgroundJobSettings<CleanupConfirmationsBackgroundJob>? CleanupConfirmations { get; set; }
 }
 
-public class BackgroundJobSettings<TBackgroundJob>  where TBackgroundJob : BaseBackgroundJob<TBackgroundJob>
+public class BackgroundJobSettings<TBackgroundJob> : BackgroundJobSettings
+    where TBackgroundJob : BaseBackgroundJob<TBackgroundJob>
+{
+}
+
+public class BackgroundJobSettings
 {
     public required bool Enabled { get; set; }
     public string? CronSchedule { get; set; }

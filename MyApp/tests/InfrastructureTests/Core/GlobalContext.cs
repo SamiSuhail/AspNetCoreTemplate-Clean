@@ -1,18 +1,57 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MyApp.Infrastructure.Database;
+using Testcontainers.PostgreSql;
+using DbDeployHelpers = MyApp.DbDeploy.Helpers;
 
 namespace MyApp.InfrastructureTests.Core;
 
 public static class GlobalContext
 {
-    public static IConfigurationRoot Configuration { get; } = CreateConfiguration();
+    private static readonly PostgreSqlContainer _postgreSqlContainer;
+    private static readonly SemaphoreSlim _semaphore = new(1, 1);
+    private static bool _isInitialized = false;
 
-    private static IConfigurationRoot CreateConfiguration()
+    static GlobalContext()
     {
-        var builder = new ConfigurationBuilder();
+        _postgreSqlContainer = new PostgreSqlBuilder()
+            .WithCleanUp(true)
+            .WithDatabase($"test_run_{Guid.NewGuid()}")
+            .WithUsername("admin")
+            .WithPassword("admin")
+            .Build();
+    }
 
-        builder.AddInfrastructureAppsettings()
-            .AddEnvironmentVariables();
+    public static IConfigurationRoot Configuration { get; private set; } = default!;
 
-        return builder.Build();
+    public static string ConnectionString { get; private set; } = default!;
+
+    public static async Task InitializeAsync()
+    {
+        await _semaphore.WaitAsync();
+        try
+        {
+            if (_isInitialized)
+            {
+                _semaphore.Release();
+                return;
+            }
+
+            await _postgreSqlContainer.StartAsync();
+            ConnectionString = _postgreSqlContainer.GetConnectionString();
+            DbDeployHelpers.DeployDatabase(ConnectionString);
+
+            Configuration = new ConfigurationBuilder()
+                .AddInfrastructureAppsettings()
+                .AddInMemoryCollection([
+                    new($"{BaseSettings<ConnectionStringsSettings>.SectionName}:{nameof(ConnectionStringsSettings.Database)}", ConnectionString),
+                    ])
+                .Build();
+
+            _isInitialized = true;
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 }

@@ -25,16 +25,22 @@ public static class GlobalContext
     {
         await _semaphore.WaitAsync();
 
-        if (_isInitialized)
+        try
+        {
+            if (_isInitialized)
+            {
+                _semaphore.Release();
+                return;
+            }
+
+            await _postgreSqlContainer.StartAsync();
+            ConnectionString = _postgreSqlContainer.GetConnectionString();
+            DbDeployHelpers.DeployDatabase(ConnectionString);
+            _isInitialized = true;
+        }
+        finally
         {
             _semaphore.Release();
-            return;
         }
-
-        await _postgreSqlContainer.StartAsync();
-        ConnectionString = _postgreSqlContainer.GetConnectionString();
-        DbDeployHelpers.DeployDatabase(ConnectionString);
-        _isInitialized = true;
-        _semaphore.Release();
     }
 }
