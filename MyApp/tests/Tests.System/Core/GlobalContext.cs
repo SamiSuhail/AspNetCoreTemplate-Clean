@@ -7,25 +7,26 @@ using MyApp.Tests.System.Core.Settings;
 using MyApp.Tests.Utilities.Clients;
 using MyApp.Tests.Utilities.Clients.Extensions;
 using Refit;
+using Tests.Utilities;
 
 namespace MyApp.Tests.System.Core;
 
 public class GlobalContext
 {
-    public GlobalContext()
+    public IConfiguration Configuration { get; private set; } = default!;
+    public IApplicationClient UnauthorizedAppClient { get; private set; } = default!;
+    public IApplicationClient AppClient { get; private set; } = default!;
+
+    public async Task InitializeAsync()
+        => await GlobalInitializer.InitializeAsync(InitializeAsyncInternal);
+
+    private async Task InitializeAsyncInternal()
     {
         Configuration = new ConfigurationBuilder()
             .AddJsonFile("testsettings.system.json", optional: false)
             .AddEnvironmentVariables()
             .Build();
-    }
 
-    public IConfiguration Configuration { get; private set; }
-    public IApplicationClient UnauthorizedAppClient { get; private set; } = default!;
-    public IApplicationClient AppClient { get; private set; } = default!;
-
-    public async Task InitializeAsync()
-    {
         var settings = ServerSettings.Get(Configuration);
         var authSettings = settings.Auth;
 
