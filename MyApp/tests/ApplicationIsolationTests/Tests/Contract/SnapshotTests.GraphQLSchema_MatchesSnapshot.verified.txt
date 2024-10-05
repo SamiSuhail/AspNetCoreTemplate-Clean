@@ -2,11 +2,11 @@
   query: Query
 }
 
-type MeQuery @authorize {
-  user: UserQuery!
+type Me @authorize {
+  user: User!
 }
 
-type PingQuery {
+type Ping {
   default: Pong!
   database: Pong! @authorize
 }
@@ -16,11 +16,11 @@ type Pong {
 }
 
 type Query {
-  ping: PingQuery!
-  me: MeQuery!
+  ping: Ping!
+  me: Me!
 }
 
-type UserQuery {
+type User {
   id: Int!
   username: String!
   email: String!

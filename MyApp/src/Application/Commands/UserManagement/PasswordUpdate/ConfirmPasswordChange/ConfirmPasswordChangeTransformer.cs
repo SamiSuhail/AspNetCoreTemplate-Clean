@@ -1,4 +1,6 @@
-﻿using MyApp.Application.Utilities;
+﻿using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
+using MyApp.Application.Interfaces.Utilities;
+using MyApp.Application.Utilities;
 
 namespace MyApp.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 

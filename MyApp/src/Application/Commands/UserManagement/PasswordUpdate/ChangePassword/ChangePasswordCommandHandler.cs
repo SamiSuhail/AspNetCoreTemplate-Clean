@@ -1,17 +1,16 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
-using MyApp.Application.Infrastructure.Abstractions;
-using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Application.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
-
-public record ChangePasswordRequest(string NewPassword) : IRequest;
 
 public class ChangePasswordCommandHandler(IUserContextAccessor userContextAccessor, IScopedDbContext dbContext, IMessageProducer messageProducer) : IRequestHandler<ChangePasswordRequest>
 {

@@ -1,16 +1,15 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Application.Utilities;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.Shared.Confirmations;
 using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;
-using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Application.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
-
-public record ConfirmEmailChangeRequest(string OldEmailCode, string NewEmailCode) : IRequest;
 
 public class ConfirmEmailChangeCommandHandler(
     IUserContextAccessor userContextAccessor,

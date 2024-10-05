@@ -1,12 +1,13 @@
-﻿using MyApp.Application.Commands.Auth.Login;
-using MyApp.Application.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Application.Commands.Auth.PasswordManagement.ResetPassword;
-using MyApp.Application.Commands.Auth.RefreshToken;
+﻿using MyApp.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Application.Commands.Auth.Registration;
-using MyApp.Application.Commands.Auth.Registration.ConfirmUserRegistration;
-using MyApp.Application.Commands.Auth.Registration.Register;
-using MyApp.Application.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Application.Interfaces.Commands.Auth.Login;
+using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
+using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
+using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
+using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
 
 namespace MyApp.ApplicationIsolationTests.Tests.EndToEnd;
 

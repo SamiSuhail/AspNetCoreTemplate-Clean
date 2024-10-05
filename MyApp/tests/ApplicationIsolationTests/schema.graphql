@@ -9,22 +9,22 @@ enum ApplyPolicy {
 }
 
 type Query {
-  ping: PingQuery!
-  me: MeQuery!
+  ping: Ping!
+  me: Me!
 }
 
-type UserQuery {
+type User {
   id: Int!
   username: String!
   email: String!
   createdAt: DateTime!
 }
 
-type MeQuery {
-  user: UserQuery!
+type Me {
+  user: User!
 }
 
-type PingQuery {
+type Ping {
   default: Pong!
   database: Pong!
 }

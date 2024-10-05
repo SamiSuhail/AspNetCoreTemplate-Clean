@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
 using MyApp.Domain.Shared.Confirmations;
 
 namespace MyApp.Application.Commands.Auth.PasswordManagement.ResetPassword;

@@ -1,15 +1,14 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Application.Utilities;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Shared.Confirmations;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
-using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Application.Infrastructure.Abstractions.Database;
 
 namespace MyApp.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
-
-public record ConfirmPasswordChangeRequest(string Code) : IRequest;
 
 public class ConfirmPasswordChangeCommandHandler(IUserContextAccessor userContextAccessor, IScopedDbContext dbContext) : IRequestHandler<ConfirmPasswordChangeRequest>
 {

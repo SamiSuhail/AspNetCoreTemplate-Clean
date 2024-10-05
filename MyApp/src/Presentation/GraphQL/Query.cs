@@ -2,9 +2,9 @@
 
 public class Query
 {
-    public PingQuery Ping()
+    public Ping Ping()
         => new();
 
-    public MeQuery Me()
+    public Me Me()
         => new();
 }

@@ -4,13 +4,9 @@ using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
 
 namespace MyApp.Application.Commands.Auth.Registration.Register;
-
-public record RegisterRequest(
-    string Email,
-    string Username,
-    string Password) : IRequest;
 
 public class RegisterCommandHandler(IScopedDbContext dbContext, IMessageProducer messageProducer) : IRequestHandler<RegisterRequest>
 {

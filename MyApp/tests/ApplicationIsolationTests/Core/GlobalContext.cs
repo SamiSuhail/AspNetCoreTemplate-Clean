@@ -29,7 +29,6 @@ public static class GlobalContext
         {
             if (_isInitialized)
             {
-                _semaphore.Release();
                 return;
             }
 

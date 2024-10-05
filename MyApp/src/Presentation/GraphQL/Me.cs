@@ -1,5 +1,5 @@
 ﻿namespace MyApp.Presentation.GraphQL;
 
-public class MeQuery
+public class Me
 {
 }

@@ -1,4 +1,5 @@
 ﻿using MyApp.Application.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Domain.Auth.User;

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Domain.Shared.Confirmations;
 
 namespace MyApp.Application.Commands.Auth.Registration.ConfirmUserRegistration;

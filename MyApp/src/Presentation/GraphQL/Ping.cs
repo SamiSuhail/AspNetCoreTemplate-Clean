@@ -1,10 +1,10 @@
 ﻿using HotChocolate.Authorization;
 using MediatR;
-using MyApp.Application.Queries.Ping;
+using MyApp.Application.Interfaces.Queries.Ping;
 
 namespace MyApp.Presentation.GraphQL;
 
-public class PingQuery
+public class Ping
 {
     public Pong Default()
         => new();

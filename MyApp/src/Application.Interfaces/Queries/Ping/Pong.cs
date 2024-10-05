@@ -1,4 +1,4 @@
-﻿namespace MyApp.Application.Queries.Ping;
+﻿namespace MyApp.Application.Interfaces.Queries.Ping;
 
 public record Pong(string Message = Pong.DefaultMessage)
 {

@@ -4,10 +4,9 @@ using MyApp.Domain.Auth.UserConfirmation;
 using MyApp.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Domain.Shared.Confirmations;
 using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
 
 namespace MyApp.Application.Commands.Auth.Registration.ConfirmUserRegistration;
-
-public record ConfirmUserRegistrationRequest(string Code) : IRequest;
 
 public class ConfirmUserRegistrationCommandHandler(IScopedDbContext dbContext) : IRequestHandler<ConfirmUserRegistrationRequest>
 {

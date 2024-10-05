@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Queries.Ping;
+﻿using MyApp.Application.Interfaces.Queries.Ping;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Queries.Ping;
 

@@ -5,10 +5,9 @@ using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Domain.Auth.User;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
 
 namespace MyApp.Application.Commands.Auth.PasswordManagement.ForgotPassword;
-
-public record ForgotPasswordRequest(string Email, string Username) : IRequest;
 
 public class ForgotPasswordCommandHandler(IScopedDbContext dbContext, IMessageProducer messageProducer) : IRequestHandler<ForgotPasswordRequest>
 {

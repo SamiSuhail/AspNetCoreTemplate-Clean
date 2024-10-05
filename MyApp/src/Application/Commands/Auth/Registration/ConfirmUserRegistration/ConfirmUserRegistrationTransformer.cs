@@ -1,4 +1,6 @@
-﻿using MyApp.Application.Utilities;
+﻿using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
+using MyApp.Application.Interfaces.Utilities;
+using MyApp.Application.Utilities;
 
 namespace MyApp.Application.Commands.Auth.Registration.ConfirmUserRegistration;
 

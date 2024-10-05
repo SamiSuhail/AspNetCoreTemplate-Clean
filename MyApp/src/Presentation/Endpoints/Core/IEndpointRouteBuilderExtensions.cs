@@ -14,6 +14,17 @@ public static class IEndpointRouteBuilderExtensions
         return builder;
     }
 
+    public static IEndpointRouteBuilder MapGetWithoutDescription(this IEndpointRouteBuilder builder, Delegate handler, string pattern = "")
+    {
+        handler.ThrowIfAnonymousMethod();
+
+        builder.MapGet(pattern, handler)
+            .WithName(handler.Method.Name)
+            .ExcludeFromDescription();
+
+        return builder;
+    }
+
     public static IEndpointRouteBuilder MapPost(this IEndpointRouteBuilder builder, Delegate handler, string pattern = "")
     {
         handler.ThrowIfAnonymousMethod();

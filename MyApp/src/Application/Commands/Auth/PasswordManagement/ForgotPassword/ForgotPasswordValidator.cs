@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
 
 namespace MyApp.Application.Commands.Auth.PasswordManagement.ForgotPassword;
 

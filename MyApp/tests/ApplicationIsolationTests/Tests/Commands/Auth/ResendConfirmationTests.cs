@@ -1,9 +1,9 @@
 ﻿using MyApp.Application.Commands.Auth.Registration;
-using MyApp.Application.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Domain.Auth.UserConfirmation;
 using MyApp.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Domain.Auth.User;
 using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
 
 namespace MyApp.ApplicationIsolationTests.Tests.Commands.Auth;
 
