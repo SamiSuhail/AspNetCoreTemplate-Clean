@@ -11,16 +11,16 @@ using Tests.Utilities;
 
 namespace MyApp.Tests.System.Core;
 
-public class GlobalContext
+public static class GlobalContext
 {
-    public IConfiguration Configuration { get; private set; } = default!;
-    public IApplicationClient UnauthorizedAppClient { get; private set; } = default!;
-    public IApplicationClient AppClient { get; private set; } = default!;
+    public static IConfiguration Configuration { get; private set; } = default!;
+    public static IApplicationClient UnauthorizedAppClient { get; private set; } = default!;
+    public static IApplicationClient AppClient { get; private set; } = default!;
 
-    public async Task InitializeAsync()
+    public static async Task InitializeAsync()
         => await GlobalInitializer.InitializeAsync(InitializeAsyncInternal);
 
-    private async Task InitializeAsyncInternal()
+    private static async Task InitializeAsyncInternal()
     {
         Configuration = new ConfigurationBuilder()
             .AddJsonFile("testsettings.system.json", optional: false)
