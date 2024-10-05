@@ -1,5 +1,4 @@
 using MyApp.Infrastructure.Logging;
-using MyApp.Server;
 
 CustomBootstrapLogger.Create();
 
@@ -7,8 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 configuration.AddInfrastructureAppsettings()
-    .AddEnvironmentVariables()
-    .AddInMemoryCollection(ProgramApi.ConfigurationOverrides);
+    .AddEnvironmentVariables();
 
 builder.Services.AddInfrastructureServices(configuration)
     .AddApplicationServices()
@@ -23,9 +21,5 @@ await app.RunAsync();
 
 namespace MyApp.Server
 {
-    public partial class ProgramApi 
-    {
-        // Used only by tests
-        public static IEnumerable<KeyValuePair<string, string?>>? ConfigurationOverrides { get; set; } = null;
-    }
+    public partial class ProgramApi { }
 }

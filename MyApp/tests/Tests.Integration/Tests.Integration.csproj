@@ -31,7 +31,6 @@
     <ProjectReference Include="..\..\src\DbDeploy\DbDeploy.csproj" />
     <ProjectReference Include="..\..\src\Server\Server.csproj" />
     <ProjectReference Include="..\Tests.Utilities.Clients\Tests.Utilities.Clients.csproj" />
-    <ProjectReference Include="..\Tests.Utilities\Tests.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

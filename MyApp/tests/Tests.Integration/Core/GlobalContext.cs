@@ -1,32 +1,24 @@
-﻿using Testcontainers.PostgreSql;
-using Tests.Utilities;
+﻿using MyApp.Infrastructure.Database;
+using Testcontainers.PostgreSql;
 using DbDeployHelpers = MyApp.DbDeploy.Helpers;
 
 namespace MyApp.Tests.Integration.Core;
 
 public static class GlobalContext
 {
-    private static readonly PostgreSqlContainer _postgreSqlContainer;
+    public static Task Initialize { get; } = new Lazy<Task>(() => Task.Run(InitializeAsyncInternal)).Value;
 
-    static GlobalContext()
+    private static async Task InitializeAsyncInternal()
     {
-        _postgreSqlContainer = new PostgreSqlBuilder()
+        var postgreSqlContainer = new PostgreSqlBuilder()
             .WithCleanUp(true)
             .WithDatabase($"test_run_{Guid.NewGuid()}")
             .WithUsername("admin")
             .WithPassword("admin")
             .Build();
-    }
-
-    public static string ConnectionString { get; private set; } = default!;
-
-    public static async Task InitializeAsync()
-        => await GlobalInitializer.InitializeAsync(InitializeAsyncInternal);
-
-    private static async Task InitializeAsyncInternal()
-    {
-        await _postgreSqlContainer.StartAsync();
-        ConnectionString = _postgreSqlContainer.GetConnectionString();
-        DbDeployHelpers.DeployDatabase(ConnectionString);
+        await postgreSqlContainer.StartAsync();
+        var connectionString = postgreSqlContainer.GetConnectionString();
+        DbDeployHelpers.DeployDatabase(connectionString);
+        Environment.SetEnvironmentVariable($"{ConnectionStringsSettings.SectionName}:{nameof(ConnectionStringsSettings.Database)}", connectionString);
     }
 }

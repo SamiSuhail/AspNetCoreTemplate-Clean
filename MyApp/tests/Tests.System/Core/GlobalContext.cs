@@ -1,68 +1,61 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using MyApp.Application.Interfaces.Commands.Auth.Login;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
 using MyApp.Tests.System.Core.Settings;
 using MyApp.Tests.Utilities.Clients;
 using MyApp.Tests.Utilities.Clients.Extensions;
 using Refit;
-using Tests.Utilities;
 
 namespace MyApp.Tests.System.Core;
 
 public static class GlobalContext
 {
-    public static IConfiguration Configuration { get; private set; } = default!;
-    public static IApplicationClient UnauthorizedAppClient { get; private set; } = default!;
-    public static IApplicationClient AppClient { get; private set; } = default!;
+    public static ServerSettings Settings { get; private set; } = default!;
+    public static string AccessToken { get; private set; } = default!;
 
-    public static async Task InitializeAsync()
-        => await GlobalInitializer.InitializeAsync(InitializeAsyncInternal);
+    public static Task Initialize { get; } = new Lazy<Task>(() => Task.Run(InitializeAsyncInternal)).Value;
 
     private static async Task InitializeAsyncInternal()
     {
-        Configuration = new ConfigurationBuilder()
+        var configuration = new ConfigurationBuilder()
             .AddJsonFile("testsettings.system.json", optional: false)
             .AddEnvironmentVariables()
             .Build();
 
-        var settings = ServerSettings.Get(Configuration);
-        var authSettings = settings.Auth;
+        Settings = ServerSettings.Get(configuration);
+        var authSettings = Settings.Auth;
 
         var httpClient = new HttpClient
         {
-            BaseAddress = new(settings.BaseUrl),
+            BaseAddress = new(Settings.BaseUrl),
         };
-        UnauthorizedAppClient = RestService.For<IApplicationClient>(httpClient);
+        var client = RestService.For<IApplicationClient>(httpClient);
 
-        var authorizedHttpClient = new HttpClient
+        var response = await client.Login(new(authSettings.Username, authSettings.Password));
+
+        if (response.IsSuccessStatusCode)
         {
-            BaseAddress = new(settings.BaseUrl),
-        };
-
-        var loginRequest = new LoginRequest(authSettings.Username, authSettings.Password);
-        var loginResponse = await UnauthorizedAppClient.Login(loginRequest);
-
-        if (!loginResponse.IsSuccessStatusCode)
-        {
-            loginResponse.AssertInvalidLoginFailure();
-
-            var registerRequest = new RegisterRequest(authSettings.Email, authSettings.Username, authSettings.Password);
-            var registerResponse = await UnauthorizedAppClient.Register(registerRequest);
-            registerResponse.AssertSuccess();
-
-            var confirmationRequest = new ConfirmUserRegistrationRequest("000000");
-            var confirmationResponse = await UnauthorizedAppClient.ConfirmUserRegistration(confirmationRequest);
-            confirmationResponse.AssertSuccess();
-
-            loginResponse = await UnauthorizedAppClient.Login(loginRequest);
-            loginResponse.AssertSuccess();
+            AssertAndSetAccessToken(response);
+            return;
         }
 
-        var accessToken = loginResponse.Content?.AccessToken;
-        accessToken.Should().NotBeNullOrEmpty();
-        authorizedHttpClient.SetAuthorizationHeader(accessToken!);
-        AppClient = RestService.For<IApplicationClient>(authorizedHttpClient);
+        response.AssertInvalidLoginFailure();
+
+        var registerResponse = await client.Register(new(authSettings.Email, authSettings.Username, authSettings.Password));
+        registerResponse.AssertSuccess();
+
+        var confirmationResponse = await client.ConfirmUserRegistration(new("000000"));
+        confirmationResponse.AssertSuccess();
+
+        response = await client.Login(new(authSettings.Username, authSettings.Password));
+        AssertAndSetAccessToken(response);
+    }
+
+    private static void AssertAndSetAccessToken(IApiResponse<LoginResponse> response)
+    {
+        response.AssertSuccess();
+        var token = response.Content?.AccessToken;
+        token.Should().NotBeNullOrEmpty();
+        AccessToken = token!;
     }
 }

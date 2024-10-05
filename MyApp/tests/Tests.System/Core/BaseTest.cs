@@ -7,7 +7,7 @@ public class BaseTest(TestFixture fixture) : IClassFixture<TestFixture>, IAsyncL
 
     public async Task InitializeAsync()
     {
-        await GlobalContext.InitializeAsync();
+        await Task.CompletedTask;
     }
 
     public Task DisposeAsync()
