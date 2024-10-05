@@ -1,4 +1,5 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Clients;
 

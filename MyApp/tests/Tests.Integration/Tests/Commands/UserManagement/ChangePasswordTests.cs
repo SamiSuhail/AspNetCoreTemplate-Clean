@@ -4,6 +4,7 @@ using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
+using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 

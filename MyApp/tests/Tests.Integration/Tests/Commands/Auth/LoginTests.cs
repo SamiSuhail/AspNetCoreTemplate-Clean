@@ -1,6 +1,7 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Interfaces.Commands.Auth.Login;
 using MyApp.Domain.Auth.User.Failures;
+using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -76,7 +77,7 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.Login(request);
 
         // Assert
-        AssertInvalidFailure(response);
+        response.AssertInvalidLoginFailure();
     }
 
     [Fact]
@@ -102,11 +103,6 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.Login(request);
 
         // Assert
-        AssertInvalidFailure(response);
-    }
-
-    private static void AssertInvalidFailure(IApiResponse<LoginResponse> response)
-    {
-        response.AssertSingleBadRequestError(LoginInvalidFailure.Key, LoginInvalidFailure.Message);
+        response.AssertInvalidLoginFailure();
     }
 }

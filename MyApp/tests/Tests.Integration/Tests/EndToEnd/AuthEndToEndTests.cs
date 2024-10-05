@@ -8,6 +8,7 @@ using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.EndToEnd;
 

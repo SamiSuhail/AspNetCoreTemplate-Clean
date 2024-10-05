@@ -1,6 +1,6 @@
 ﻿using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
-using MyApp.Application.Interfaces.Utilities;
 using MyApp.Application.Utilities;
+using MyApp.Utilities.Strings;
 
 namespace MyApp.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 

@@ -10,8 +10,9 @@ using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEm
 using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Application.Interfaces.Queries.Ping;
+using Refit;
 
-namespace MyApp.Tests.Integration.Clients;
+namespace MyApp.Tests.Utilities.Clients;
 
 public interface IApplicationClient
 {

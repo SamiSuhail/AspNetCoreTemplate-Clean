@@ -7,11 +7,21 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Include="testsettings.system.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="coverlet.collector" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="FluentAssertions" Version="6.12.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
 		<PackageReference Include="Refit" Version="7.1.2" />
 		<PackageReference Include="xunit" Version="2.9.0" />
@@ -23,6 +33,8 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\Application.Interfaces\Application.Interfaces.csproj" />
+	  <ProjectReference Include="..\..\src\Utilities\Utilities.csproj" />
+	  <ProjectReference Include="..\Tests.Utilities.Clients\Tests.Utilities.Clients.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

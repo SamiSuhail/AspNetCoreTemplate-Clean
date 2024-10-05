@@ -1,6 +1,7 @@
 ﻿using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.UserConfirmation.Failures;
+using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 

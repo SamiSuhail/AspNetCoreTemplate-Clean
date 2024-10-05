@@ -5,7 +5,7 @@
     "strawberryShake": {
       "name": "ApplicationGraphQLClient",
       "url": "https://localhost:7018/graphql/",
-      "namespace": "MyApp.Tests.Integration.Core",
+      "namespace": "MyApp.Tests.Utilities.Clients",
       "records": {
         "inputs": false,
         "entities": false

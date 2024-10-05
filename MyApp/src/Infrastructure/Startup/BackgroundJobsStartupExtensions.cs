@@ -1,5 +1,6 @@
 ﻿using MyApp.Infrastructure.BackgroundJobs;
 using MyApp.Infrastructure.Database;
+using MyApp.Utilities.Settings;
 using Quartz;
 
 namespace MyApp.Infrastructure.Startup;

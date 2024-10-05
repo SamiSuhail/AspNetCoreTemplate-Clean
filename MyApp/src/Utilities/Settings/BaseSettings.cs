@@ -1,4 +1,6 @@
-﻿namespace MyApp.Infrastructure.Utilities;
+﻿using Microsoft.Extensions.Configuration;
+
+namespace MyApp.Utilities.Settings;
 
 public abstract class BaseSettings<TActual> where TActual : class
 {

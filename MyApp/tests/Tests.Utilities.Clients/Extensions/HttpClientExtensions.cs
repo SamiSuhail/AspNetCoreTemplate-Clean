@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace MyApp.Tests.Integration.Clients;
+namespace MyApp.Tests.Utilities.Clients.Extensions;
 
 public static class HttpClientExtensions
 {

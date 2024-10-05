@@ -6,12 +6,6 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
-    <ItemGroup>
-		<None Update="Clients\Queries\*.graphql">
-			<Generator>MSBuild:GenerateGraphQLCode</Generator>
-	    </None>
-    </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -36,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\DbDeploy\DbDeploy.csproj" />
     <ProjectReference Include="..\..\src\Server\Server.csproj" />
+    <ProjectReference Include="..\Tests.Utilities.Clients\Tests.Utilities.Clients.csproj" />
   </ItemGroup>
 
   <ItemGroup>

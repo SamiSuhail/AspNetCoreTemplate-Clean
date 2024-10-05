@@ -2,6 +2,7 @@
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
+using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 

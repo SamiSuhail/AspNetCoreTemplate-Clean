@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="appsettings.dbdeploy.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="appsettings.dbdeploy.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

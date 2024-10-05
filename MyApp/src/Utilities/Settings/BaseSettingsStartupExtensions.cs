@@ -1,6 +1,7 @@
-﻿using MyApp.Infrastructure.Utilities;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace MyApp.Infrastructure.Startup;
+namespace MyApp.Utilities.Settings;
 
 public static class BaseSettingsStartupExtensions
 {

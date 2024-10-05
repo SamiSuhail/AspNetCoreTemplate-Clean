@@ -1,4 +1,4 @@
-﻿using MyApp.Infrastructure.Utilities;
+﻿using MyApp.Utilities.Settings;
 
 namespace MyApp.Infrastructure.Database;
 

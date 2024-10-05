@@ -1,5 +1,5 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Application.Interfaces.Utilities;
+using MyApp.Utilities.Strings;
 
 namespace MyApp.Infrastructure.Auth;
 

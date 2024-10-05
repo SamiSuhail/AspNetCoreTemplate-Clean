@@ -1,4 +1,8 @@
-﻿namespace MyApp.Tests.Integration.Utilities.Assert;
+﻿using FluentAssertions;
+using FluentAssertions.Execution;
+using StrawberryShake;
+
+namespace MyApp.Tests.Utilities.Clients.Extensions;
 
 public static class AssertGraphQLResponseExtensions
 {

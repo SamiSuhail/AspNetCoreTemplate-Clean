@@ -1,6 +1,6 @@
 ﻿using MyApp.Application.BackgroundJobs.CleanupConfirmations;
-using MyApp.Infrastructure.Utilities;
 using MyApp.Application.Utilities;
+using MyApp.Utilities.Settings;
 
 namespace MyApp.Infrastructure.BackgroundJobs;
 

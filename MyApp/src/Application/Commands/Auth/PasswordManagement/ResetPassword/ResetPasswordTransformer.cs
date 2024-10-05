@@ -1,6 +1,6 @@
 ﻿using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
-using MyApp.Application.Interfaces.Utilities;
 using MyApp.Application.Utilities;
+using MyApp.Utilities.Strings;
 
 namespace MyApp.Application.Commands.Auth.PasswordManagement.ResetPassword;
 

@@ -1,6 +1,7 @@
 ﻿using MyApp.Domain.Auth.User.Failures;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
+using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
