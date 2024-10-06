@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Configuration;
-using MyApp.Application.Interfaces.Commands.Auth.Login;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Tests.System.Core.Settings;
 using MyApp.Tests.Utilities.Clients;

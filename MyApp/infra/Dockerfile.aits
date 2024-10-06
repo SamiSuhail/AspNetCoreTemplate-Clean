@@ -1,4 +1,0 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS final-aits
-WORKDIR /app
-COPY --from=base /app/aits .
-ENTRYPOINT dotnet test ApplicationIsolationTests.dll --no-build --logger:trx

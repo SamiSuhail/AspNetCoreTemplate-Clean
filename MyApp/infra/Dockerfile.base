@@ -15,12 +15,12 @@ RUN dotnet build "./MyApp.sln" -c $BUILD_CONFIGURATION
 FROM build AS publish
 RUN dotnet publish "./src/DbDeploy/DbDeploy.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/dbdeploy
 RUN dotnet publish "./src/Server/Server.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/server
-RUN dotnet publish "./tests/ApplicationIsolationTests/ApplicationIsolationTests.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/aits
+RUN dotnet publish "./tests/Tests.Integration/Tests.Integration.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/testsintegration
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 COPY --from=publish /app/publish/dbdeploy ./dbdeploy
 COPY --from=publish /app/publish/server ./server
-COPY --from=publish /app/publish/aits ./aits
+COPY --from=publish /app/publish/testsintegration ./testsintegration
 
 VOLUME /app
