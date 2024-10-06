@@ -1,13 +1,24 @@
-﻿using System.Reflection;
-using MassTransit;
+﻿using MassTransit;
+using MyApp.Application;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure.Messaging;
+using MyApp.Utilities.Settings;
 
 namespace MyApp.Infrastructure.Startup;
 
 public static class MessagingStartupExtensions
 {
     public static IServiceCollection AddCustomMessaging(this IServiceCollection services, IConfiguration configuration)
+        => services.AddCustomMessaging(configuration, x =>
+        {
+            x.AddConsumersFromNamespaceContaining<IApplicationAssemblyMarker>();
+            x.AddConsumersFromNamespaceContaining<IInfrastructureAssemblyMarker>();
+        });
+
+    public static IServiceCollection AddCustomMessaging(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        Action<IBusRegistrationConfigurator> setupConsumers)
     {
         services.AddCustomSettings<MessagingSettings>(configuration);
 
@@ -25,7 +36,8 @@ public static class MessagingStartupExtensions
         services.AddMassTransit(x =>
         {
             x.SetKebabCaseEndpointNameFormatter();
-            x.AddConsumers(Assembly.GetExecutingAssembly());
+
+            setupConsumers(x);
 
             x.UsingRabbitMq((context, cfg) =>
             {

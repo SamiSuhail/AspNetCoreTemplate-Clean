@@ -1,0 +1,37 @@
+schema {
+  query: Query
+}
+
+enum ApplyPolicy {
+  BEFORE_RESOLVER
+  AFTER_RESOLVER
+  VALIDATION
+}
+
+type Query {
+  ping: Ping!
+  me: Me!
+}
+
+type User {
+  id: Int!
+  username: String!
+  email: String!
+  createdAt: DateTime!
+}
+
+type Me {
+  user: User!
+}
+
+type Ping {
+  default: Pong!
+  database: Pong!
+}
+
+type Pong {
+  message: String!
+}
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime

@@ -4,10 +4,9 @@ using MyApp.Domain.Auth.UserConfirmation;
 using MyApp.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
 
 namespace MyApp.Application.Commands.Auth.Registration.ResendConfirmation;
-
-public record ResendConfirmationRequest(string Email) : IRequest;
 
 public class ResendConfirmationCommandHandler(IScopedDbContext dbContext, IMessageProducer messageProducer) : IRequestHandler<ResendConfirmationRequest>
 {

@@ -1,0 +1,10 @@
+{
+  "Server": {
+    "BaseUrl": "https://localhost:7018",
+    "Auth": {
+      "Username": "SomeUsername",
+      "Email": "user@email.com",
+      "Password": "SomeSecretPassword"
+    }
+  }
+}

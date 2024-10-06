@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using MediatR;
+﻿using MediatR;
 using MyApp.Application.Startup.Behaviours;
 
 namespace MyApp.Application.Startup;
@@ -10,7 +9,7 @@ public static class MediatRStartupExtensions
     {
         services.AddMediatR(config =>
          {
-             config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+             config.RegisterServicesFromAssemblyContaining<IApplicationAssemblyMarker>();
              config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
          });
 

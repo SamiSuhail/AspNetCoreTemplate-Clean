@@ -1,12 +1,12 @@
 using MyApp.Infrastructure.Logging;
-using MyApp.Presentation;
 
 CustomBootstrapLogger.Create();
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-configuration.AddEnvironmentVariables();
+configuration.AddInfrastructureAppsettings()
+    .AddEnvironmentVariables();
 
 builder.Services.AddInfrastructureServices(configuration)
     .AddApplicationServices()

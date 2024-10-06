@@ -3,10 +3,9 @@ using MyApp.Application.Utilities;
 using MyApp.Domain.Auth.User;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.UserManagement.SignOutOnAllDevices;
 
 namespace MyApp.Application.Commands.UserManagement.SignOutOnAllDevices;
-
-public record SignOutOnAllDevicesRequest() : IRequest;
 
 public class SignOutOnAllDevicesCommandHandler(IUserContextAccessor userContextAccessor, IScopedDbContext dbContext) : IRequestHandler<SignOutOnAllDevicesRequest>
 {

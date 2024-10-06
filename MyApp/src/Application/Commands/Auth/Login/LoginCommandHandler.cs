@@ -2,16 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.Auth.Login;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 
 namespace MyApp.Application.Commands.Auth.Login;
-
-public record LoginRequest(
-    string Username,
-    string Password) : IRequest<LoginResponse>;
-
-public record LoginResponse(string AccessToken, string RefreshToken);
 
 public class LoginCommandHandler(IScopedDbContext dbContext, IJwtGenerator jwtGenerator) : IRequestHandler<LoginRequest, LoginResponse>
 {

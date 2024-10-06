@@ -4,12 +4,9 @@ using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
 
 namespace MyApp.Application.Commands.Auth.RefreshToken;
-
-public record RefreshTokenRequest(string RefreshToken) : IRequest<RefreshTokenResponse>;
-
-public record RefreshTokenResponse(string AccessToken, string RefreshToken);
 
 public class RefreshTokenCommandHandler(
     IJwtReader jwtReader,

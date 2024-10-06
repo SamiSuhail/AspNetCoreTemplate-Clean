@@ -1,4 +1,6 @@
-﻿using MyApp.Application.Utilities;
+﻿using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
+using MyApp.Application.Utilities;
+using MyApp.Utilities.Strings;
 
 namespace MyApp.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 
@@ -7,7 +9,7 @@ public class ConfirmEmailTransformer : IRequestTransformer<ConfirmEmailChangeReq
     public ConfirmEmailChangeRequest Transform(ConfirmEmailChangeRequest request)
         => request with
         {
-            OldEmailCode = request.OldEmailCode.Trim(),
-            NewEmailCode = request.NewEmailCode.Trim(),
+            OldEmailCode = request.OldEmailCode.RemoveWhitespace(),
+            NewEmailCode = request.NewEmailCode.RemoveWhitespace(),
         };
 }

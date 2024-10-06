@@ -4,10 +4,9 @@ using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Domain.Shared.Confirmations;
 using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
 
 namespace MyApp.Application.Commands.Auth.PasswordManagement.ResetPassword;
-
-public record ResetPasswordRequest(string Code, string Password) : IRequest;
 
 public class ResetPasswordCommandHandler(IScopedDbContext dbContext) : IRequestHandler<ResetPasswordRequest>
 {

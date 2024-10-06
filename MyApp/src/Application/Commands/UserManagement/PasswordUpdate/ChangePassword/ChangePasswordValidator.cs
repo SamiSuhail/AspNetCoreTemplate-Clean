@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MyApp.Application.Commands.Auth;
+using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ChangePassword;
 
 namespace MyApp.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
 

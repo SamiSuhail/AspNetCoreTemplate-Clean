@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ChangeEmail;
 
 namespace MyApp.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
 

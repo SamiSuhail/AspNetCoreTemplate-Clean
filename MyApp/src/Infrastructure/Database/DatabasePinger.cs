@@ -1,5 +1,5 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Queries.Ping;
+using MyApp.Application.Interfaces.Queries.Ping;
 using Npgsql;
 
 namespace MyApp.Infrastructure.Database;

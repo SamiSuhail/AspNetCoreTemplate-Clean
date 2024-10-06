@@ -1,5 +1,6 @@
 ﻿using MyApp.Infrastructure.BackgroundJobs;
 using MyApp.Infrastructure.Database;
+using MyApp.Utilities.Settings;
 using Quartz;
 
 namespace MyApp.Infrastructure.Startup;
@@ -7,6 +8,12 @@ namespace MyApp.Infrastructure.Startup;
 public static class BackgroundJobsStartupExtensions
 {
     public static IServiceCollection AddCustomBackgroundJobs(this IServiceCollection services, IConfiguration configuration)
+        => AddCustomBackgroundJobs(services, configuration, BackgroundScheduleStarter.StartAll);
+
+    public static IServiceCollection AddCustomBackgroundJobs(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        Action<IServiceCollectionQuartzConfigurator, BackgroundJobsSettings> addJobsAction)
     {
         var backgroundJobsSettings = services.AddCustomSettings<BackgroundJobsSettings>(configuration);
         if (!backgroundJobsSettings.Enabled)
@@ -15,7 +22,7 @@ public static class BackgroundJobsStartupExtensions
         var connectionStrings = ConnectionStringsSettings.Get(configuration);
         services.AddQuartz(c =>
         {
-            BackgroundScheduleStarter.StartAll(c, backgroundJobsSettings);
+            addJobsAction.Invoke(c, backgroundJobsSettings);
 
             c.UsePersistentStore(o =>
             {

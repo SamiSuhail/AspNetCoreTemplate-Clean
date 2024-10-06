@@ -10,7 +10,7 @@ public static class GraphQLStartupExtensions
         services.AddGraphQLServer()
             .AddAuthorization()
             .AddQueryType<Query>()
-            .AddTypeExtension<AuthQuery>()
+            .AddTypeExtension<MeAuth>()
             .AddErrorFilter<CustomGraphQLExceptionHandler>()
             .AddTypeConverter<DateTime, DateTimeOffset>(dateTime => new DateTimeOffset(dateTime, TimeSpan.Zero))
             .AddTypeConverter<DateTimeOffset, DateTime>(dateTimeOffset => dateTimeOffset.UtcDateTime)

@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MyApp.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
-using MyApp.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
-using MyApp.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
-using MyApp.Application.Commands.UserManagement.SignOutOnAllDevices;
+using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ChangeEmail;
+using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
+using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ChangePassword;
+using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
+using MyApp.Application.Interfaces.Commands.UserManagement.SignOutOnAllDevices;
 using MyApp.Presentation.Endpoints.Core;
 
 namespace MyApp.Presentation.Endpoints;

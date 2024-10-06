@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 using MyApp.Infrastructure.Database;
+using MyApp.Utilities.Settings;
 
 namespace MyApp.Infrastructure.Startup;
 

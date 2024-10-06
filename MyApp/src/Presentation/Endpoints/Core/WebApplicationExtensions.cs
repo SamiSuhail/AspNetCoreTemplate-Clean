@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Utilities;
+﻿using MyApp.Utilities.Strings;
 
 namespace MyApp.Presentation.Endpoints.Core;
 

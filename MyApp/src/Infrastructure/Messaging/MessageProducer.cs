@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using MassTransit;
 using MyApp.Application.Infrastructure.Abstractions;
-using MyApp.Application.Utilities;
+using MyApp.Utilities.Strings;
 
 namespace MyApp.Infrastructure.Messaging;
 
