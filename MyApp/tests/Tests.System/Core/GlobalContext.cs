@@ -1,9 +1,11 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using MyApp.Application.Interfaces.Commands.Auth.Login;
+using MyApp.Domain.Auth.User.Failures;
 using MyApp.Tests.System.Core.Settings;
 using MyApp.Tests.Utilities.Clients;
 using MyApp.Tests.Utilities.Clients.Extensions;
+using MyApp.Utilities.Collections;
 using Refit;
 
 namespace MyApp.Tests.System.Core;
@@ -35,24 +37,32 @@ public static class GlobalContext
 
         if (response.IsSuccessStatusCode)
         {
-            AssertAndSetAccessToken(response);
+            response.AssertSuccess();
+            var accessToken = response.Content?.AccessToken;
+            accessToken.Should().NotBeNullOrEmpty();
+            AccessToken = accessToken!;
             return;
         }
 
-        response.AssertInvalidLoginFailure();
+        var problemDetails = response.AssertBadRequest();
 
-        var registerResponse = await client.Register(new(authSettings.Email, authSettings.Username, authSettings.Password));
-        registerResponse.AssertSuccess();
+        if (problemDetails.Errors.GetValueOrDefault(UserRegistrationNotConfirmedFailure.Key)?.Any(message => message == UserRegistrationNotConfirmedFailure.Message) == true)
+        {
+            var resendConfirmationResponse = await client.ResendConfirmation(new(authSettings.Email));
+            resendConfirmationResponse.AssertSuccess();
+        }
+        else
+        {
+            response.AssertInvalidLoginFailure();
+
+            var registerResponse = await client.Register(new(authSettings.Email, authSettings.Username, authSettings.Password));
+            registerResponse.AssertSuccess();
+        }
 
         var confirmationResponse = await client.ConfirmUserRegistration(new("000000"));
         confirmationResponse.AssertSuccess();
 
         response = await client.Login(new(authSettings.Username, authSettings.Password));
-        AssertAndSetAccessToken(response);
-    }
-
-    private static void AssertAndSetAccessToken(IApiResponse<LoginResponse> response)
-    {
         response.AssertSuccess();
         var token = response.Content?.AccessToken;
         token.Should().NotBeNullOrEmpty();
