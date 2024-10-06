@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+        <Title>Endpoint Group</Title>
+    	<Description>Class for endpoint group with sample endpoints</Description>
+   		<Shortcut>s_c_p_group</Shortcut>
+		</Header>
+		<Snippet>
+			<Code Language="CSharp">
+				<![CDATA[
+public class Sample : EndpointGroupBase
+{
+    public override void Map(WebApplication app)
+    {
+        app.MapGroup(this)
+            .RequireAuthorization()
+            .MapPost(NoContent, "no-content")
+            .MapPost(Content, "content");
+    }
+
+    [ProducesResponseType(204)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(400)]
+    public async Task NoContent(
+        [FromServices] ISender sender,
+        [FromBody] NoContentRequest request,
+        CancellationToken cancellationToken)
+    {
+        await sender.Send(request, cancellationToken);
+    }
+
+    [ProducesResponseType(401)]
+    [ProducesResponseType(400)]
+    public async Task<ContentResponse> Content(
+        [FromServices] ISender sender,
+        [FromBody] ContentRequest request,
+        CancellationToken cancellationToken)
+    {
+        return await sender.Send(request, cancellationToken);
+    }
+}
+				]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

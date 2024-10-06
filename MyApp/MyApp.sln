@@ -46,6 +46,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Utilities.Clients", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "src\Utilities\Utilities.csproj", "{A723E12B-FC23-483A-AD07-705EB3721C89}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "code_snippets", "code_snippets", "{85B77CD8-077A-4998-A51D-257207956C4B}"
+	ProjectSection(SolutionItems) = preProject
+		code_snippets\first.snippet = code_snippets\first.snippet
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +117,7 @@ Global
 		{68FDB4EE-352E-43A9-B8A0-6430DB75EFF0} = {09FB4069-50DE-43AE-B5EF-95AB77B1CC6C}
 		{0E328D8F-98C3-4EE8-A485-9F4ECC3051BF} = {09FB4069-50DE-43AE-B5EF-95AB77B1CC6C}
 		{A723E12B-FC23-483A-AD07-705EB3721C89} = {F32198D7-C729-413E-935E-7C0251474238}
+		{85B77CD8-077A-4998-A51D-257207956C4B} = {21378147-57C3-4DC6-8B11-AFA9A07F77D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFF10B26-1EDE-4CFD-9159-E14E9355AF61}

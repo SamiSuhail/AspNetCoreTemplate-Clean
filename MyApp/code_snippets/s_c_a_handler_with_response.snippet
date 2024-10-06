@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+        <Title>Handler with Response</Title>
+    	<Description>Request type and handler class with response</Description>
+   		<Shortcut>s_c_a_handler_with_response</Shortcut>
+		</Header>
+		<Snippet>
+			<Code Language="CSharp">
+				<![CDATA[
+public record ContentRequest() : IRequest<ContentResponse>;
+
+public record ContentResponse();
+
+public class ContentCommandHandler(
+    IScopedDbContext dbContext
+    ) : IRequestHandler<ContentRequest, ContentResponse>
+{
+    public async Task<ContentResponse> Handle(ContentRequest request, CancellationToken cancellationToken)
+    {
+        await Task.CompletedTask;
+        return new();
+    }
+}
+				]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

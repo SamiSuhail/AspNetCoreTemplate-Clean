@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+        <Title>Handler no Response</Title>
+    	<Description>Request type and handler class with no response</Description>
+   		<Shortcut>s_c_a_handler_no_response</Shortcut>
+		</Header>
+		<Snippet>
+			<Code Language="CSharp">
+				<![CDATA[
+public record NoContentRequest() : IRequest;
+
+public class NoContentCommandHandler(
+    IScopedDbContext dbContext
+    ) : IRequestHandler<NoContentRequest>
+{
+    public async Task Handle(NoContentRequest request, CancellationToken cancellationToken)
+    {
+        await Task.CompletedTask;
+    }
+}
+				]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+        <Title>Endpoint with Response</Title>
+    	<Description>Method for sample endpoint with response</Description>
+   		<Shortcut>s_c_p_endpoint_with_response</Shortcut>
+		</Header>
+		<Snippet>
+			<Code Language="CSharp">
+				<![CDATA[
+    [ProducesResponseType(401)]
+    [ProducesResponseType(400)]
+    public async Task<ContentResponse> Content(
+        [FromServices] ISender sender,
+        [FromBody] ContentRequest request,
+        CancellationToken cancellationToken)
+    {
+        return await sender.Send(request, cancellationToken);
+    }
+				]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>
