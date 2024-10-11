@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using MyApp.Server;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure.BackgroundJobs;
-using MyApp.Infrastructure.Database;
-using MyApp.DbDeploy;
 
 namespace MyApp.Tests.Integration.Core;
 

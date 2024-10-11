@@ -6,7 +6,7 @@ namespace MyApp.Infrastructure.Auth;
 
 public class JwtReader(AuthSettings settings) : IJwtReader
 {
-    public UserContext ReadAccessToken(string jwtBearer)
+    public AccessToken ReadAccessToken(string jwtBearer)
     {
         var (identity, ex) = ReadTokenClaims(settings.Jwt.PublicKeyXml, jwtBearer);
 

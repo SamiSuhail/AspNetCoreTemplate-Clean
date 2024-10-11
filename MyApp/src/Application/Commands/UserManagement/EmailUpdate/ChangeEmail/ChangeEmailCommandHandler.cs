@@ -12,14 +12,14 @@ using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;
 namespace MyApp.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
 
 public class ChangeEmailCommandHandler(
-    IUserContextAccessor userContextAccessor,
+    IRequestContextAccessor userContextAccessor,
     IScopedDbContext dbContext,
     IMessageProducer messageProducer
     ) : IRequestHandler<ChangeEmailRequest>
 {
     public async Task Handle(ChangeEmailRequest request, CancellationToken cancellationToken)
     {
-        var (userId, username, oldEmail) = userContextAccessor.User;
+        var (userId, username, oldEmail) = userContextAccessor.AccessToken;
         var newEmail = request.Email;
 
         if (oldEmail == newEmail)

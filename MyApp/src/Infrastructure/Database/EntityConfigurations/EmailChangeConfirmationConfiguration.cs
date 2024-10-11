@@ -24,7 +24,9 @@ public class EmailChangeConfirmationConfiguration : IEntityTypeConfiguration<Ema
         builder.HasOne(x => x.User)
             .WithOne(x => x.EmailChangeConfirmation)
             .HasForeignKey<EmailChangeConfirmationEntity>(x => x.UserId)
-            .HasConstraintName("fk_email_change_confirmations_user_id");
+            .HasConstraintName("fk_email_change_confirmations_user_id")
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => x.UserId)
             .IsUnique()

@@ -28,13 +28,13 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
         response.Content!.RefreshToken.Should().NotBeNullOrEmpty();
 
         var jwtReader = ScopedServices.GetRequiredService<IJwtReader>();
-        var user = jwtReader.ReadAccessToken(response.Content.AccessToken);
+        var accessToken = jwtReader.ReadAccessToken(response.Content.AccessToken);
         var refreshToken = jwtReader.ReadRefreshToken(response.Content.RefreshToken);
         using (new AssertionScope())
         {
-            user.Id.Should().Be(User.Entity.Id);
-            user.Username.Should().Be(User.Entity.Username);
-            user.Email.Should().Be(User.Entity.Email);
+            accessToken.Id.Should().Be(User.Entity.Id);
+            accessToken.Username.Should().Be(User.Entity.Username);
+            accessToken.Email.Should().Be(User.Entity.Email);
         }
         refreshToken.Should().NotBeNull();
         using (new AssertionScope())

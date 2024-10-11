@@ -10,11 +10,11 @@ using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
 
 namespace MyApp.Application.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 
-public class ConfirmPasswordChangeCommandHandler(IUserContextAccessor userContextAccessor, IScopedDbContext dbContext) : IRequestHandler<ConfirmPasswordChangeRequest>
+public class ConfirmPasswordChangeCommandHandler(IRequestContextAccessor userContextAccessor, IScopedDbContext dbContext) : IRequestHandler<ConfirmPasswordChangeRequest>
 {
     public async Task Handle(ConfirmPasswordChangeRequest request, CancellationToken cancellationToken)
     {
-        var (userId, _, _) = userContextAccessor.User;
+        var (userId, _, _) = userContextAccessor.AccessToken;
 
         var user = await dbContext.Set<UserEntity>()
             .Include(u => u.PasswordChangeConfirmation)

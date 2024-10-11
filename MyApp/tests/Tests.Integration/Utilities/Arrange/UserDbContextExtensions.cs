@@ -44,7 +44,7 @@ public static class UserDbContextExtensions
 
     public static async Task<UserEntity> ArrangeUnconfirmedUser(this IBaseDbContext dbContext, string username, string password, string email)
     {
-        var user = UserEntity.Create(username, password, email);
+        var user = UserEntity.Create(instanceId: 1, username, password, email);
         dbContext.Add(user);
         await dbContext.SaveChangesAsync(CancellationToken.None);
         return user;

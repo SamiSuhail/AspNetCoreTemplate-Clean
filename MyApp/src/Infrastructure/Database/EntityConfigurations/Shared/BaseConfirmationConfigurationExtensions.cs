@@ -27,7 +27,9 @@ public static class BaseConfirmationConfigurationExtensions
         builder.HasOne(x => x.User)
             .WithOne(navigationPropertyGetter)
             .HasForeignKey<TConfirmationEntity>(x => x.UserId)
-            .HasConstraintName($"fk_{tableName}_user_id");
+            .HasConstraintName($"fk_{tableName}_user_id")
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(x => x.UserId)
             .IsUnique()

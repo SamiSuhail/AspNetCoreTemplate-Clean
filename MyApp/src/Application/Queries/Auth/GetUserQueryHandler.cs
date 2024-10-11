@@ -8,11 +8,11 @@ using MyApp.Domain.Auth.User.Failures;
 
 namespace MyApp.Application.Queries.Auth;
 
-public class GetUserQueryHandler(IUserContextAccessor userReader, ITransientDbContext appDbContext) : IRequestHandler<GetUserRequest, User>
+public class GetUserQueryHandler(IRequestContextAccessor userReader, ITransientDbContext appDbContext) : IRequestHandler<GetUserRequest, User>
 {
     public async Task<User> Handle(GetUserRequest request, CancellationToken cancellationToken)
     {
-        var (id, username, email) = userReader.User;
+        var (id, username, email) = userReader.AccessToken;
 
         var user = await appDbContext.Set<UserEntity>()
             .Where(u => u.Id == id)

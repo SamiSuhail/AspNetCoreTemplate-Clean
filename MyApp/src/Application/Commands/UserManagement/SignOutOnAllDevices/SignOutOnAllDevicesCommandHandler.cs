@@ -7,11 +7,11 @@ using MyApp.Application.Interfaces.Commands.UserManagement.SignOutOnAllDevices;
 
 namespace MyApp.Application.Commands.UserManagement.SignOutOnAllDevices;
 
-public class SignOutOnAllDevicesCommandHandler(IUserContextAccessor userContextAccessor, IScopedDbContext dbContext) : IRequestHandler<SignOutOnAllDevicesRequest>
+public class SignOutOnAllDevicesCommandHandler(IRequestContextAccessor userContextAccessor, IScopedDbContext dbContext) : IRequestHandler<SignOutOnAllDevicesRequest>
 {
     public async Task Handle(SignOutOnAllDevicesRequest request, CancellationToken cancellationToken)
     {
-        var (userId, _, _) = userContextAccessor.User;
+        var (userId, _, _) = userContextAccessor.AccessToken;
 
         await dbContext.WrapInTransaction(async () =>
         {

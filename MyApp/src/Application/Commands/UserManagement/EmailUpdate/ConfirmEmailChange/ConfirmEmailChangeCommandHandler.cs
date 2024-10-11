@@ -12,13 +12,13 @@ using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;
 namespace MyApp.Application.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 
 public class ConfirmEmailChangeCommandHandler(
-    IUserContextAccessor userContextAccessor,
+    IRequestContextAccessor userContextAccessor,
     IScopedDbContext dbContext
     ) : IRequestHandler<ConfirmEmailChangeRequest>
 {
     public async Task Handle(ConfirmEmailChangeRequest request, CancellationToken cancellationToken)
     {
-        var (userId, _, oldEmail) = userContextAccessor.User;
+        var (userId, _, oldEmail) = userContextAccessor.AccessToken;
         var (oldEmailCode, newEmailCode) = request;
 
         var user = await dbContext.Set<UserEntity>()

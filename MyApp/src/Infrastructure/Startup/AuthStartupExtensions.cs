@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Infrastructure.Auth;
+using MyApp.Infrastructure.RequestContext;
 using MyApp.Utilities.Settings;
 
 namespace MyApp.Infrastructure.Startup;
@@ -13,7 +14,6 @@ public static class AuthStartupExtensions
 
         services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddSingleton<IJwtReader, JwtReader>();
-        services.AddScoped<IUserContextAccessor, UserContextAccessor>();
 
         services.AddAuthentication(options =>
         {

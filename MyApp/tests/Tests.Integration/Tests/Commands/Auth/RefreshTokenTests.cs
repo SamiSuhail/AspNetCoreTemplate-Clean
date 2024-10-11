@@ -32,13 +32,13 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
             response.Content!.AccessToken.Should().NotBeNullOrEmpty();
             response.Content.RefreshToken.Should().NotBeNullOrEmpty();
         }
-        var user = jwtReader.ReadAccessToken(response.Content.AccessToken);
-        user.Should().NotBeNull();
+        var accessToken = jwtReader.ReadAccessToken(response.Content.AccessToken);
+        accessToken.Should().NotBeNull();
         using (new AssertionScope())
         {
-            user.Id.Should().Be(User.Entity.Id);
-            user.Username.Should().Be(User.Entity.Username);
-            user.Email.Should().Be(User.Entity.Email);
+            accessToken.Id.Should().Be(User.Entity.Id);
+            accessToken.Username.Should().Be(User.Entity.Username);
+            accessToken.Email.Should().Be(User.Entity.Email);
         }
         var refreshToken = jwtReader.ReadRefreshToken(response.Content.RefreshToken);
         refreshToken.Should().NotBeNull();

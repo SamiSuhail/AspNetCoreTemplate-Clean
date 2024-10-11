@@ -16,6 +16,15 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(x => x.Id)
             .ValueGeneratedOnAdd();
 
+        builder.Property(x => x.InstanceId)
+            .IsRequired();
+        builder.HasOne(x => x.Instance)
+            .WithMany(x => x.Users)
+            .HasForeignKey(x => x.InstanceId)
+            .HasConstraintName("fk_users_instance_id")
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Property(x => x.Username)
             .HasMaxLength(UserConstants.UsernameMaxLength)
             .IsRequired();
@@ -38,10 +47,10 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(x => x.IsEmailConfirmed)
             .IsRequired();
         builder.HasIndex(x => x.IsEmailConfirmed);
+        builder.HasQueryFilter(u => u.IsEmailConfirmed == true);
 
         builder.Property(x => x.RefreshTokenVersion)
             .IsRequired();
 
-        builder.HasQueryFilter(u => u.IsEmailConfirmed == true);
     }
 }

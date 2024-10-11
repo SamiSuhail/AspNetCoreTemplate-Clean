@@ -9,8 +9,8 @@ public static class StartupExtensions
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHttpContextAccessor()
-            .AddSingleton<IClock, Clock>()
+        services.AddSingleton<IClock, Clock>()
+            .AddCustomRequestContext()
             .AddCustomAuth(configuration)
             .AddCustomDatabase(configuration)
             .AddCustomEmail(configuration)
