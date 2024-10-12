@@ -4,6 +4,7 @@ using MyApp.Domain.Auth.User.Failures;
 using MyApp.Tests.System.Core.Settings;
 using MyApp.Tests.Utilities.Clients;
 using MyApp.Tests.Utilities.Clients.Extensions;
+using MyApp.Tests.Utilities.Core;
 using MyApp.Utilities.Collections;
 using Refit;
 
@@ -14,7 +15,7 @@ public static class GlobalContext
     public static ServerSettings Settings { get; private set; } = default!;
     public static string AccessToken { get; private set; } = default!;
 
-    public static Task Initialize { get; } = new Lazy<Task>(() => Task.Run(InitializeAsyncInternal)).Value;
+    public static Task Initialize { get; } = new AsyncLazy(InitializeAsyncInternal).Value;
 
     private static async Task InitializeAsyncInternal()
     {

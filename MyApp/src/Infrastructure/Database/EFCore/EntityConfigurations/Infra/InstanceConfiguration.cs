@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyApp.Domain.Infra.Instance;
 using static MyApp.Infrastructure.Database.Constants;
 
-namespace MyApp.Infrastructure.Database.EntityConfigurations;
+namespace MyApp.Infrastructure.Database.EFCore.EntityConfigurations.Infra;
 
 public class InstanceConfiguration : IEntityTypeConfiguration<InstanceEntity>
 {

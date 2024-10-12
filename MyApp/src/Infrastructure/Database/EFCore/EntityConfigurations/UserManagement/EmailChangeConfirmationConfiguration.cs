@@ -5,7 +5,7 @@ using MyApp.Domain.Auth.User;
 using MyApp.Domain.Shared.Confirmations;
 using static MyApp.Infrastructure.Database.Constants;
 
-namespace MyApp.Infrastructure.Database.EntityConfigurations;
+namespace MyApp.Infrastructure.Database.EFCore.EntityConfigurations.UserManagement;
 
 public class EmailChangeConfirmationConfiguration : IEntityTypeConfiguration<EmailChangeConfirmationEntity>
 {

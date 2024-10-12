@@ -4,7 +4,7 @@ using static MyApp.Infrastructure.Database.Constants;
 using MyApp.Domain.Shared.Confirmations;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 
-namespace MyApp.Infrastructure.Database.EntityConfigurations.Shared;
+namespace MyApp.Infrastructure.Database.EFCore.EntityConfigurations.Shared;
 
 public record ConfirmationConfigurationValues(
     string SchemaName,

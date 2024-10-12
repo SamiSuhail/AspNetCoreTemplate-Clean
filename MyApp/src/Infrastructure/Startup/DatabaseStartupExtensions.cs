@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 using MyApp.Infrastructure.Database;
+using MyApp.Infrastructure.Database.EFCore;
 using MyApp.Utilities.Settings;
 
 namespace MyApp.Infrastructure.Startup;
@@ -25,10 +26,11 @@ public static class DatabaseStartupExtensions
 
                 options.EnableDetailedErrors(dbSettings.EnableDetailedErrors);
                 options.EnableSensitiveDataLogging(dbSettings.EnableSensitiveDataLogging);
-            }, ServiceLifetime.Scoped)
+            }, ServiceLifetime.Singleton)
             .AddScoped<IAppDbContextFactory, AppDbContextFactory>()
             .AddTransient(sp => sp.GetRequiredService<IAppDbContextFactory>().CreateTransientDbContext())
             .AddScoped(sp => sp.GetRequiredService<IAppDbContextFactory>().CreateScopedDbContext())
-            .AddSingleton<IDatabasePinger, DatabasePinger>();
+            .AddSingleton<IDatabasePinger, DatabasePinger>()
+            .AddSingleton<IDatabaseSeeder, DatabaseSeeder>();
     }
 }

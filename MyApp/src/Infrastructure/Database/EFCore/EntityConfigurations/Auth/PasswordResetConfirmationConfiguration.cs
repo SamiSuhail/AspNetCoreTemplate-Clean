@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyApp.Domain.Auth.PasswordResetConfirmation;
-using MyApp.Infrastructure.Database.EntityConfigurations.Shared;
+using MyApp.Infrastructure.Database.EFCore.EntityConfigurations.Shared;
 
-namespace MyApp.Infrastructure.Database.EntityConfigurations;
+namespace MyApp.Infrastructure.Database.EFCore.EntityConfigurations.Auth;
 
 public class PasswordResetConfirmationConfiguration : IEntityTypeConfiguration<PasswordResetConfirmationEntity>
 {

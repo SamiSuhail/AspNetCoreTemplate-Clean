@@ -1,5 +1,4 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Utilities.Strings;
 
 namespace MyApp.Infrastructure.RequestContext;
 
@@ -21,7 +20,7 @@ public class RequestContextAccessor : IRequestContextAccessor
     private AccessToken ReadAccessToken(IHeaderDictionary headers)
     {
         var jwtBearer = headers.Authorization.FirstOrDefault();
-        if (jwtBearer.IsNullOrEmpty())
+        if (jwtBearer is null or [])
             throw new InvalidOperationException("No authorization header found.");
 
         var jwtBearerWithNoPrefix = jwtBearer![BearerSchemaPrefix.Length..];

@@ -1,4 +1,5 @@
 ﻿using MyApp.Infrastructure.Database;
+using MyApp.Tests.Utilities.Core;
 using Testcontainers.PostgreSql;
 using DbDeployHelpers = MyApp.DbDeploy.Helpers;
 
@@ -6,7 +7,7 @@ namespace MyApp.Tests.Integration.Core;
 
 public static class GlobalContext
 {
-    public static Task Initialize { get; } = new Lazy<Task>(() => Task.Run(InitializeAsyncInternal)).Value;
+    public static Task Initialize { get; } = new AsyncLazy(InitializeAsyncInternal).Value;
 
     private static async Task InitializeAsyncInternal()
     {

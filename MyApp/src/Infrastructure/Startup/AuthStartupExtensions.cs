@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Infrastructure.Auth;
-using MyApp.Infrastructure.RequestContext;
 using MyApp.Utilities.Settings;
 
 namespace MyApp.Infrastructure.Startup;

@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Text;
 
-namespace MyApp.Infrastructure.Database;
+namespace MyApp.Infrastructure.Database.EFCore;
 
 public static class CustomModelBuilderNamingConventionExtensions
 {

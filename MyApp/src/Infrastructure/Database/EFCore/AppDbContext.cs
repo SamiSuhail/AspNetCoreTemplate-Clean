@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 
-namespace MyApp.Infrastructure.Database;
+namespace MyApp.Infrastructure.Database.EFCore;
 
 public class AppDbContext(
     DbContextOptions<AppDbContext> options)

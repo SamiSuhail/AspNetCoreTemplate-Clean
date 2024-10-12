@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Shared.Confirmations;
 
-namespace MyApp.Infrastructure.Database.EntityConfigurations.Shared;
+namespace MyApp.Infrastructure.Database.EFCore.EntityConfigurations.Shared;
 
 public static class BaseConfirmationConfigurationExtensions
 {

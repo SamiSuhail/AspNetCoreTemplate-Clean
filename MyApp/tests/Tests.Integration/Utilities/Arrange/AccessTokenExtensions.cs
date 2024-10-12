@@ -43,7 +43,8 @@ public static class AccessTokenExtensions
                 PublicKeyXml = authSettings.Jwt.PublicKeyXml,
                 AccessTokenExpirationMinutes = authSettings.Jwt.AccessTokenExpirationMinutes,
                 RefreshTokenExpirationDays = authSettings.Jwt.RefreshTokenExpirationDays,
-            }
+            },
+            AdminUser = authSettings.AdminUser,
         };
 
         return new JwtGenerator(fakeAuthSettings, clock);

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static MyApp.Infrastructure.Database.Constants;
 
-namespace MyApp.Infrastructure.Database.EntityConfigurations;
+namespace MyApp.Infrastructure.Database.EFCore.EntityConfigurations.Auth;
 
 public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 {

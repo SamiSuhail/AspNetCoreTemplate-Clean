@@ -42,9 +42,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.System", "tests\Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Integration", "tests\Tests.Integration\Tests.Integration.csproj", "{68FDB4EE-352E-43A9-B8A0-6430DB75EFF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Utilities.Clients", "tests\Tests.Utilities.Clients\Tests.Utilities.Clients.csproj", "{0E328D8F-98C3-4EE8-A485-9F4ECC3051BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Utilities", "tests\Tests.Utilities\Tests.Utilities.csproj", "{0E328D8F-98C3-4EE8-A485-9F4ECC3051BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "src\Utilities\Utilities.csproj", "{A723E12B-FC23-483A-AD07-705EB3721C89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "src\Utilities\Utilities.csproj", "{A723E12B-FC23-483A-AD07-705EB3721C89}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "code_snippets", "code_snippets", "{85B77CD8-077A-4998-A51D-257207956C4B}"
 	ProjectSection(SolutionItems) = preProject

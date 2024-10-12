@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNamespace>MyApp.Tests.Utilities.Clients</RootNamespace>
+		<RootNamespace>MyApp.Tests.Utilities</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Update="Queries\*.graphql">
+		<None Update="Clients\Queries\*.graphql">
 			<Generator>MSBuild:GenerateGraphQLCode</Generator>
 		</None>
 	</ItemGroup>

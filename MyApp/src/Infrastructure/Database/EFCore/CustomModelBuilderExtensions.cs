@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Shared;
 
-namespace MyApp.Infrastructure.Database;
+namespace MyApp.Infrastructure.Database.EFCore;
 
 public static class CustomModelBuilderExtensions
 {

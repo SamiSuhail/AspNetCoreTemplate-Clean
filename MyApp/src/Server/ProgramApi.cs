@@ -17,6 +17,8 @@ var app = builder.Build();
 app.UseCustomInfrastructure()
     .UseCustomPresentation();
 
+await app.SeedDatabase();
+
 await app.RunAsync();
 
 namespace MyApp.Server

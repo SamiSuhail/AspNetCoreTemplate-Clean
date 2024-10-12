@@ -12,11 +12,13 @@ public class InstanceEntity : ICreationAudited
 
     public ICollection<UserEntity> Users { get; private set; } = default!;
 
-    public static InstanceEntity Create(string name)
+    public static InstanceEntity Create(string name, bool isCleanupEnabled)
     {
         return new()
         {
             Name = name,
+            IsCleanupEnabled = isCleanupEnabled,
+            CreatedAt = DateTime.UtcNow,
         };
     }
 }

@@ -4,9 +4,6 @@ namespace MyApp.Utilities.Strings;
 
 public static class StringExtensions
 {
-    public static bool IsNullOrEmpty(this string? value)
-        => value == null || value.Length == 0;
-
     public static string RemoveWhitespace(this string s)
         => s.ReplaceWhitespace(string.Empty);
 
@@ -15,6 +12,9 @@ public static class StringExtensions
 
     public static string RemoveMany(this string s, params string[] oldValues)
         => s.ReplaceMany(string.Empty, oldValues);
+
+    public static bool IsAlphanumeric(this string s, params char[] exclude)
+        => s.All(c => c.IsAlphanumeric() || exclude.Any(ec => ec == c));
 
     public static string ReplaceMany(this string s, string newVal, params string[] oldValues)
     {

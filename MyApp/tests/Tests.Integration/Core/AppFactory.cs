@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using MyApp.Server;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure.BackgroundJobs;
+using MyApp.Infrastructure.Database;
+using MyApp.Tests.Integration.Decorators;
 
 namespace MyApp.Tests.Integration.Core;
 
@@ -27,6 +29,7 @@ public class AppFactory : WebApplicationFactory<ProgramApi>
         {
             services.AddMassTransitTestHarness();
             services.ReplaceWithMock<IMessageProducer>(MockBag, MockBehavior.Loose);
+            services.Decorate<IDatabaseSeeder, GlobalSingletonDatabaseSeeder>();
         });
     }
 

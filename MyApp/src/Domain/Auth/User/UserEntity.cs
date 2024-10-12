@@ -4,6 +4,7 @@ using MyApp.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Domain.Shared;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Domain.Infra.Instance;
+using MyApp.Domain.Access.Scope;
 
 namespace MyApp.Domain.Auth.User;
 
@@ -23,19 +24,27 @@ public class UserEntity : ICreationAudited
     public UserConfirmationEntity? UserConfirmation { get; private set; }
     public EmailChangeConfirmationEntity? EmailChangeConfirmation { get; private set; }
     public PasswordChangeConfirmationEntity? PasswordChangeConfirmation { get; private set; }
+    public ICollection<UserScopeEntity> UserScopes { get; private set; } = default!;
 
-    public static UserEntity Create(int instanceId, string username, string password, string email)
+    public static UserEntity CreateConfirmed(int instanceId, string username, string password, string email)
         => new()
         {
             InstanceId = instanceId,
             Username = username,
             PasswordHash = password.Hash(),
             Email = email,
-            IsEmailConfirmed = false,
+            IsEmailConfirmed = true,
             RefreshTokenVersion = 1,
             CreatedAt = DateTime.UtcNow,
-            UserConfirmation = UserConfirmationEntity.Create(),
         };
+
+    public static UserEntity Create(int instanceId, string username, string password, string email)
+    {
+        var user = CreateConfirmed(instanceId, username, password, email);
+        user.IsEmailConfirmed = false;
+        user.UserConfirmation = UserConfirmationEntity.Create();
+        return user;
+    }
 
     public void ConfirmUserRegistration()
     {

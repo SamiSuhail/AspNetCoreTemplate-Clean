@@ -9,6 +9,3 @@ CREATE TABLE infra.instances (
 	CONSTRAINT pk_instances_id 			PRIMARY KEY (id),
 	CONSTRAINT uq_instances_name 		UNIQUE (name)
 );
-
-INSERT INTO infra.instances (name, is_cleanup_enabled, created_at)
-VALUES ('main', false, now() at time zone 'utc');
