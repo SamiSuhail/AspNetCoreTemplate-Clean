@@ -14,7 +14,7 @@ public static class SwaggerStartupExtensions
         {
             options.SupportNonNullableReferenceTypes();
             options.SchemaFilter<RequiredNotNullableSwaggerSchemaFilter>();
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "MyApp.Server", Version = "v1" });
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "MyApp", Version = "v1" });
             const string SecurityDefinitionName = "JWT";
             options.AddSecurityDefinition(SecurityDefinitionName, new OpenApiSecurityScheme
             {

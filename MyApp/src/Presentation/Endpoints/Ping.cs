@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Interfaces.Queries.Ping;
 using MyApp.Presentation.Endpoints.Core;
 
+
 namespace MyApp.Presentation.Endpoints;
 
 public class Ping : EndpointGroupBase
@@ -16,16 +17,16 @@ public class Ping : EndpointGroupBase
     }
 
     [AllowAnonymous]
-    public static Pong Default()
+    public static Ok<Pong> Default()
     {
-        return new Pong();
+        return TypedResults.Ok(new Pong());
     }
 
-    [ProducesResponseType(401)]
-    public static async Task<Pong> Database(
+    public static async Task<Results<Ok<Pong>, UnauthorizedHttpResult>> Database(
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
-        return await sender.Send(new PingDatabaseRequest(), cancellationToken);
+        var response = await sender.Send(new PingDatabaseRequest(), cancellationToken);
+        return TypedResults.Ok(response);
     }
 }

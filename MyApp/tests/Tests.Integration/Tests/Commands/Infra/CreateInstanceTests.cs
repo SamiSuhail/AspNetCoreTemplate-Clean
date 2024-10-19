@@ -1,5 +1,4 @@
-﻿using MyApp.Domain.Access.Scope;
-using MyApp.Domain.Infra.Instance.Failures;
+﻿using MyApp.Domain.Infra.Instance.Failures;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Infra;
 

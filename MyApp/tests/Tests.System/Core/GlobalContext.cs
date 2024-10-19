@@ -1,11 +1,7 @@
-﻿using FluentAssertions;
-using Microsoft.Extensions.Configuration;
-using MyApp.Domain.Auth.User.Failures;
+﻿using Microsoft.Extensions.Configuration;
 using MyApp.Tests.System.Core.Settings;
 using MyApp.Tests.Utilities.Clients;
-using MyApp.Tests.Utilities.Clients.Extensions;
 using MyApp.Tests.Utilities.Core;
-using MyApp.Utilities.Collections;
 using Refit;
 
 namespace MyApp.Tests.System.Core;

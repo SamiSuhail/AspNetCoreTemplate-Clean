@@ -5,6 +5,7 @@ using MyApp.Domain.Access.Scope;
 using MyApp.Presentation.Endpoints.Core;
 
 namespace MyApp.Presentation.Endpoints;
+using CustomNoContent = Results<NoContent, CustomBadRequest, UnauthorizedHttpResult>;
 
 public class Infra : EndpointGroupBase
 {
@@ -15,14 +16,13 @@ public class Infra : EndpointGroupBase
             .MapPost(CreateInstance, "instance/create");
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(401)]
-    [ProducesResponseType(400)]
-    public async Task CreateInstance(
+    public static async Task<CustomNoContent> 
+        CreateInstance(
         [FromServices] ISender sender,
         [FromBody] CreateInstanceRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);
+        return TypedResults.NoContent();
     }
 }

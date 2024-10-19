@@ -1,4 +1,5 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS copy-files
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS copy-files
+COPY --from=mcr.microsoft.com/dotnet/sdk:8.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /app
 COPY src/ ./src
@@ -17,7 +18,7 @@ RUN dotnet publish "./src/DbDeploy/DbDeploy.csproj" -c $BUILD_CONFIGURATION  /p:
 RUN dotnet publish "./src/Server/Server.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/server
 RUN dotnet publish "./tests/Tests.Integration/Tests.Integration.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/testsintegration
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 COPY --from=publish /app/publish/dbdeploy ./dbdeploy
 COPY --from=publish /app/publish/server ./server

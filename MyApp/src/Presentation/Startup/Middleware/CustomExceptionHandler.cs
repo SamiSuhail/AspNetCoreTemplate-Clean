@@ -6,7 +6,7 @@ namespace MyApp.Presentation.Startup.Middleware;
 
 public static class UnhandledExceptionConstants
 {
-    public const string Message = "An unexpected error occured - please try again later. If the error persists, please contact support.";
+    public const string Message = "An unexpected error occurred - please try again later. If the error persists, please contact support.";
 }
 
 public class CustomExceptionHandler : IExceptionHandler
@@ -33,7 +33,7 @@ public class CustomExceptionHandler : IExceptionHandler
             return true;
         }
 
-        _logger.Error(exception, "An unhandled exception has occured!");
+        _logger.Error(exception, "An unhandled exception has occurred!");
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         await httpContext.Response.WriteAsync(UnhandledExceptionConstants.Message, cancellationToken);
         return true;
@@ -44,14 +44,14 @@ public class CustomExceptionHandler : IExceptionHandler
         var exception = (DomainException)ex;
 
         _logger.ForContext(nameof(exception.Failure.Errors), exception.Failure.Errors, destructureObjects: true)
-            .Warning(ex, "A domain exception has occured.");
+            .Warning(ex, "A domain exception has occurred.");
 
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
 
         var errors = AsErrors(exception.Failure.Errors);
         await httpContext.Response.WriteAsJsonAsync(new ValidationProblemDetails(errors)
         {
-            Title = "One or more errors occured.",
+            Title = "One or more errors occurred.",
             Status = StatusCodes.Status400BadRequest,
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
         }, cancellationToken);

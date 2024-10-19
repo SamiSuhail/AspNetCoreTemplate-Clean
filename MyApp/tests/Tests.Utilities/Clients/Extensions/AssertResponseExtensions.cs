@@ -2,7 +2,6 @@
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc;
-using MyApp.Domain.Auth.User.Failures;
 using Newtonsoft.Json;
 using Refit;
 

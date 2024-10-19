@@ -1,5 +1,4 @@
-﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Domain.Access.Scope;
+﻿using MyApp.Domain.Access.Scope;
 
 namespace MyApp.Tests.Integration.Tests;
 

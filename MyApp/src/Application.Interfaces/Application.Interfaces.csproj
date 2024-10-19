@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<RootNamespace>MyApp.Application.Interfaces</RootNamespace>
+		<TargetFramework>net8.0</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>

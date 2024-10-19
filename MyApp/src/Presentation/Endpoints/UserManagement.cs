@@ -8,6 +8,7 @@ using MyApp.Application.Interfaces.Commands.UserManagement.SignOutOnAllDevices;
 using MyApp.Presentation.Endpoints.Core;
 
 namespace MyApp.Presentation.Endpoints;
+using CustomNoContent = Results<NoContent, BadRequest<ValidationProblemDetails>, UnauthorizedHttpResult>;
 
 public class UserManagement : EndpointGroupBase
 {
@@ -22,52 +23,52 @@ public class UserManagement : EndpointGroupBase
             .MapPost(ConfirmPasswordChange, "confirm-password-change");
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    public static async Task SignOutOnAllDevices(
+    public static async Task<CustomNoContent> 
+        SignOutOnAllDevices(
         [FromServices] ISender sender,
         CancellationToken cancellationToken)
     {
         await sender.Send(new SignOutOnAllDevicesRequest(), cancellationToken);
+        return TypedResults.NoContent();
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    public static async Task ChangeEmail(
+    public static async Task<CustomNoContent>
+        ChangeEmail(
         [FromServices] ISender sender,
         [FromBody] ChangeEmailRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);
+        return TypedResults.NoContent();
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    public static async Task ConfirmEmailChange(
+    public static async Task<CustomNoContent>
+        ConfirmEmailChange(
         [FromServices] ISender sender,
         [FromBody] ConfirmEmailChangeRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);
+        return TypedResults.NoContent();
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    public static async Task ChangePassword(
+    public static async Task<CustomNoContent>
+        ChangePassword(
         [FromServices] ISender sender,
         [FromBody] ChangePasswordRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);
+        return TypedResults.NoContent();
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    public static async Task ConfirmPasswordChange(
+    public static async Task<CustomNoContent>
+        ConfirmPasswordChange(
         [FromServices] ISender sender,
         [FromBody] ConfirmPasswordChangeRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);
+        return TypedResults.NoContent();
     }
 }

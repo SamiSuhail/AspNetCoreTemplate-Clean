@@ -14,6 +14,7 @@ using MyApp.Presentation.Endpoints.Core;
 using MyApp.Presentation.Startup.Filters;
 
 namespace MyApp.Presentation.Endpoints;
+using CustomNoContent = Results<NoContent, CustomBadRequest>;
 
 public class Auth : EndpointGroupBase
 {
@@ -34,78 +35,75 @@ public class Auth : EndpointGroupBase
             .MapPost(RefreshToken, "refresh-token");
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    public static async Task<IResult> Register(
+    public static async Task<CustomNoContent> 
+        Register(
         [FromServices] ISender sender,
         [FromBody] RegisterRequest request,
         [FromHeader(Name = CustomHeaders.InstanceName)] string? instanceName,
         CancellationToken cancellationToken)
     {
         await sender.Send(new RegisterCommand(request, instanceName), cancellationToken);
-        return Results.NoContent();
+        return TypedResults.NoContent();
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    public static async Task<IResult> ResendConfirmation(
+    public static async Task<CustomNoContent>
+        ResendConfirmation(
         [FromServices] ISender sender,
         [FromBody] ResendConfirmationRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);
-        return Results.NoContent();
+        return TypedResults.NoContent();
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    public static async Task<IResult> ConfirmUserRegistration(
+    public static async Task<CustomNoContent>
+        ConfirmUserRegistration(
         [FromServices] ISender sender,
         [FromBody] ConfirmUserRegistrationRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);
-        return Results.NoContent();
+        return TypedResults.NoContent();
     }
 
-    [ProducesResponseType<LoginResponse>(200)]
-    [ProducesResponseType(400)]
-    public static async Task<LoginResponse> Login(
+    public static async Task<Results<Ok<LoginResponse>, CustomBadRequest>> 
+        Login(
         [FromServices] ISender sender,
         [FromBody] LoginRequest request,
         [FromHeader(Name = CustomHeaders.InstanceName)] string? instanceName,
         CancellationToken cancellationToken)
     {
-        return await sender.Send(new LoginCommand(request, instanceName), cancellationToken);
+        var response = await sender.Send(new LoginCommand(request, instanceName), cancellationToken);
+        return TypedResults.Ok(response);
     }
 
-    [ProducesResponseType<RefreshTokenResponse>(200)]
-    [ProducesResponseType(400)]
-    public static async Task<RefreshTokenResponse> RefreshToken(
+    public static async Task<Results<Ok<RefreshTokenResponse>, CustomBadRequest>> 
+        RefreshToken(
         [FromServices] ISender sender,
         [FromBody] RefreshTokenRequest request,
         CancellationToken cancellationToken)
     {
-        return await sender.Send(request, cancellationToken);
+        var response = await sender.Send(request, cancellationToken);
+        return TypedResults.Ok(response);
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    public static async Task ForgotPassword(
+    public static async Task<CustomNoContent>
+        ForgotPassword(
         [FromServices] ISender sender,
         [FromBody] ForgotPasswordRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);
+        return TypedResults.NoContent();
     }
 
-    [ProducesResponseType(204)]
-    [ProducesResponseType(400)]
-    public static async Task ResetPassword(
+    public static async Task<CustomNoContent>
+        ResetPassword(
         [FromServices] ISender sender,
         [FromBody] ResetPasswordRequest request,
         CancellationToken cancellationToken)
     {
         await sender.Send(request, cancellationToken);
+        return TypedResults.NoContent();
     }
 }
