@@ -11,6 +11,15 @@
           "Auth"
         ],
         "operationId": "Register",
+        "parameters": [
+          {
+            "name": "MyApp-InstanceName",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -89,6 +98,15 @@
           "Auth"
         ],
         "operationId": "Login",
+        "parameters": [
+          {
+            "name": "MyApp-InstanceName",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -211,6 +229,35 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/infra/instance/create": {
+      "post": {
+        "tags": [
+          "Infra"
+        ],
+        "operationId": "CreateInstance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInstanceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -463,6 +510,22 @@
         },
         "additionalProperties": false
       },
+      "CreateInstanceRequest": {
+        "required": [
+          "isCleanupEnabled",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "isCleanupEnabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "ForgotPasswordRequest": {
         "required": [
           "email",
@@ -485,6 +548,7 @@
       "LoginRequest": {
         "required": [
           "password",
+          "scopes",
           "username"
         ],
         "type": "object",
@@ -498,6 +562,12 @@
             "maxLength": 128,
             "minLength": 10,
             "type": "string"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         },
         "additionalProperties": false
@@ -532,10 +602,15 @@
       },
       "RefreshTokenRequest": {
         "required": [
+          "accessToken",
           "refreshToken"
         ],
         "type": "object",
         "properties": {
+          "accessToken": {
+            "minLength": 1,
+            "type": "string"
+          },
           "refreshToken": {
             "minLength": 1,
             "type": "string"

@@ -1,12 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using FluentAssertions;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 
 namespace MyApp.Infrastructure.Auth;
 
 public class JwtReader(AuthSettings settings) : IJwtReader
 {
-    public UserContext ReadAccessToken(string jwtBearer)
+    public AccessToken ReadAccessToken(string jwtBearer)
     {
         var (identity, ex) = ReadTokenClaims(settings.Jwt.PublicKeyXml, jwtBearer);
 
@@ -14,9 +15,10 @@ public class JwtReader(AuthSettings settings) : IJwtReader
             throw new InvalidOperationException("No identity could be generated with the provided access token.", ex);
 
         return new(
-            Id: int.Parse(GetClaim(identity, JwtClaims.UserId)),
+            UserId: int.Parse(GetClaim(identity, JwtClaims.UserId)),
             Username: GetClaim(identity, JwtClaims.Username),
-            Email: GetClaim(identity, JwtClaims.Email)
+            Email: GetClaim(identity, JwtClaims.Email),
+            Scopes: GetClaims(identity, JwtClaims.Scopes)
             );
     }
 
@@ -54,8 +56,21 @@ public class JwtReader(AuthSettings settings) : IJwtReader
 
     private static string GetClaim(ClaimsIdentity identity, string type)
     {
-        var claim = identity.FindFirst(type)?.Value;
-        ArgumentException.ThrowIfNullOrWhiteSpace(claim, nameof(claim));
-        return claim;
+        var claim = GetClaimOrDefault(identity, type);
+        claim.Should().NotBeNull(because: $"Claim {type} is required.");
+
+        return claim!;
+    }
+
+    private static string? GetClaimOrDefault(ClaimsIdentity identity, string type, string? defaultValue = null)
+        => GetClaims(identity, type).FirstOrDefault() ?? defaultValue;
+
+    private static string[] GetClaims(ClaimsIdentity identity, string type)
+    {
+        var claims = identity.FindAll(type)
+            .Select(c => c.Value)
+            .ToArray();
+
+        return claims;
     }
 }

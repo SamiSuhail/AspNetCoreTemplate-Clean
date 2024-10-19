@@ -2,5 +2,5 @@
 
 public interface IUserContextAccessor
 {
-    UserContext User { get; }
+    AccessToken AccessToken { get; }
 }

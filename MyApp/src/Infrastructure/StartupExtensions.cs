@@ -1,5 +1,6 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure;
+using MyApp.Infrastructure.Database;
 using MyApp.Infrastructure.Startup;
 using MyApp.Infrastructure.Utilities;
 
@@ -9,8 +10,8 @@ public static class StartupExtensions
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHttpContextAccessor()
-            .AddSingleton<IClock, Clock>()
+        services.AddSingleton<IClock, Clock>()
+            .AddCustomHttpContextAccessors()
             .AddCustomAuth(configuration)
             .AddCustomDatabase(configuration)
             .AddCustomEmail(configuration)
@@ -42,5 +43,11 @@ public static class StartupExtensions
             .UseAuthorization();
 
         return app;
+    }
+
+    public static async Task SeedDatabase(this WebApplication app)
+    {
+        var seeder = app.Services.GetRequiredService<IDatabaseSeeder>();
+        await seeder.SeedDatabase();
     }
 }

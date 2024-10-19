@@ -1,5 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using MyApp.Application.Handlers.Commands.Auth.Login;
+using MyApp.Application.Handlers.Commands.Auth.Registration.Register;
+using MyApp.Application.Interfaces;
 using MyApp.Application.Interfaces.Commands.Auth.Login;
 using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
@@ -36,9 +39,10 @@ public class Auth : EndpointGroupBase
     public static async Task<IResult> Register(
         [FromServices] ISender sender,
         [FromBody] RegisterRequest request,
+        [FromHeader(Name = CustomHeaders.InstanceName)] string? instanceName,
         CancellationToken cancellationToken)
     {
-        await sender.Send(request, cancellationToken);
+        await sender.Send(new RegisterCommand(request, instanceName), cancellationToken);
         return Results.NoContent();
     }
 
@@ -69,9 +73,10 @@ public class Auth : EndpointGroupBase
     public static async Task<LoginResponse> Login(
         [FromServices] ISender sender,
         [FromBody] LoginRequest request,
+        [FromHeader(Name = CustomHeaders.InstanceName)] string? instanceName,
         CancellationToken cancellationToken)
     {
-        return await sender.Send(request, cancellationToken);
+        return await sender.Send(new LoginCommand(request, instanceName), cancellationToken);
     }
 
     [ProducesResponseType<RefreshTokenResponse>(200)]

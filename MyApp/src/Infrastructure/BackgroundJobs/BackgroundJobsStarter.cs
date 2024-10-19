@@ -1,5 +1,4 @@
-﻿using MyApp.Application.BackgroundJobs.CleanupConfirmations;
-using MyApp.Application.Utilities;
+﻿using MyApp.Application.Infrastructure;
 using Quartz;
 
 namespace MyApp.Infrastructure.BackgroundJobs;
@@ -9,6 +8,7 @@ public static class BackgroundScheduleStarter
     public static void StartAll(IServiceCollectionQuartzConfigurator options, BackgroundJobsSettings settings)
     {
         options.StartSchedule(settings.CleanupConfirmations!);
+        options.StartSchedule(settings.CleanupInstances!);
     }
 
     private static void StartSchedule<TBackgroundJob>(
@@ -22,7 +22,7 @@ public static class BackgroundScheduleStarter
         var name = BaseBackgroundJob<TBackgroundJob>.Name;
         var jobKey = JobKey.Create(name);
 
-        options.AddJob<CleanupConfirmationsBackgroundJob>(jb =>
+        options.AddJob<TBackgroundJob>(jb =>
             jb.WithIdentity(jobKey)
                 .DisallowConcurrentExecution()
                 .Build());

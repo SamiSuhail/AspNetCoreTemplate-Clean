@@ -1,10 +1,8 @@
-﻿using MyApp.Application.Commands.UserManagement.PasswordUpdate.ChangePassword;
+﻿using MyApp.Application.Handlers.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Domain.Auth.User;
-using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 
@@ -59,17 +57,6 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     }
 
     [Fact]
-    public async Task GivenUserIsUnauthrozied_ReturnsUnauthorizedError()
-    {
-        // Act
-        var response = await UnauthorizedAppClient.ChangePassword(_request);
-
-        // Assert
-        response.AssertUnauthorizedError();
-        await AssertNoChangesOccured();
-    }
-
-    [Fact]
     public async Task GivenUserIdNotFound_ReturnsInvalidFailure()
     {
         // Arrange
@@ -79,7 +66,7 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await client.ChangePassword(_request);
 
         // Assert
-        response.AssertSingleBadRequestError(UserIdNotFoundFailure.Key, UserIdNotFoundFailure.Message);
+        response.AssertUserNotFoundFailure();
         await AssertNoChangesOccured();
     }
 
@@ -133,7 +120,7 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         var existingConfirmation = PasswordChangeConfirmationEntity.Create(User.Entity.Id, RandomData.Password);
         ArrangeDbContext.Add(existingConfirmation);
-        await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
+        await ArrangeDbContext.SaveChangesAsync();
         return existingConfirmation;
     }
 

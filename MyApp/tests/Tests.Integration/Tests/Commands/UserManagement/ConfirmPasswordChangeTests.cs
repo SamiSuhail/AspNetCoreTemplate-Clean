@@ -1,8 +1,6 @@
-﻿using MyApp.Domain.Auth.User.Failures;
-using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
+﻿using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
 using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 
@@ -18,7 +16,7 @@ public class ConfirmPasswordChangeTests(AppFactory appFactory) : BaseTest(appFac
         var password = RandomData.Password;
         _passwordChangeConfirmation = PasswordChangeConfirmationEntity.Create(User.Entity.Id, password);
         ArrangeDbContext.Add(_passwordChangeConfirmation);
-        await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
+        await ArrangeDbContext.SaveChangesAsync();
 
         _request = new(_passwordChangeConfirmation.Code);
     }
@@ -69,7 +67,7 @@ public class ConfirmPasswordChangeTests(AppFactory appFactory) : BaseTest(appFac
         var response = await client.ConfirmPasswordChange(_request);
 
         // Assert
-        response.AssertSingleBadRequestError(UserIdNotFoundFailure.Key, UserIdNotFoundFailure.Message);
+        response.AssertUserNotFoundFailure();
         await AssertNoDataChanges();
     }
 

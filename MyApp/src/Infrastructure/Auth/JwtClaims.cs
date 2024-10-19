@@ -8,4 +8,5 @@ public static class JwtClaims
     public const string Username = JwtRegisteredClaimNames.UniqueName;
     public const string Email = JwtRegisteredClaimNames.Email;
     public const string RefreshTokenVersion = "token_version";
+    public const string Scopes = "scopes";
 }

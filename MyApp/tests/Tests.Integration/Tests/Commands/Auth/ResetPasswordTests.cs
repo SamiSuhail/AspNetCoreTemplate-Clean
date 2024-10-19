@@ -2,7 +2,6 @@
 using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Domain.Auth.User;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -110,7 +109,7 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         _passwordReset = PasswordResetConfirmationEntity.Create(_userId);
         ArrangeDbContext.Add(_passwordReset);
-        await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
+        await ArrangeDbContext.SaveChangesAsync();
 
         _request = new ResetPasswordRequest(_passwordReset.Code, password);
     }

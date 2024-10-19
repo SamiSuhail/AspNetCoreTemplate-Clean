@@ -1,14 +1,18 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Tests.Utilities.Clients.Extensions;
+using MyApp.Domain.Access.Scope;
 
 namespace MyApp.Tests.Integration.Clients;
 
 public static class AppFactoryClientExtensions
 {
-    public static IApplicationClient ArrangeClientWithCredentials(this AppFactory appFactory, int userId, string username, string email)
+    public static IApplicationClient ArrangeClientWithCredentials(
+        this AppFactory appFactory,
+        int userId,
+        string username,
+        string email)
     {
         var jwtGenerator = appFactory.Services.GetRequiredService<IJwtGenerator>();
-        var accessToken = jwtGenerator.CreateAccessToken(userId, username, email);
+        var accessToken = jwtGenerator.CreateAccessToken(userId, username, email, ScopeCollection.Empty);
         return appFactory.ArrangeClientWithToken(accessToken);
     }
 

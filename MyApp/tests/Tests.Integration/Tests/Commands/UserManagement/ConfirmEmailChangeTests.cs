@@ -2,7 +2,6 @@
 using MyApp.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 
@@ -17,7 +16,7 @@ public class ConfirmEmailChangeTests(AppFactory appFactory) : BaseTest(appFactor
 
         _emailChangeConfirmation = EmailChangeConfirmationEntity.Create(User.Entity.Id, RandomData.Email);
         ArrangeDbContext.Add(_emailChangeConfirmation);
-        await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
+        await ArrangeDbContext.SaveChangesAsync();
 
         _request = new(_emailChangeConfirmation.OldEmailCode, _emailChangeConfirmation.NewEmailCode);
     }
@@ -68,7 +67,7 @@ public class ConfirmEmailChangeTests(AppFactory appFactory) : BaseTest(appFactor
         var response = await client.ConfirmEmailChange(_request);
 
         // Assert
-        response.AssertSingleBadRequestError(UserIdNotFoundFailure.Key, UserIdNotFoundFailure.Message);
+        response.AssertUserNotFoundFailure();
         await AssertNoDataChanges();
     }
 

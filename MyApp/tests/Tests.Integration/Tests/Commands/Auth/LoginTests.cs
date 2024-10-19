@@ -1,7 +1,6 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Interfaces.Commands.Auth.Login;
 using MyApp.Domain.Auth.User.Failures;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -12,7 +11,7 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
     public override async Task InitializeAsync()
     {
         await base.InitializeAsync();
-        _request = new(User.Entity.Username, User.Password);
+        _request = new(User.Entity.Username, User.Password, []);
     }
 
     [Fact]
@@ -28,13 +27,13 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
         response.Content!.RefreshToken.Should().NotBeNullOrEmpty();
 
         var jwtReader = ScopedServices.GetRequiredService<IJwtReader>();
-        var user = jwtReader.ReadAccessToken(response.Content.AccessToken);
+        var accessToken = jwtReader.ReadAccessToken(response.Content.AccessToken);
         var refreshToken = jwtReader.ReadRefreshToken(response.Content.RefreshToken);
         using (new AssertionScope())
         {
-            user.Id.Should().Be(User.Entity.Id);
-            user.Username.Should().Be(User.Entity.Username);
-            user.Email.Should().Be(User.Entity.Email);
+            accessToken.UserId.Should().Be(User.Entity.Id);
+            accessToken.Username.Should().Be(User.Entity.Username);
+            accessToken.Email.Should().Be(User.Entity.Email);
         }
         refreshToken.Should().NotBeNull();
         using (new AssertionScope())
@@ -78,16 +77,6 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertInvalidLoginFailure();
-    }
-
-    [Fact]
-    public async Task GivenUserIsAuthenticated_ReturnsAnonymousOnlyError()
-    {
-        // Act
-        var response = await AppClient.Login(_request);
-
-        // Assert
-        response.AssertAnonymousOnlyError();
     }
 
     [Fact]

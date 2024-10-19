@@ -1,6 +1,5 @@
-﻿using MyApp.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
+﻿using MyApp.Application.Handlers.Commands.UserManagement.EmailUpdate.ChangeEmail;
 using MyApp.Application.Infrastructure.Abstractions;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.EndToEnd;
 
@@ -10,7 +9,7 @@ public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFa
     public async Task HappyPathTest()
     {
         await TestSignOutOnAllDevices();
-        await TestRefreshTokenFailure(User.RefreshToken);
+        await TestRefreshTokenFailure(User.AccessToken, User.RefreshToken);
         var (oldEmailCode, newEmailCode) = await TestChangeEmail();
         await TestConfirmEmailChange(oldEmailCode, newEmailCode);
     }
@@ -21,9 +20,9 @@ public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFa
         response.AssertSuccess();
     }
 
-    private async Task TestRefreshTokenFailure(string refreshToken)
+    private async Task TestRefreshTokenFailure(string accessToken, string refreshToken)
     {
-        var response = await UnauthorizedAppClient.RefreshToken(new(refreshToken));
+        var response = await UnauthorizedAppClient.RefreshToken(new(accessToken, refreshToken));
         response.AssertBadRequest();
     }
 

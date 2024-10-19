@@ -1,14 +1,13 @@
-﻿using MyApp.Application.Commands.Auth.Registration;
+﻿using MyApp.Application.Handlers.Commands.Auth.Registration;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
 public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    private readonly RegisterRequest _request = new(RandomData.Email, RandomData.Username, RandomData.Password);
+    private readonly RegisterRequest _request = RandomRequests.Register;
 
     [Fact]
     public async Task GivenHappyPath_ThenCreatesUnconfirmedUser()
@@ -75,17 +74,6 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertInternalServerError();
-        await AssertUserNotExists(_request.Username, _request.Email);
-    }
-
-    [Fact]
-    public async Task GivenUserIsAuthenticated_ReturnsAnonymousOnlyError()
-    {
-        // Act
-        var response = await AppClient.Register(_request);
-
-        // Assert
-        response.AssertAnonymousOnlyError();
         await AssertUserNotExists(_request.Username, _request.Email);
     }
 

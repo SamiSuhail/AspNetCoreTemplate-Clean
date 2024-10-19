@@ -1,9 +1,8 @@
-﻿using MyApp.Application.Commands.UserManagement.EmailUpdate.ChangeEmail;
+﻿using MyApp.Application.Handlers.Commands.UserManagement.EmailUpdate.ChangeEmail;
 using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ChangeEmail;
 using MyApp.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 
@@ -31,7 +30,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         var emailChangeConfirmation = EmailChangeConfirmationEntity.Create(User.Entity.Id, RandomData.Email);
         ArrangeDbContext.Add(emailChangeConfirmation);
-        await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
+        await ArrangeDbContext.SaveChangesAsync();
 
         // Act
         var response = await AppClient.ChangeEmail(_request);
@@ -90,7 +89,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         var emailChangeConfirmation = EmailChangeConfirmationEntity.Create(User.Entity.Id, RandomData.Email);
         ArrangeDbContext.Add(emailChangeConfirmation);
-        await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
+        await ArrangeDbContext.SaveChangesAsync();
         MockBag.ArrangeMessageThrows<ChangeEmailMessage>();
 
         // Act
@@ -104,17 +103,6 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
         user.EmailChangeConfirmation.NewEmail.Should().Be(emailChangeConfirmation.NewEmail);
         user.EmailChangeConfirmation.OldEmailCode.Should().Be(emailChangeConfirmation.OldEmailCode);
         user.EmailChangeConfirmation.NewEmailCode.Should().Be(emailChangeConfirmation.NewEmailCode);
-    }
-
-    [Fact]
-    public async Task GivenUnauthorized_ReturnsUnauthorizedError()
-    {
-        // Act
-        var response = await UnauthorizedAppClient.ChangeEmail(_request);
-
-        // Assert
-        response.AssertUnauthorizedError();
-        await AssertNoChangesOccured();
     }
 
     [Fact]

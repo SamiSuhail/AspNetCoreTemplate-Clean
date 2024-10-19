@@ -19,7 +19,9 @@ public static class RandomData
         return new(chars);
     }
 
+    public static string InstanceName => Alphanumeric();
     public static string Username => Alphanumeric();
     public static string Email => Alphanumeric() + "@email.com";
     public static string Password => Alphanumeric();
+    public static string ScopeName => Alphanumeric();
 }

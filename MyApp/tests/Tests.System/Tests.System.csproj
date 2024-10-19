@@ -34,7 +34,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\Application.Interfaces\Application.Interfaces.csproj" />
 	  <ProjectReference Include="..\..\src\Utilities\Utilities.csproj" />
-	  <ProjectReference Include="..\Tests.Utilities.Clients\Tests.Utilities.Clients.csproj" />
+	  <ProjectReference Include="..\Tests.Utilities\Tests.Utilities.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

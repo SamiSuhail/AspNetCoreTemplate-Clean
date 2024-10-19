@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using MediatR;
 using MyApp.Application.Startup.Behaviours;
-using MyApp.Application.Utilities;
 
 namespace MyApp.Application.Startup;
 

@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Domain.Access.Scope;
 using MyApp.Infrastructure.Auth;
 
 namespace MyApp.Tests.Integration.Utilities.Arrange;
@@ -14,7 +15,7 @@ public static class AccessTokenExtensions
         var jwtGenerator = new JwtGenerator(authSettings, clockMock.Object);
         clockMock.Setup(x => x.UtcNow)
             .Returns(DateTime.UtcNow.AddMinutes(-authSettings.Jwt.AccessTokenExpirationMinutes - 1));
-        var accessToken = jwtGenerator.CreateAccessToken(user.Entity.Id, user.Entity.Username, user.Entity.Email);
+        var accessToken = jwtGenerator.CreateAccessToken(user.Entity.Id, user.Entity.Username, user.Entity.Email, ScopeCollection.Empty);
         return accessToken;
     }
 
@@ -43,7 +44,8 @@ public static class AccessTokenExtensions
                 PublicKeyXml = authSettings.Jwt.PublicKeyXml,
                 AccessTokenExpirationMinutes = authSettings.Jwt.AccessTokenExpirationMinutes,
                 RefreshTokenExpirationDays = authSettings.Jwt.RefreshTokenExpirationDays,
-            }
+            },
+            AdminUser = authSettings.AdminUser,
         };
 
         return new JwtGenerator(fakeAuthSettings, clock);
