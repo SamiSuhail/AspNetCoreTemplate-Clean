@@ -5,6 +5,7 @@ using MyApp.Domain.Auth.User;
 using MyApp.Domain.Infra.Instance;
 using MyApp.Infrastructure.Auth;
 using MyApp.Infrastructure.Database.EFCore;
+using MyApp.Utilities.Collections;
 using static MyApp.Domain.Infra.Instance.InstanceConstants;
 
 namespace MyApp.Infrastructure.Database;
@@ -29,14 +30,14 @@ public class DatabaseSeeder(
 
         var defaultInstanceId = await SeedDefaultInstance();
         var adminUserId = await SeedAdminUser(defaultInstanceId);
-        await SeedInstanceWriteScope(adminUserId);
+        await SeedScopes(adminUserId);
     }
 
     private async Task<int> SeedDefaultInstance()
     {
         var existingInstance = await _dbContext.Set<InstanceEntity>()
             .Where(i => i.Name == DefaultInstanceName)
-            .Select(i => new 
+            .Select(i => new
             {
                 i.Id,
             })
@@ -47,13 +48,14 @@ public class DatabaseSeeder(
 
         var newInstance = InstanceEntity.Create(DefaultInstanceName, isCleanupEnabled: false);
         _dbContext.Add(newInstance);
-        await _dbContext.SaveChangesAsync(CancellationToken.None);
+        await _dbContext.SaveChangesAsync();
         return newInstance.Id;
     }
 
     private async Task<int> SeedAdminUser(int defaultInstanceId)
     {
         var existingUser = await _dbContext.Set<UserEntity>()
+            .IgnoreQueryFilters()
             .Where(u => u.Username == _adminUserSettings.Username)
             .FirstOrDefaultAsync();
 
@@ -61,46 +63,44 @@ public class DatabaseSeeder(
         {
             var newUser = UserEntity.CreateConfirmed(defaultInstanceId, _adminUserSettings.Username, _adminUserSettings.Password, "fake@email.com");
             _dbContext.Add(newUser);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
+            await _dbContext.SaveChangesAsync();
             return newUser.Id;
         }
 
         if (!_adminUserSettings.Password.Verify(existingUser.PasswordHash))
         {
             existingUser.UpdatePassword(_adminUserSettings.Password);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
+            await _dbContext.SaveChangesAsync();
         }
 
         return existingUser.Id;
     }
 
-    private async Task SeedInstanceWriteScope(int adminUserId)
+    private async Task SeedScopes(int adminUserId)
     {
-        var existingScope = await _dbContext.Set<ScopeEntity>()
-            .Include(s => s.ScopeUsers.Where(su => su.UserId == adminUserId))
-            .Where(s => s.Name == CustomScopes.InstanceWrite)
-            .Select(s => new
-            {
-                s.Id,
-                s.ScopeUsers,
-            })
-            .FirstOrDefaultAsync();
+        string[] scopeNames = CustomScopes.All;
+        object[] alreadySeededScopes = await GetExistingScopes(adminUserId, scopeNames);
 
-        if (existingScope?.ScopeUsers.Count > 0)
+        if (alreadySeededScopes.Length == scopeNames.Length)
             return;
 
-        if (existingScope == null)
+        var scopeNamesToSeed = scopeNames.Where(sn => alreadySeededScopes.NotContains(sn));
+        foreach (var scopeName in scopeNamesToSeed)
         {
-            var newScope = ScopeEntity.Create(CustomScopes.InstanceWrite);
+            var newScope = ScopeEntity.Create(scopeName);
             var newUserScope = UserScopeEntity.Create(adminUserId, newScope);
             _dbContext.Add(newScope);
             _dbContext.Add(newUserScope);
-            await _dbContext.SaveChangesAsync(CancellationToken.None);
-            return;
         }
 
-        var userScope = UserScopeEntity.Create(adminUserId, existingScope.Id);
-        _dbContext.Add(userScope);
-        await _dbContext.SaveChangesAsync(CancellationToken.None);
+        await _dbContext.SaveChangesAsync();
+
+        async Task<string[]> GetExistingScopes(int adminUserId, string[] scopeNames)
+        {
+            return await _dbContext.Set<ScopeEntity>()
+                        .Where(s => scopeNames.Contains(s.Name))
+                        .Select(s => s.Name)
+                        .ToArrayAsync();
+        }
     }
 }

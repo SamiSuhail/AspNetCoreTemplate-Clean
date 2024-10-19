@@ -46,6 +46,15 @@ public class UserEntity : ICreationAudited
         return user;
     }
 
+    public void AddScopes(ScopeEntity[] scopes)
+    {
+        foreach (var scope in scopes)
+        {
+            var userScope = UserScopeEntity.Create(Id, scope);
+            UserScopes.Add(userScope);
+        }
+    }
+
     public void ConfirmUserRegistration()
     {
         IsEmailConfirmed = true;

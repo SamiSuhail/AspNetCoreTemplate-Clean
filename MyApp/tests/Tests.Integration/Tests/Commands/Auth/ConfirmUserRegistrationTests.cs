@@ -1,7 +1,6 @@
 ﻿using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.UserConfirmation.Failures;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -28,17 +27,6 @@ public class ConfirmUserRegistrationTests(AppFactory appFactory) : BaseTest(appF
         using var _ = new AssertionScope();
         user.IsEmailConfirmed.Should().BeTrue();
         user.UserConfirmation.Should().BeNull();
-    }
-
-    [Fact]
-    public async Task GivenUserIsAuthenticated_ReturnsAnonymousOnlyError()
-    {
-        // Act
-        var response = await AppClient.ConfirmUserRegistration(_request);
-
-        // Assert
-        response.AssertAnonymousOnlyError();
-        await AssertNotConfirmed();
     }
 
     [Fact]

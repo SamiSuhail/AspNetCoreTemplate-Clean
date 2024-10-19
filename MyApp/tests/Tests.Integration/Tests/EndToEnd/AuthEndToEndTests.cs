@@ -1,5 +1,5 @@
-﻿using MyApp.Application.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Application.Commands.Auth.Registration;
+﻿using MyApp.Application.Handlers.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Application.Handlers.Commands.Auth.Registration;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Interfaces.Commands.Auth.Login;
 using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
@@ -8,7 +8,6 @@ using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.EndToEnd;
 
@@ -30,7 +29,7 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         var loginResponse = await TestLogin();
         _graphqlClient = AppFactory.ArrangeGraphQLClientWithToken(loginResponse.AccessToken);
         await TestMe();
-        await TestRefreshToken(loginResponse.RefreshToken);
+        await TestRefreshToken(loginResponse.AccessToken, loginResponse.RefreshToken);
     }
 
     private async Task TestRegister()
@@ -86,7 +85,7 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
 
     private async Task<LoginResponse> TestLogin()
     {
-        var request = new LoginRequest(Username, Password);
+        var request = new LoginRequest(Username, Password, []);
         var response = await UnauthorizedAppClient.Login(request);
         response.AssertSuccess();
         return response.Content!;
@@ -98,9 +97,9 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
         response.AssertSuccess();
     }
 
-    private async Task TestRefreshToken(string refreshToken)
+    private async Task TestRefreshToken(string accessToken, string refreshToken)
     {
-        var request = new RefreshTokenRequest(refreshToken);
+        var request = new RefreshTokenRequest(accessToken, refreshToken);
         var response = await UnauthorizedAppClient.RefreshToken(request);
         response.AssertSuccess();
     }

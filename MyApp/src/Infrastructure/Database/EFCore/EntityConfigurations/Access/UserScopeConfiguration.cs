@@ -29,5 +29,7 @@ public class UserScopeConfiguration : IEntityTypeConfiguration<UserScopeEntity>
             .HasForeignKey(x => x.ScopeId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasQueryFilter(x => x.User.IsEmailConfirmed == true);
     }
 }

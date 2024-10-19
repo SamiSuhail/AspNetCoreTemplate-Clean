@@ -1,10 +1,9 @@
-﻿using MyApp.Application.Commands.Auth.Registration;
-using MyApp.Domain.Auth.UserConfirmation;
+﻿using MyApp.Domain.Auth.UserConfirmation;
 using MyApp.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Domain.Auth.User;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
-using MyApp.Tests.Utilities.Clients.Extensions;
+using MyApp.Application.Handlers.Commands.Auth.Registration;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -78,17 +77,6 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertInternalServerError();
-        await AssertUserConfirmationUnchanged();
-    }
-
-    [Fact]
-    public async Task GivenUserIsAuthenticated_ReturnsAnonymousOnlyError()
-    {
-        // Act
-        var response = await AppClient.ResendConfirmation(_request);
-
-        // Assert
-        response.AssertAnonymousOnlyError();
         await AssertUserConfirmationUnchanged();
     }
 

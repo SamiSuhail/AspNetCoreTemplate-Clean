@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Domain.Access.Scope;
 using MyApp.Infrastructure.Auth;
 using MyApp.Utilities.Settings;
 
@@ -26,7 +28,13 @@ public static class AuthStartupExtensions
             jwt.MapInboundClaims = false;
             jwt.TokenValidationParameters = JwtValidationParametersProvider.Get(authSettings.Jwt.PublicKeyXml);
         });
-        services.AddAuthorization();
+
+        services.AddScoped<IAuthorizationHandler, ScopeAuthorizationHandler>();
+        services.AddAuthorization(options =>
+        {
+            foreach (var scopeName in CustomScopes.All)
+                options.AddPolicy(scopeName, policy => policy.Requirements.Add(new ScopeRequirement(scopeName)));
+        });
 
         return services;
     }

@@ -1,7 +1,11 @@
 ﻿using MediatR;
-using MyApp.Application.Utilities;
 
 namespace MyApp.Application.Startup.Behaviours;
+
+public interface IRequestTransformer<TRequest>
+{
+    TRequest Transform(TRequest request);
+}
 
 public class SenderTransformationDecorator(
     ISender sender,

@@ -1,5 +1,4 @@
 ﻿using MyApp.Application.Interfaces.Queries.Ping;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Queries.Ping;
 

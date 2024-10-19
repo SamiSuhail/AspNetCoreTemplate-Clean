@@ -1,6 +1,4 @@
-﻿using MyApp.Application.Infrastructure.Abstractions.Database;
-
-namespace MyApp.Tests.Integration.Core;
+﻿namespace MyApp.Tests.Integration.Core;
 
 public abstract class BaseTest(AppFactory appFactory) : IAsyncLifetime, IClassFixture<AppFactory>
 {

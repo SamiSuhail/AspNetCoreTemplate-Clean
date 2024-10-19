@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using MyApp.Application;
-using MyApp.Application.Interfaces;
 using MyApp.Domain;
 using MyApp.Infrastructure;
 using MyApp.Presentation;
@@ -12,7 +11,6 @@ public class ArchitectureTests
 {
     private readonly Assembly _domainAssembly = typeof(IDomainAssemblyMarker).Assembly;
     private readonly Assembly _applicationAssembly = typeof(IApplicationAssemblyMarker).Assembly;
-    private readonly Assembly _applicationInterfacesAssembly = typeof(IApplicationInterfacesAssemblyMarker).Assembly;
     private readonly Assembly _infrastructureAssembly = typeof(IInfrastructureAssemblyMarker).Assembly;
     private readonly Assembly _presentationAssembly = typeof(IPresentationAssemblyMarker).Assembly;
     private readonly Assembly _serverAssembly = typeof(IServerAssemblyMarker).Assembly;
@@ -55,11 +53,10 @@ public class ArchitectureTests
     [Fact]
     public void Presentation_Should_Only_Reference_Application_Domain()
     {
-        var references = _presentationAssembly.GetReferencedAssemblies()
-            .In([.. _mainProjectAssemblies, _applicationInterfacesAssembly]);
+        var references = GetReferencedProjects(_presentationAssembly);
 
         references.Should().HaveCount(2);
-        references.Should().Contain(r => r.Name == GetAssemblyName(_applicationInterfacesAssembly));
+        references.Should().Contain(r => r.Name == GetAssemblyName(_applicationAssembly));
         references.Should().Contain(r => r.Name == GetAssemblyName(_domainAssembly));
     }
 
@@ -74,7 +71,8 @@ public class ArchitectureTests
         references.Should().Contain(r => r.Name == GetAssemblyName(_applicationAssembly));
     }
     
-    private string GetAssemblyName(Assembly assembly) => assembly.GetName().Name ?? throw new Exception("Assembly has null name.");
+    private static string GetAssemblyName(Assembly assembly) 
+        => assembly.GetName().Name ?? throw new Exception("Assembly has null name.");
 
     private AssemblyName[] GetReferencedProjects(Assembly assembly)
         => assembly.GetReferencedAssemblies()

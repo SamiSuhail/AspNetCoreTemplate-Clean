@@ -5,4 +5,6 @@ public static class InstanceConstants
     public const string DefaultInstanceName = "main";
     public const int NameMinLength = 3;
     public const int NameMaxLength = 30;
+
+    public const int ExpirationTimeHours = 4;
 }

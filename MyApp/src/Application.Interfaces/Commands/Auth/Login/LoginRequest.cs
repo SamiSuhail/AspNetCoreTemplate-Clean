@@ -1,7 +1,6 @@
-﻿using MediatR;
-
-namespace MyApp.Application.Interfaces.Commands.Auth.Login;
+﻿namespace MyApp.Application.Interfaces.Commands.Auth.Login;
 
 public record LoginRequest(
     string Username,
-    string Password) : IRequest<LoginResponse>;
+    string Password,
+    string[] Scopes);

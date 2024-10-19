@@ -1,4 +1,5 @@
-﻿using MyApp.Domain.Shared;
+﻿using FluentAssertions;
+using MyApp.Domain.Shared;
 
 namespace MyApp.Domain.Access.Scope;
 
@@ -11,9 +12,13 @@ public class ScopeEntity : ICreationAudited
     public ICollection<UserScopeEntity> ScopeUsers { get; private set; } = default!;
 
     public static ScopeEntity Create(string name)
-        => new()
+    {
+        name.AsEnumerable().Should().NotContain(ScopeCollection.Separator);
+
+        return new()
         {
             Name = name,
             CreatedAt = DateTime.UtcNow,
         };
+    }
 }

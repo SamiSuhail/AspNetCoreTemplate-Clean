@@ -13,7 +13,7 @@ public static class AssertGraphQLResponseExtensions
         response.Data.Should().NotBeNull();
     }
 
-    public static void AssertUnauthorized(this IOperationResult response)
+    public static void AssertUnauthorizedError(this IOperationResult response)
         => response.AssertSingleError("AUTH_NOT_AUTHORIZED", "The current user is not authorized to access this resource.");
 
     public static void AssertSingleError(this IOperationResult response, string errorCode, string message)

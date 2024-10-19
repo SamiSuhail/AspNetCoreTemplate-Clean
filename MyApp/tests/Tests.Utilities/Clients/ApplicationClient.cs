@@ -1,10 +1,12 @@
-﻿using MyApp.Application.Interfaces.Commands.Auth.Login;
+﻿using MyApp.Application.Interfaces;
+using MyApp.Application.Interfaces.Commands.Auth.Login;
 using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
 using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
 using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Application.Interfaces.Commands.Infra.CreateInstance;
 using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ChangeEmail;
 using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ChangePassword;
@@ -26,6 +28,9 @@ public interface IApplicationClient
     [Post("/api/auth/register")]
     public Task<IApiResponse> Register(RegisterRequest request);
 
+    [Post("/api/auth/register")]
+    public Task<IApiResponse> Register(RegisterRequest request, [Header(CustomHeaders.InstanceName)] string instanceName);
+
     [Post("/api/auth/resend-confirmation")]
     public Task<IApiResponse> ResendConfirmation(ResendConfirmationRequest request);
 
@@ -35,6 +40,9 @@ public interface IApplicationClient
     [Post("/api/auth/login")]
     public Task<IApiResponse<LoginResponse>> Login(LoginRequest request);
 
+    [Post("/api/auth/login")]
+    public Task<IApiResponse<LoginResponse>> Login(LoginRequest request, [Header(CustomHeaders.InstanceName)] string instanceName);
+
     [Post("/api/auth/refresh-token")]
     public Task<IApiResponse<RefreshTokenResponse>> RefreshToken(RefreshTokenRequest request);
 
@@ -43,6 +51,7 @@ public interface IApplicationClient
 
     [Post("/api/auth/reset-password")]
     public Task<IApiResponse> ResetPassword(ResetPasswordRequest request);
+
 
     [Post("/api/user-management/sign-out-on-all-devices")]
     public Task<IApiResponse> SignOutOnAllDevices();
@@ -58,4 +67,8 @@ public interface IApplicationClient
 
     [Post("/api/user-management/confirm-password-change")]
     public Task<IApiResponse> ConfirmPasswordChange(ConfirmPasswordChangeRequest request);
+
+
+    [Post("/api/infra/instance/create")]
+    public Task<IApiResponse> CreateInstance(CreateInstanceRequest request);
 }

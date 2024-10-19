@@ -48,7 +48,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "src\Utilities\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "code_snippets", "code_snippets", "{85B77CD8-077A-4998-A51D-257207956C4B}"
 	ProjectSection(SolutionItems) = preProject
-		code_snippets\first.snippet = code_snippets\first.snippet
+		code_snippets\s_c_a_handler_no_response.snippet = code_snippets\s_c_a_handler_no_response.snippet
+		code_snippets\s_c_a_handler_with_response.snippet = code_snippets\s_c_a_handler_with_response.snippet
+		code_snippets\s_c_p_endpoint_no_response.snippet = code_snippets\s_c_p_endpoint_no_response.snippet
+		code_snippets\s_c_p_endpoint_with_response.snippet = code_snippets\s_c_p_endpoint_with_response.snippet
+		code_snippets\s_c_p_group.snippet = code_snippets\s_c_p_group.snippet
 	EndProjectSection
 EndProject
 Global

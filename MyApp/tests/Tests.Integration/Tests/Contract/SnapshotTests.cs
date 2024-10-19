@@ -16,7 +16,7 @@ public class SnapshotTests(AppFactory appFactory) : BaseTest(appFactory)
         // Assert
         response.IsSuccessStatusCode.Should().BeTrue();
         string openApiSpec = await response.Content.ReadAsStringAsync();
-        await Verify(openApiSpec, sourceFile: GetSourceFile(nameof(OpenApiSpec_MatchesSnapshot)));
+        await CustomVerify(openApiSpec, nameof(OpenApiSpec_MatchesSnapshot));
     }
 
     [Fact]
@@ -31,7 +31,16 @@ public class SnapshotTests(AppFactory appFactory) : BaseTest(appFactory)
         // Assert
         response.IsSuccessStatusCode.Should().BeTrue();
         string graphQlSchema = await response.Content.ReadAsStringAsync();
-        await Verify(graphQlSchema, sourceFile: GetSourceFile(nameof(GraphQLSchema_MatchesSnapshot)));
+        await CustomVerify(graphQlSchema, nameof(OpenApiSpec_MatchesSnapshot));
+    }
+
+    private static async Task CustomVerify(string target, string testName)
+    {
+#if DEBUG
+        await Verify(target);
+#else
+        await Verify(target, sourceFile: GetSourceFile(testName));
+#endif
     }
 
     private static string GetSourceFile(string testName)

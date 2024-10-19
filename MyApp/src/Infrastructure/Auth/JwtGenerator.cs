@@ -4,12 +4,13 @@ using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Domain.Access.Scope;
 
 namespace MyApp.Infrastructure.Auth;
 
 public class JwtGenerator(AuthSettings authSettings, IClock clock) : IJwtGenerator
 {
-    public string CreateAccessToken(int userId, string username, string email)
+    public string CreateAccessToken(int userId, string username, string email, ScopeCollection scopes)
     {
         List<Claim> claims =
             [
@@ -17,6 +18,8 @@ public class JwtGenerator(AuthSettings authSettings, IClock clock) : IJwtGenerat
                 new(JwtClaims.Username, username),
                 new(JwtClaims.Email, email),
             ];
+
+        claims.AddRange(scopes.Collection.Select(scope => new Claim(JwtClaims.Scopes, scope)));
 
         var expiration = clock.UtcNow.AddMinutes(authSettings.Jwt.AccessTokenExpirationMinutes);
         var jwt = CreateToken(authSettings.Jwt.PrivateKeyXml, claims, expiration);

@@ -1,51 +1,11 @@
 ﻿using MyApp.Application.Interfaces.Queries.Ping;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Queries.Ping;
 
 public class PingDatabaseGraphQLTests(AppFactory appFactory) : BaseTest(appFactory)
 {
     [Fact]
-    public async Task GivenUserIsUnauthorized_ReturnsError()
-    {
-        // Act
-        var response = await UnauthorizedGraphQLClient.PingDatabase.ExecuteAsync();
-
-        // Assert
-        response.AssertUnauthorized();
-    }
-
-    [Fact]
-    public async Task GivenTokenHasExpired_ReturnsError()
-    {
-        // Arrange
-        var accessToken = ScopedServices.ArrangeExpiredAccessToken(User);
-        var graphQlClient = AppFactory.ArrangeGraphQLClientWithToken(accessToken);
-
-        // Act
-        var response = await graphQlClient.PingDatabase.ExecuteAsync();
-
-        // Assert
-        response.AssertUnauthorized();
-    }
-
-    [Fact]
-    public async Task GivenTokenIsInvalid_ReturnsError()
-    {
-        // Arrange
-        var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
-        var accessToken = jwtGenerator.CreateAccessToken(User.Entity.Id, User.Entity.Username, User.Entity.Email);
-        var graphQlClient = AppFactory.ArrangeGraphQLClientWithToken(accessToken);
-
-        // Act
-        var response = await graphQlClient.PingDatabase.ExecuteAsync();
-
-        // Assert
-        response.AssertUnauthorized();
-    }
-
-    [Fact]
-    public async Task GivenUserIsAuthorized_ReturnsResponse()
+    public async Task GivenHappyPath_ReturnsResponse()
     {
         // Act
         var response = await GraphQLClient.PingDatabase.ExecuteAsync();

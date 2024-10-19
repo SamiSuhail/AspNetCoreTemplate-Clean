@@ -4,11 +4,13 @@ namespace MyApp.Utilities.Strings;
 
 public static class StringExtensions
 {
+    public static string[] WhitespaceCharacters { get; } = [" ", "\r", "\n", "\t"];
+
     public static string RemoveWhitespace(this string s)
         => s.ReplaceWhitespace(string.Empty);
 
     public static string ReplaceWhitespace(this string s, string newValue)
-        => s.ReplaceMany(newValue, " ", "\r", "\n", "\t");
+        => s.ReplaceMany(newValue, WhitespaceCharacters);
 
     public static string RemoveMany(this string s, params string[] oldValues)
         => s.ReplaceMany(string.Empty, oldValues);

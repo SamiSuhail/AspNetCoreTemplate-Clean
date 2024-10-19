@@ -1,9 +1,8 @@
-﻿using MyApp.Application.Commands.Auth.PasswordManagement.ForgotPassword;
+﻿using MyApp.Application.Handlers.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Domain.Auth.User;
-using MyApp.Tests.Utilities.Clients.Extensions;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -66,7 +65,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         await ArrangeUserAndRequest(userIsConfirmed);
         var oldPasswordReset = PasswordResetConfirmationEntity.Create(_user.Id);
         ArrangeDbContext.Add(oldPasswordReset);
-        await ArrangeDbContext.SaveChangesAsync(CancellationToken.None);
+        await ArrangeDbContext.SaveChangesAsync();
 
         // Act
         var response = await UnauthorizedAppClient.ForgotPassword(_request);
@@ -113,22 +112,6 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         await UnauthorizedAppClient.ForgotPassword(_request);
 
         // Assert
-        await AssertConfirmationNotExists();
-    }
-
-    [Theory]
-    [InlineData(true)]
-    [InlineData(false)]
-    public async Task GivenUserIsAuthenticated_ReturnsAnonymousOnlyError(bool userIsConfirmed)
-    {
-        // Arrange
-        await ArrangeUserAndRequest(userIsConfirmed);
-
-        // Act
-        var response = await AppClient.ForgotPassword(_request);
-
-        // Assert
-        response.AssertAnonymousOnlyError();
         await AssertConfirmationNotExists();
     }
 

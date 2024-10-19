@@ -1,7 +1,4 @@
-﻿using MyApp.Domain.Auth.User.Failures;
-using MyApp.Tests.Utilities.Clients.Extensions;
-
-namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
+﻿namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 
 public class SignOutOnAllDevicesTests(AppFactory appFactory) : BaseTest(appFactory)
 {
@@ -18,16 +15,6 @@ public class SignOutOnAllDevicesTests(AppFactory appFactory) : BaseTest(appFacto
     }
 
     [Fact]
-    public async Task GivenUserUnauthorized_ReturnsUnauthorizedError()
-    {
-        // Act
-        var response = await UnauthorizedAppClient.SignOutOnAllDevices();
-
-        // Assert
-        response.AssertUnauthorizedError();
-    }
-
-    [Fact]
     public async Task GivenUserIdNotFound_ReturnsUserNotFoundFailure()
     {
         // Arrange
@@ -37,6 +24,6 @@ public class SignOutOnAllDevicesTests(AppFactory appFactory) : BaseTest(appFacto
         var response = await client.SignOutOnAllDevices();
 
         // Assert
-        response.AssertSingleBadRequestError(UserIdNotFoundFailure.Key, UserIdNotFoundFailure.Message);
+        response.AssertUserNotFoundFailure();
     }
 }

@@ -1,5 +1,5 @@
 ﻿using MyApp.Application.Interfaces.Queries.Ping;
-using MyApp.Tests.Utilities.Clients.Extensions;
+using MyApp.Domain.Access.Scope;
 
 namespace MyApp.Tests.Integration.Tests.Queries.Ping;
 
@@ -34,7 +34,7 @@ public class PingDatabaseTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
-        var accessToken = jwtGenerator.CreateAccessToken(User.Entity.Id, User.Entity.Username, User.Entity.Email);
+        var accessToken = jwtGenerator.CreateAccessToken(User.Entity.Id, User.Entity.Username, User.Entity.Email, ScopeCollection.Empty);
         var client = AppFactory.ArrangeClientWithToken(accessToken);
 
         // Act

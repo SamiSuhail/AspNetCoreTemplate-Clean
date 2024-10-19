@@ -1,13 +1,12 @@
-﻿using MyApp.Domain.Auth.User.Failures;
-using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Tests.Utilities.Clients.Extensions;
+﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Domain.Access.Scope;
 
 namespace MyApp.Tests.Integration.Tests.Queries.Auth;
 
 public class MeGraphQLTests(AppFactory appFactory) : BaseTest(appFactory)
 {
     [Fact]
-    public async Task GivenUserIsAuthorized_ReturnsResponse()
+    public async Task GivenHappyPath_ReturnsResponse()
     {
         // Act
         var response = await GraphQLClient.Me.ExecuteAsync();
@@ -24,27 +23,17 @@ public class MeGraphQLTests(AppFactory appFactory) : BaseTest(appFactory)
     }
 
     [Fact]
-    public async Task GivenUserIsUnauthorized_ReturnsError()
-    {
-        // Act
-        var response = await UnauthorizedGraphQLClient.Me.ExecuteAsync();
-
-        // Assert
-        response.AssertUnauthorized();
-    }
-
-    [Fact]
     public async Task GivenUserNotFound_ReturnsFailure()
     {
         // Arrange
         var jwtGenerator = ScopedServices.GetRequiredService<IJwtGenerator>();
-        var accessToken = jwtGenerator.CreateAccessToken(userId: int.MaxValue, User.Entity.Username, User.Entity.Email);
+        var accessToken = jwtGenerator.CreateAccessToken(userId: int.MaxValue, User.Entity.Username, User.Entity.Email, ScopeCollection.Empty);
         var client = AppFactory.ArrangeGraphQLClientWithToken(accessToken);
 
         // Act
         var response = await client.Me.ExecuteAsync();
 
         // Assert
-        response.AssertSingleError(UserIdNotFoundFailure.Key, UserIdNotFoundFailure.Message);
+        response.AssertUserNotFoundFailure();
     }
 }

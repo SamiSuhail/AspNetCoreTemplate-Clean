@@ -13,12 +13,11 @@ public static class AssertResponseExtensions
     public static void AssertSuccess(this IApiResponse response)
     {
         using var _ = new AssertionScope();
-        response.IsSuccessStatusCode.Should().BeTrue();
+        var intStatusCode = (int) response.StatusCode;
+        intStatusCode.Should().BeGreaterThanOrEqualTo(200);
+        intStatusCode.Should().BeLessThan(300);
         response.Error?.Content.Should().BeNull();
     }
-
-    public static void AssertInvalidLoginFailure(this IApiResponse response)
-        => response.AssertSingleBadRequestError(LoginInvalidFailure.Key, LoginInvalidFailure.Message);
 
     public static void AssertSingleBadRequestError(this IApiResponse response, string key, string message)
     {
@@ -53,6 +52,9 @@ public static class AssertResponseExtensions
         var problemDetails = JsonConvert.DeserializeObject<ValidationProblemDetails>(response.Error!.Content!)!;
         return problemDetails;
     }
+
+    public static void AssertForbiddenError(this IApiResponse response)
+        => response.AssertError(HttpStatusCode.Forbidden);
 
     public static void AssertUnauthorizedError(this IApiResponse response)
         => response.AssertError(HttpStatusCode.Unauthorized);
