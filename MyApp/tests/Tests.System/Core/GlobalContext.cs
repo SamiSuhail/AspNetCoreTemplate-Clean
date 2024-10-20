@@ -1,6 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentAssertions;
+using FluentAssertions.Common;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using MyApp.Tests.System.Core.Settings;
 using MyApp.Tests.Utilities.Clients;
+using MyApp.Tests.Utilities.Clients.Extensions;
 using MyApp.Tests.Utilities.Core;
 using Refit;
 
@@ -10,6 +14,7 @@ public static class GlobalContext
 {
     public static ServerSettings Settings { get; private set; } = default!;
     public static string AccessToken { get; private set; } = default!;
+    public static IServiceProvider Services { get; private set; } = default!;
 
     public static Task Initialize { get; } = new AsyncLazy(InitializeAsyncInternal).Value;
 
@@ -23,12 +28,30 @@ public static class GlobalContext
         Settings = ServerSettings.Get(configuration);
         var authSettings = Settings.Auth;
 
-        var httpClient = new HttpClient
+        using var httpClient = new HttpClient
         {
             BaseAddress = new(Settings.BaseUrl),
         };
-        var client = RestService.For<IApplicationClient>(httpClient);
+        var unauthorizedClient = httpClient.ToApplicationClient();
 
-        await Task.CompletedTask;
+        var loginResponse = await unauthorizedClient.Login(new(authSettings.Username, authSettings.Password, Scopes: []));
+        loginResponse.AssertSuccess();
+        loginResponse.Content.Should().NotBeNull();
+        AccessToken = loginResponse.Content!.AccessToken;
+        AccessToken.Should().NotBeNullOrEmpty();
+
+
+        var services = new ServiceCollection();
+        services.AddHttpClient(nameof(TestFixture.AdminAppClient), c =>
+        {
+            c.BaseAddress = new(Settings.BaseUrl);
+            c.SetAuthorizationHeader(AccessToken);
+        });
+        services.AddHttpClient(nameof(TestFixture.UnauthorizedAppClient), c =>
+        {
+            c.BaseAddress = new(Settings.BaseUrl);
+        });
+
+        Services = services.BuildServiceProvider();
     }
 }

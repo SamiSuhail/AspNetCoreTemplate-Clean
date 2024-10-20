@@ -1,15 +1,19 @@
 ﻿
+using MyApp.Tests.Utilities.Clients;
+
 namespace MyApp.Tests.System.Core;
 
 public class BaseTest(TestFixture fixture) : IClassFixture<TestFixture>, IAsyncLifetime
 {
-    private readonly TestFixture _fixture = fixture;
+    public TestFixture Fixture { get; } = fixture;
 
     public async Task InitializeAsync()
     {
-        await Task.CompletedTask;
+        await Fixture.InitializeAsync();
     }
 
-    public Task DisposeAsync()
-        => Task.CompletedTask;
+    public async Task DisposeAsync()
+    {
+        await Fixture.DisposeAsync();
+    }
 }

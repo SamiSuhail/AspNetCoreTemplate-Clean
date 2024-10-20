@@ -2,9 +2,9 @@
   "Server": {
     "BaseUrl": "https://localhost:7018",
     "Auth": {
-      "Username": "SomeUsername",
-      "Email": "user@email.com",
-      "Password": "SomeSecretPassword"
+      "Username": "admin1",
+      "Email": "fake@email.com",
+      "Password": "password1!"
     }
   }
 }

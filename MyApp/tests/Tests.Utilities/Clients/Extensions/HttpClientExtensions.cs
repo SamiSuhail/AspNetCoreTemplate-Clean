@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Refit;
 
 namespace MyApp.Tests.Utilities.Clients.Extensions;
 
@@ -9,4 +10,7 @@ public static class HttpClientExtensions
         httpClient.DefaultRequestHeaders.Authorization = new(JwtBearerDefaults.AuthenticationScheme, accessToken);
         return httpClient;
     }
+
+    public static IApplicationClient ToApplicationClient(this HttpClient httpClient)
+        => RestService.For<IApplicationClient>(httpClient);
 }
