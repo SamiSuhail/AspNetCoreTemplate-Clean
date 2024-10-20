@@ -17,11 +17,13 @@ FROM build AS publish
 RUN dotnet publish "./src/DbDeploy/DbDeploy.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/dbdeploy
 RUN dotnet publish "./src/Server/Server.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/server
 RUN dotnet publish "./tests/Tests.Integration/Tests.Integration.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/testsintegration
+RUN dotnet publish "./tests/Tests.System/Tests.System.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/testssystem
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 WORKDIR /app
 COPY --from=publish /app/publish/dbdeploy ./dbdeploy
 COPY --from=publish /app/publish/server ./server
 COPY --from=publish /app/publish/testsintegration ./testsintegration
+COPY --from=publish /app/publish/testssystem ./testssystem
 
 VOLUME /app

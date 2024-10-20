@@ -16,7 +16,6 @@ public static class StartupExtensions
 
     public static WebApplication UseCustomPresentation(this WebApplication app)
     {
-        app.UseHttpsRedirection();
         app.UseExceptionHandler(options => { });
 
         app.UseCustomSwagger()

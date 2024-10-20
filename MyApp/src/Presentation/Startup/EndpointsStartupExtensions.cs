@@ -7,7 +7,7 @@ public static class EndpointsStartupExtensions
 {
     public static WebApplication MapCustomEndpoints(this WebApplication app)
     {
-        app.Map("/", () => Results.Redirect("/api"));
+        app.Map("/", () => Results.Redirect("/swagger"));
         var endpointGroupType = typeof(EndpointGroupBase);
 
         var assembly = Assembly.GetExecutingAssembly();

@@ -14,6 +14,7 @@ public class BaseTest(TestFixture fixture) : IClassFixture<TestFixture>, IAsyncL
 
     public async Task DisposeAsync()
     {
-        await Fixture.DisposeAsync();
+        if (Fixture != null)
+            await Fixture.DisposeAsync();
     }
 }

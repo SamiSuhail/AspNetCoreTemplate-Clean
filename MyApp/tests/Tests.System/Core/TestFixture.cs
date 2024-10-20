@@ -7,7 +7,7 @@ namespace MyApp.Tests.System.Core;
 
 public class TestFixture : IAsyncLifetime
 {
-    private IServiceScope _serviceScope = default!;
+    private AsyncServiceScope _serviceScope = default!;
 
     public IServiceProvider Services { get; private set; } = default!;
     public IApplicationClient AdminAppClient { get; private set; } = default!;
@@ -27,7 +27,6 @@ public class TestFixture : IAsyncLifetime
 
     public async Task DisposeAsync()
     {
-        _serviceScope.Dispose();
-        await Task.CompletedTask;
+        await _serviceScope.DisposeAsync();
     }
 }
