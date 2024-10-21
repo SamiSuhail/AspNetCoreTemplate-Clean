@@ -1,21 +1,22 @@
 volumes:
-    pg_volume:                                
-        name: pg_volume
+    db_volume:                                
+        name: db_volume
     rabbitmq_volume:
         name: rabbitmq_volume
 
 services: 
-    postgres:
+    db:
         image: postgres
-        container_name: postgres
+        container_name: db
+        hostname: ${DB_INTERNAL_HOST}
         ports:
-            - ${PG_PORT}:${PG_PORT}
+            - ${DB_PORT}:${DB_PORT}
         volumes:
-            - pg_volume:/var/lib/postgresql/data
+            - db_volume:/var/lib/postgresql/data
         environment:
-            POSTGRES_DB: ${PG_NAME}
-            POSTGRES_USER: ${PG_USERNAME}
-            POSTGRES_PASSWORD: ${PG_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
 
     base:
         image: ${DOCKER_REGISTRY-}base
@@ -45,18 +46,25 @@ services:
         depends_on:
             base:
                 condition: service_completed_successfully
+            db:
+                condition: service_started
         build:
             context: ../
             dockerfile: ./infra/Dockerfile.dbdeploy
         environment:
-            ConnectionStrings__Default: Server=${PG_INTERNAL_HOST};Port=${PG_PORT};Database=${PG_NAME};User Id=${PG_USERNAME};Password=${PG_PASSWORD};
+            ConnectionStrings__Default: Server=${DB_INTERNAL_HOST};Port=${DB_PORT};Database=${DB_NAME};User Id=${DB_USERNAME};Password=${DB_PASSWORD};
 
     server:
         image: ${DOCKER_REGISTRY-}server
         container_name: server
+        hostname: ${SERVER_INTERNAL_HOST}
         depends_on:
             dbdeploy:
                 condition: service_completed_successfully
+            queue:
+                condition: service_started
+            email:
+                condition: service_started
         build:
             context: ../
             dockerfile: ./infra/Dockerfile.server
@@ -64,14 +72,14 @@ services:
             - ${SERVER_PORT}:${SERVER_PORT}
         environment:
             Server__UrlsJoined: http://+:${SERVER_PORT}
-            ConnectionStrings__Database: Server=${PG_INTERNAL_HOST};Port=${PG_PORT};Database=${PG_NAME};User Id=${PG_USERNAME};Password=${PG_PASSWORD};
-            Email__SMTPHost: ${MAILHOG_INTERNAL_HOST}
-            Email__SMTPPort: ${MAILHOG_PORT}
-            Messaging__Host: ${RABBITMQ_INTERNAL_HOST}
-            Messaging__Port: ${RABBITMQ_PORT}
-            Messaging__ManagementPort: ${RABBITMQ_PORT_MANAGEMENT}
-            Messaging__User: ${RABBITMQ_USERNAME}
-            Messaging__Pass: ${RABBITMQ_PASSWORD}
+            ConnectionStrings__Database: Server=${DB_INTERNAL_HOST};Port=${DB_PORT};Database=${DB_NAME};User Id=${DB_USERNAME};Password=${DB_PASSWORD};
+            Email__SMTPHost: ${EMAIL_INTERNAL_HOST}
+            Email__SMTPPort: ${EMAIL_SMTP_PORT}
+            Messaging__Host: ${QUEUE_INTERNAL_HOST}
+            Messaging__Port: ${QUEUE_PORT}
+            Messaging__ManagementPort: ${QUEUE_WEBUI_PORT}
+            Messaging__User: ${QUEUE_USERNAME}
+            Messaging__Pass: ${QUEUE_PASSWORD}
             Auth__AdminUser__Username: ${SERVER_ADMIN_USERNAME}
             Auth__AdminUser__Password: ${SERVER_ADMIN_PASSWORD}
             Auth__AdminUser__Email: ${SERVER_ADMIN_EMAIL}
@@ -79,6 +87,7 @@ services:
     testssystem:
         image: ${DOCKER_REGISTRY-}testssystem
         container_name: testssystem
+        restart: on-failure
         depends_on:
             server:
                 condition: service_started
@@ -86,7 +95,7 @@ services:
             context: ../
             dockerfile: ./infra/Dockerfile.testssystem
         environment:
-            Server__BaseUrl: http://server:${SERVER_PORT}
+            Server__BaseUrl: http://${SERVER_INTERNAL_HOST}:${SERVER_PORT}
             Auth__Username: ${SERVER_ADMIN_USERNAME}
             Auth__Password: ${SERVER_ADMIN_PASSWORD}
             Auth__Email: ${SERVER_ADMIN_EMAIL}
@@ -96,7 +105,7 @@ services:
         container_name: pgadmin
         restart: always
         ports:
-            - ${PGADMIN_PORT}:80
+            - ${DB_WEBUI_PORT}:80
         environment:
             PGADMIN_DEFAULT_EMAIL: postgres@example.com
             PGADMIN_DEFAULT_PASSWORD: postgres
@@ -106,24 +115,29 @@ services:
             - source: servers.json
               target: /pgadmin4/servers.json
 
-    mailhog:
-        image: mailhog/mailhog
-        container_name: mailhog
+    email:
+        image: jijiechen/papercut:latest
+        container_name: email
+        hostname: ${EMAIL_INTERNAL_HOST}
         ports:
-            - ${MAILHOG_PORT}:${MAILHOG_PORT}
-            - 8025:8025
+            - ${EMAIL_WEBUI_PORT}:${EMAIL_WEBUI_PORT}
+            - ${EMAIL_SMTP_PORT}:${EMAIL_SMTP_PORT}
+            - ${EMAIL_POP3_PORT}:${EMAIL_POP3_PORT}
+        environment:
+            PAPERCUT_USE_SSL: "false"
     
-    rabbitmq:
+    queue:
         image: rabbitmq:3-management
-        container_name: rabbitmq
+        container_name: queue
+        hostname: ${QUEUE_INTERNAL_HOST}
         ports:
-            - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
-            - ${RABBITMQ_PORT_MANAGEMENT}:${RABBITMQ_PORT_MANAGEMENT}
+            - ${QUEUE_PORT}:${QUEUE_PORT}
+            - ${QUEUE_WEBUI_PORT}:${QUEUE_WEBUI_PORT}
         volumes:
             - rabbitmq_volume:/var/lib/rabbitmq/data
         environment:
-            RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME}
-            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+            RABBITMQ_DEFAULT_USER: ${QUEUE_USERNAME}
+            RABBITMQ_DEFAULT_PASS: ${QUEUE_PASSWORD}
 
 
 configs:
@@ -134,10 +148,10 @@ configs:
                     "1": {
                         "Group": "Servers",
                         "Name": "docker",
-                        "Host": "postgres",
+                        "Host": "${DB_INTERNAL_HOST}",
                         "Port": 5432,
                         "MaintenanceDB": "postgres",
-                        "Username": "${PG_USERNAME}",
+                        "Username": "${DB_USERNAME}",
                         "SSLMode": "prefer"
                     }
                 }
