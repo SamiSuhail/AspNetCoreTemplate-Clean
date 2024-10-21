@@ -1,10 +1,14 @@
-﻿namespace MyApp.Tests.System.Core;
+﻿using MyApp.Tests.System.Providers.Email;
+
+namespace MyApp.Tests.System.Core;
 
 public static class GlobalContext
 {
-    public static ServerSettings Settings { get; private set; } = default!;
+    public static ServerSettings ServerSettings { get; private set; } = default!;
+    public static EmailSettings EmailSettings { get; private set; } = default!;
     public static string AccessToken { get; private set; } = default!;
     public static IServiceProvider Services { get; private set; } = default!;
+    public static EmailProvider EmailProvider => Services.GetRequiredService<EmailProvider>();
 
     public static Task Initialize { get; } = new AsyncLazy(InitializeAsyncInternal).Value;
 
@@ -15,12 +19,13 @@ public static class GlobalContext
             .AddEnvironmentVariables()
             .Build();
 
-        Settings = ServerSettings.Get(configuration);
-        var authSettings = Settings.Auth;
+        ServerSettings = ServerSettings.Get(configuration);
+        EmailSettings = EmailSettings.Get(configuration);
+        var authSettings = ServerSettings.AdminAuth;
 
         using var httpClient = new HttpClient
         {
-            BaseAddress = new(Settings.BaseUrl),
+            BaseAddress = new(ServerSettings.BaseUrl),
         };
         var unauthorizedClient = httpClient.ToApplicationClient();
 
@@ -34,13 +39,16 @@ public static class GlobalContext
         var services = new ServiceCollection();
         services.AddHttpClient(nameof(BaseTest.AdminAppClient), c =>
         {
-            c.BaseAddress = new(Settings.BaseUrl);
+            c.BaseAddress = new(ServerSettings.BaseUrl);
             c.SetAuthorizationHeader(AccessToken);
         });
         services.AddHttpClient(nameof(BaseTest.UnauthorizedAppClient), c =>
         {
-            c.BaseAddress = new(Settings.BaseUrl);
+            c.BaseAddress = new(ServerSettings.BaseUrl);
         });
+
+        services.AddSingleton(EmailSettings);
+        services.AddSingleton<EmailProvider>();
 
         Services = services.BuildServiceProvider();
     }

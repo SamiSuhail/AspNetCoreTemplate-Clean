@@ -5,7 +5,7 @@ namespace MyApp.Tests.Integration.Clients;
 
 public static class AppFactoryClientExtensions
 {
-    public static IApplicationClient ArrangeClientWithCredentials(
+    public static IApplicationAdminClient ArrangeClientWithCredentials(
         this AppFactory appFactory,
         int userId,
         string username,
@@ -16,10 +16,10 @@ public static class AppFactoryClientExtensions
         return appFactory.ArrangeClientWithToken(accessToken);
     }
 
-    public static IApplicationClient ArrangeClientWithToken(this AppFactory appFactory, string accessToken)
+    public static IApplicationAdminClient ArrangeClientWithToken(this AppFactory appFactory, string accessToken)
     {
         var httpClient = appFactory.CreateClient().SetAuthorizationHeader(accessToken);
-        return RestService.For<IApplicationClient>(httpClient);
+        return RestService.For<IApplicationAdminClient>(httpClient);
     }
 
     public static IApplicationGraphQLClient ArrangeGraphQLClientWithToken(this AppFactory appFactory, string accessToken)

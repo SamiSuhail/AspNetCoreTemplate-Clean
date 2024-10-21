@@ -16,6 +16,6 @@ Swagger UI:		localhost:8889
 
 ## Renaming the solution
 If you want to rename the solution there is a script called renameSolution.ps1 in the repository root.
-You can run the script from the root folder and it will rename all occurences of the solution name to the new one.
+You can run the script from the root folder and it will rename all occurrences of the solution name to the new one.
 
 Please verify the diffcheck afterwards, as the script does not (at time of writing) respect casing upon rename.

@@ -16,6 +16,12 @@ using Refit;
 
 namespace MyApp.Tests.Utilities.Clients;
 
+public interface IApplicationAdminClient : IApplicationClient
+{
+    [Post("/api/infra/instance/create")]
+    public Task<IApiResponse> CreateInstance(CreateInstanceRequest request);
+}
+
 public interface IApplicationClient
 {
     [Get("/api/ping")]
@@ -67,8 +73,4 @@ public interface IApplicationClient
 
     [Post("/api/user-management/confirm-password-change")]
     public Task<IApiResponse> ConfirmPasswordChange(ConfirmPasswordChangeRequest request);
-
-
-    [Post("/api/infra/instance/create")]
-    public Task<IApiResponse> CreateInstance(CreateInstanceRequest request);
 }

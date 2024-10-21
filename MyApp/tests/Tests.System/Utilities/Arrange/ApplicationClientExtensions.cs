@@ -6,7 +6,7 @@ namespace MyApp.Tests.System.Utilities.Arrange;
 
 public static class ApplicationClientExtensions
 {
-    public static async Task<string> ArrangeRandomInstance(this IApplicationClient client)
+    public static async Task<string> ArrangeRandomInstance(this IApplicationAdminClient client)
     {
         var instanceName = RandomData.InstanceName;
         var createInstanceRequest = new CreateInstanceRequest(instanceName, IsCleanupEnabled: true);
@@ -19,17 +19,18 @@ public static class ApplicationClientExtensions
     {
         var registerRequest = RandomRequests.Register with
         {
-            Email = GlobalContext.Settings.Auth.Email,
+            Email = GlobalContext.ServerSettings.AdminAuth.Email,
         };
         var registerResponse = await client.Register(registerRequest, instanceName);
         registerResponse.AssertSuccess();
 
         // get from email
-        var code = "000000";
+        var code = await GlobalContext.EmailProvider
+            .GetUserConfirmationCode(registerRequest.Email, registerRequest.Username);
         var confirmUserRequest = new ConfirmUserRegistrationRequest(code);
         var confirmUserResponse = await client.ConfirmUserRegistration(confirmUserRequest);
         confirmUserResponse.AssertSuccess();
 
-        return (registerRequest.Username, registerRequest.Password, instanceName);
+        return (registerRequest.Username, registerRequest.Password, GlobalContext.ServerSettings.AdminAuth.Email);
     }
 }

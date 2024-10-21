@@ -89,16 +89,18 @@ services:
         container_name: testssystem
         restart: on-failure
         depends_on:
-            server:
+            server: 
                 condition: service_started
         build:
             context: ../
             dockerfile: ./infra/Dockerfile.testssystem
         environment:
             Server__BaseUrl: http://${SERVER_INTERNAL_HOST}:${SERVER_PORT}
-            Auth__Username: ${SERVER_ADMIN_USERNAME}
-            Auth__Password: ${SERVER_ADMIN_PASSWORD}
-            Auth__Email: ${SERVER_ADMIN_EMAIL}
+            Server__AdminAuth__Username: ${SERVER_ADMIN_USERNAME}
+            Server__AdminAuth__Password: ${SERVER_ADMIN_PASSWORD}
+            Server__AdminAuth__Email: ${SERVER_ADMIN_EMAIL}
+            Email__Host: ${EMAIL_INTERNAL_HOST}
+            Email__Port: ${EMAIL_IMAP_PORT}
 
     pgadmin:
         image: dpage/pgadmin4
@@ -123,6 +125,7 @@ services:
             - ${EMAIL_WEBUI_PORT}:${EMAIL_WEBUI_PORT}
             - ${EMAIL_SMTP_PORT}:${EMAIL_SMTP_PORT}
             - ${EMAIL_POP3_PORT}:${EMAIL_POP3_PORT}
+            - ${EMAIL_IMAP_PORT}:${EMAIL_IMAP_PORT}
         environment:
             PAPERCUT_USE_SSL: "false"
     

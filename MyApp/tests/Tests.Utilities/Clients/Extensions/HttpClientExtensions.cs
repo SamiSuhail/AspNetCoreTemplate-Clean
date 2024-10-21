@@ -13,4 +13,7 @@ public static class HttpClientExtensions
 
     public static IApplicationClient ToApplicationClient(this HttpClient httpClient)
         => RestService.For<IApplicationClient>(httpClient);
+
+    public static IApplicationAdminClient ToApplicationAdminClient(this HttpClient httpClient)
+        => RestService.For<IApplicationAdminClient>(httpClient);
 }

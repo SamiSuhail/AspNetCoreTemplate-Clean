@@ -1,10 +1,10 @@
 ﻿namespace MyApp.Tests.System.Tests;
 
-public class SampleTest(TestFixture fixture) : BaseTest(fixture)
+public class SampleTest(TestFixture fixture) : AuthenticatedBaseTest(fixture)
 {
     [Fact]
     public async Task Run()
     {
-        var client = await CreateRandomUserClient();
+        await Task.CompletedTask;
     }
 }

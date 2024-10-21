@@ -1,10 +1,18 @@
 {
   "Server": {
     "BaseUrl": "http://localhost:7018",
-    "Auth": {
+    "AdminAuth": {
       "Username": "admin1",
       "Email": "fake@email.com",
       "Password": "password1!"
+    }
+  },
+  "Email": {
+    "Host": "localhost",
+    "Port": 143,
+    "Addresses": {
+      "Default": "user1@email.com",
+      "Other": "user2@email.com"
     }
   }
 }
