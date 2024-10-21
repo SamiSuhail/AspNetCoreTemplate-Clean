@@ -1,4 +1,4 @@
-﻿namespace MyApp.Tests.Integration.Utilities;
+﻿namespace MyApp.Tests.Utilities.Utilities.Arrange;
 
 public static class RandomData
 {

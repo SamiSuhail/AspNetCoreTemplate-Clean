@@ -1,14 +1,4 @@
-﻿using FluentAssertions;
-using FluentAssertions.Common;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using MyApp.Tests.System.Core.Settings;
-using MyApp.Tests.Utilities.Clients;
-using MyApp.Tests.Utilities.Clients.Extensions;
-using MyApp.Tests.Utilities.Core;
-using Refit;
-
-namespace MyApp.Tests.System.Core;
+﻿namespace MyApp.Tests.System.Core;
 
 public static class GlobalContext
 {
@@ -42,12 +32,12 @@ public static class GlobalContext
 
 
         var services = new ServiceCollection();
-        services.AddHttpClient(nameof(TestFixture.AdminAppClient), c =>
+        services.AddHttpClient(nameof(BaseTest.AdminAppClient), c =>
         {
             c.BaseAddress = new(Settings.BaseUrl);
             c.SetAuthorizationHeader(AccessToken);
         });
-        services.AddHttpClient(nameof(TestFixture.UnauthorizedAppClient), c =>
+        services.AddHttpClient(nameof(BaseTest.UnauthorizedAppClient), c =>
         {
             c.BaseAddress = new(Settings.BaseUrl);
         });

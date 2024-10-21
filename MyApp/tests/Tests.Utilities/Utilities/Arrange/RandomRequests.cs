@@ -3,7 +3,7 @@ using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
 using MyApp.Application.Interfaces.Commands.Infra.CreateInstance;
 using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ChangeEmail;
 
-namespace MyApp.Tests.Integration.Utilities.Arrange;
+namespace MyApp.Tests.Utilities.Utilities.Arrange;
 
 public static class RandomRequests
 {

@@ -1,6 +1,6 @@
 {
   "Server": {
-    "BaseUrl": "https://localhost:7018",
+    "BaseUrl": "http://localhost:7018",
     "Auth": {
       "Username": "admin1",
       "Email": "fake@email.com",
