@@ -35,7 +35,6 @@ public static class GlobalContext
         AccessToken = loginResponse.Content!.AccessToken;
         AccessToken.Should().NotBeNullOrEmpty();
 
-
         var services = new ServiceCollection();
         services.AddHttpClient(nameof(BaseTest.AdminAppClient), c =>
         {

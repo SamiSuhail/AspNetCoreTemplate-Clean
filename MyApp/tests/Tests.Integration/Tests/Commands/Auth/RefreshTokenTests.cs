@@ -1,7 +1,7 @@
-﻿using MyApp.Domain.Auth.User.Failures;
-using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
+﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Domain.Access.Scope;
+using MyApp.Domain.Auth.User.Failures;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.RefreshToken;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -41,7 +41,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
         accessToken.Should().NotBeNull();
         using (new AssertionScope())
         {
-            accessToken.UserId.Should().Be(User.Entity.Id);
+            accessToken!.UserId.Should().Be(User.Entity.Id);
             accessToken.Username.Should().Be(User.Entity.Username);
             accessToken.Email.Should().Be(User.Entity.Email);
         }
@@ -51,8 +51,6 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
         {
             response.Content.RefreshToken.Should().NotBe(_request.RefreshToken);
             refreshToken!.UserId.Should().Be(User.Entity.Id);
-            refreshToken.Username.Should().Be(User.Entity.Username);
-            refreshToken.Email.Should().Be(User.Entity.Email);
             refreshToken.Version.Should().Be(User.Entity.RefreshTokenVersion);
         }
     }
@@ -117,7 +115,31 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
         // Arrange
         ArrangeClient(userIsAuthenticated);
         var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
-        var token = jwtGenerator.CreateRefreshToken(User.Entity.Id, User.Entity.Username, User.Entity.Email, User.Entity.RefreshTokenVersion);
+        var token = jwtGenerator.CreateRefreshToken(User.Entity.Id, User.Entity.RefreshTokenVersion);
+        _request = _request with
+        {
+            RefreshToken = token,
+        };
+
+        // Act
+        var response = await _client.RefreshToken(_request);
+
+        // Assert
+        AssertInvalidFailure(response);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task GivenTokensAreFromDifferentUsers_ReturnsInvalidFailure(bool userIsAuthenticated)
+    {
+        // Arrange
+        ArrangeClient(userIsAuthenticated);
+
+        var otherUser = await ArrangeDbContext.ArrangeRandomConfirmedUser();
+
+        var jwtGenerator = ScopedServices.ArrangeJwtGeneratorWithInvalidPrivateKey();
+        var token = jwtGenerator.CreateRefreshToken(otherUser.Id, otherUser.RefreshTokenVersion);
         _request = _request with
         {
             RefreshToken = token,
@@ -145,7 +167,7 @@ public class RefreshTokenTests(AppFactory appFactory) : BaseTest(appFactory)
     private RefreshTokenRequest NewRequest(int userId, int refreshTokenVersion)
     {
         var jwtGenerator = ScopedServices.GetRequiredService<IJwtGenerator>();
-        var requestRefreshToken = jwtGenerator.CreateRefreshToken(userId, User.Entity.Username, User.Entity.Email, refreshTokenVersion);
+        var requestRefreshToken = jwtGenerator.CreateRefreshToken(userId, refreshTokenVersion);
         var expiredAccessToken = jwtGenerator.CreateAccessToken(userId, User.Entity.Username, User.Entity.Email, ScopeCollection.Empty);
         return new(expiredAccessToken, requestRefreshToken);
     }

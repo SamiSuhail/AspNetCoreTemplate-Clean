@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MyApp.Application.Interfaces.Commands.Infra.CreateInstance;
+using MyApp.Presentation.Interfaces.Http.Commands.Infra.CreateInstance;
 using MyApp.Domain.Access.Scope;
 using MyApp.Presentation.Endpoints.Core;
 

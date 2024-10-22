@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using MyApp.Application.Infrastructure.Abstractions;
-using static MyApp.Application.Interfaces.Email.EmailConstants.ChangeEmail;
+using static MyApp.Presentation.Interfaces.Email.ChangeEmailConstants;
 
 namespace MyApp.Application.Handlers.Commands.UserManagement.EmailUpdate.ChangeEmail;
 

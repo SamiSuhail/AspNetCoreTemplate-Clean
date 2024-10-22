@@ -1,6 +1,6 @@
 ﻿using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
-using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 

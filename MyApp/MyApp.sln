@@ -22,20 +22,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{B8813C86-34D8-45EA-97F5-7C346751D678}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Interfaces", "src\Application.Interfaces\Application.Interfaces.csproj", "{2AC06E22-5382-4CDA-BA57-13EBB633F620}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.Interfaces", "src\Presentation.Interfaces\Presentation.Interfaces.csproj", "{2AC06E22-5382-4CDA-BA57-13EBB633F620}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{9FBFE0F5-8DAD-4EDB-A663-2C75EACF5A31}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "src\Presentation\Presentation.csproj", "{FF3410CE-CCC9-49AB-BEA0-D7507B1AFDCC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{0E28FF4B-2043-4554-9C77-251A98DD16BC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0E28FF4B-2043-4554-9C77-251A98DD16BC}"
 	ProjectSection(SolutionItems) = preProject
-		infra\docker-compose.env = infra\docker-compose.env
-		infra\docker-compose.yml = infra\docker-compose.yml
-		infra\Dockerfile.aits = infra\Dockerfile.aits
-		infra\Dockerfile.base = infra\Dockerfile.base
-		infra\Dockerfile.dbdeploy = infra\Dockerfile.dbdeploy
-		infra\Dockerfile.server = infra\Dockerfile.server
+		build\docker-compose.env = build\docker-compose.env
+		build\docker-compose.yml = build\docker-compose.yml
+		build\Dockerfile.aits = build\Dockerfile.aits
+		build\Dockerfile.base = build\Dockerfile.base
+		build\Dockerfile.dbdeploy = build\Dockerfile.dbdeploy
+		build\Dockerfile.server = build\Dockerfile.server
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.System", "tests\Tests.System\Tests.System.csproj", "{4A683E97-B246-4A49-A9FA-F98032B328C7}"

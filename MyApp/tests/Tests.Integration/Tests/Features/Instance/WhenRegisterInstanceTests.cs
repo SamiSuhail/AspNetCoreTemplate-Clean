@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
+﻿using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
 using MyApp.Domain.Infra.Instance.Failures;
 
 namespace MyApp.Tests.Integration.Tests.Features.Instance;

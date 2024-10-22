@@ -4,7 +4,7 @@ using MyApp.Domain.Auth.UserConfirmation;
 using MyApp.Domain.Auth.UserConfirmation.Failures;
 using MyApp.Domain.Shared.Confirmations;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ConfirmUserRegistration;
 
 namespace MyApp.Application.Handlers.Commands.Auth.Registration.ConfirmUserRegistration;
 

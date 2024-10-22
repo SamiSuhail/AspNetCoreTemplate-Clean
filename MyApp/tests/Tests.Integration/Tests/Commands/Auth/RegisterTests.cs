@@ -1,5 +1,5 @@
 ﻿using MyApp.Application.Handlers.Commands.Auth.Registration;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ChangePassword;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
@@ -16,7 +16,7 @@ public class ChangePasswordCommandHandler(IUserContextAccessor userContextAccess
 {
     public async Task Handle(ChangePasswordRequest request, CancellationToken cancellationToken)
     {
-        var (userId, username, email, _) = userContextAccessor.AccessToken;
+        var (userId, username, email, _) = userContextAccessor.UserData;
 
         var userData = await dbContext.Set<UserEntity>()
             .Where(u => u.Id == userId)

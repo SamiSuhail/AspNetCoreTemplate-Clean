@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
 
 namespace MyApp.Application.Handlers.Commands.Auth.Registration.Register;
 

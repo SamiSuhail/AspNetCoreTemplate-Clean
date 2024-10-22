@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
+﻿using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ResetPassword;
 using MyApp.Application.Startup.Behaviours;
 using MyApp.Utilities.Strings;
 

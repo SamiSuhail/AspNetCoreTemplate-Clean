@@ -8,6 +8,7 @@ public static class AssertAccessTokenExtensions
     {
         var jwtReader = sp.GetRequiredService<IJwtReader>();
         var accessToken = jwtReader.ReadAccessToken(tokenInput);
-        accessToken.Scopes.Should().BeEquivalentTo(scopeNames);
+        accessToken.Should().NotBeNull();
+        accessToken!.Scopes.Should().BeEquivalentTo(scopeNames);
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.Shared.Confirmations;
@@ -18,7 +18,7 @@ public class ConfirmEmailChangeCommandHandler(
 {
     public async Task Handle(ConfirmEmailChangeRequest request, CancellationToken cancellationToken)
     {
-        var (userId, _, oldEmail, _) = userContextAccessor.AccessToken;
+        var (userId, _, oldEmail, _) = userContextAccessor.UserData;
         var (oldEmailCode, newEmailCode) = request;
 
         var user = await dbContext.Set<UserEntity>()

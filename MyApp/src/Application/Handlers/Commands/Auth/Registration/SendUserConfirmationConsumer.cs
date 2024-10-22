@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using MyApp.Application.Infrastructure.Abstractions;
-using static MyApp.Application.Interfaces.Email.EmailConstants.SendUserConfirmation;
+using static MyApp.Presentation.Interfaces.Email.SendUserConfirmationConstants;
 
 namespace MyApp.Application.Handlers.Commands.Auth.Registration;
 

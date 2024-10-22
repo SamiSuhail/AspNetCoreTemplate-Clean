@@ -1,6 +1,5 @@
-﻿using MyApp.Application.Features.Cleanup.Confirmations;
-using MyApp.Application.Features.Cleanup.Instances;
-using MyApp.Application.Infrastructure;
+﻿using MyApp.Application.Infrastructure;
+using MyApp.Infrastructure.BackgroundJobs.Jobs;
 using MyApp.Utilities.Settings;
 
 namespace MyApp.Infrastructure.BackgroundJobs;

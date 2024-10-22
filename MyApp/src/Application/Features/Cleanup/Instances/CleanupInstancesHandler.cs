@@ -14,7 +14,7 @@ public class CleanupInstancesHandler(IAppDbContextFactory dbContextFactory) : IR
         await using var dbContext = await dbContextFactory.CreateTransientDbContextAsync(cancellationToken);
         var expirationTime = DateTime.UtcNow.AddHours(-InstanceConstants.ExpirationTimeHours);
         await dbContext.Set<InstanceEntity>()
-            .Where(uc => uc.CreatedAt < expirationTime)
+            .Where(uc => uc.CreatedAt < expirationTime && uc.IsCleanupEnabled)
             .ExecuteDeleteAsync(cancellationToken);
     }
 }

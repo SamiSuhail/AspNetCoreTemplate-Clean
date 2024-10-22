@@ -48,7 +48,7 @@ public static class EmailProviderExtensions
         {
             var uids = await inbox.SearchAsync(SearchQuery.SentSince(DateTime.UtcNow.AddMinutes(sentSinceMinutesFilter)));
             uids = await inbox.SearchAsync(uids, SearchQuery.SubjectContains(subjectFilter));
-            uids = await inbox.SearchAsync(uids, SearchQuery.ToContains(subjectFilter));
+            uids = await inbox.SearchAsync(uids, SearchQuery.ToContains(recipientFilter));
             return uids;
         });
 

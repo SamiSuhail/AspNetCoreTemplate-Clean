@@ -1,24 +1,49 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Infrastructure.Logging;
 
 namespace MyApp.Infrastructure.Http;
 
-public class HttpUserContextAccessor(IHttpContextAccessor httpContextAccessor, IJwtReader jwtReader) : IUserContextAccessor
+public class HttpUserContextAccessor(
+    IHttpContextAccessor httpContextAccessor,
+    IJwtReader jwtReader
+    ) : IUserContextAccessor
 {
     const string BearerSchemaPrefix = "Bearer ";
-    private AccessToken? _accessToken;
+    private readonly ILogger<HttpUserContextAccessor> _logger = new Logger<HttpUserContextAccessor>(Log.Logger);
 
-    public AccessToken AccessToken => _accessToken ??= ReadAccessToken();
+    public string? JwtBearerOrDefault => ReadJwtBearer();
+    public AccessTokenData? UserDataOrDefault => ReadAccessToken();
+    public string JwtBearer 
+        => JwtBearerOrDefault ?? throw new InvalidOperationException("No user data available.");
+    public AccessTokenData UserData
+        => UserDataOrDefault ?? throw new InvalidOperationException("No user data available.");
 
-    private AccessToken ReadAccessToken()
+    private string? ReadJwtBearer()
     {
-        var headers = httpContextAccessor.HttpContext?.Request?.Headers
-                ?? throw new InvalidOperationException("No request headers accessible in scope.");
+        var headers = httpContextAccessor.HttpContext?.Request?.Headers;
+
+        if (headers == null)
+        {
+            _logger.Debug("No request headers accessible in scope.");
+            return null;
+        }
 
         var jwtBearer = headers.Authorization.FirstOrDefault();
-            if (jwtBearer is null or [])
-                throw new InvalidOperationException("No authorization header found.");
+        if (jwtBearer is null or [])
+        {
+            _logger.Debug("No authorization header found.");
+            return null;
+        }
 
-        var jwtBearerWithNoPrefix = jwtBearer![BearerSchemaPrefix.Length..];
+        return jwtBearer;
+    }
+
+    private AccessTokenData? ReadAccessToken()
+    {
+        if (JwtBearerOrDefault == null)
+            return null;
+
+        var jwtBearerWithNoPrefix = JwtBearerOrDefault[BearerSchemaPrefix.Length..];
         return jwtReader.ReadAccessToken(jwtBearerWithNoPrefix);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Application.Interfaces.Commands.Auth.Login;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
 using MyApp.Domain.Auth.User.Failures;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
@@ -29,9 +29,10 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
         var jwtReader = ScopedServices.GetRequiredService<IJwtReader>();
         var accessToken = jwtReader.ReadAccessToken(response.Content.AccessToken);
         var refreshToken = jwtReader.ReadRefreshToken(response.Content.RefreshToken);
+        accessToken.Should().NotBeNull();
         using (new AssertionScope())
         {
-            accessToken.UserId.Should().Be(User.Entity.Id);
+            accessToken!.UserId.Should().Be(User.Entity.Id);
             accessToken.Username.Should().Be(User.Entity.Username);
             accessToken.Email.Should().Be(User.Entity.Email);
         }
@@ -39,8 +40,6 @@ public class LoginTests(AppFactory appFactory) : BaseTest(appFactory)
         using (new AssertionScope())
         {
             refreshToken!.UserId.Should().Be(User.Entity.Id);
-            refreshToken.Username.Should().Be(User.Entity.Username);
-            refreshToken.Email.Should().Be(User.Entity.Email);
             refreshToken.Version.Should().Be(User.Entity.RefreshTokenVersion);
         }
     }

@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
+﻿using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Application.Startup.Behaviours;
 using MyApp.Utilities.Strings;
 

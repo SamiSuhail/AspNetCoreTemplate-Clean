@@ -5,7 +5,7 @@ public static class HttpClientFactoryExtensions
     public static async Task<HttpClient> CreateClientForUser(this IHttpClientFactory clientFactory, UserCredentials credentials, string instanceName)
     {
         var client = clientFactory.CreateClient(nameof(BaseTest.UnauthorizedAppClient));
-        var (username, password, email) = credentials;
+        var (username, password, _) = credentials;
 
         var response = await client.ToApplicationClient()
             .Login(new(username, password, Scopes: []), instanceName);

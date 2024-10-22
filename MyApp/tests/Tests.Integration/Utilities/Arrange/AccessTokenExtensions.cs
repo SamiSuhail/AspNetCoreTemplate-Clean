@@ -26,7 +26,7 @@ public static class AccessTokenExtensions
         var jwtGenerator = new JwtGenerator(authSettings, clockMock.Object);
         clockMock.Setup(x => x.UtcNow)
             .Returns(DateTime.UtcNow.AddDays(-authSettings.Jwt.RefreshTokenExpirationDays - 1));
-        var accessToken = jwtGenerator.CreateRefreshToken(user.Entity.Id, user.Entity.Username, user.Entity.Email, user.Entity.RefreshTokenVersion);
+        var accessToken = jwtGenerator.CreateRefreshToken(user.Entity.Id, user.Entity.RefreshTokenVersion);
         return accessToken;
     }
 

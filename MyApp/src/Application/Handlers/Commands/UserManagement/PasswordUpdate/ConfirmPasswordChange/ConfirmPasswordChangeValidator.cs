@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Domain.Shared.Confirmations;
 
 namespace MyApp.Application.Handlers.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.RefreshToken;
 
 namespace MyApp.Application.Handlers.Commands.Auth.RefreshToken;
 

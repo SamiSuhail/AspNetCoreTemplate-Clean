@@ -1,13 +1,13 @@
 ﻿using MyApp.Application.Handlers.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Application.Handlers.Commands.Auth.Registration;
 using MyApp.Application.Infrastructure.Abstractions;
-using MyApp.Application.Interfaces.Commands.Auth.Login;
-using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
-using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.RefreshToken;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ConfirmUserRegistration;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ResendConfirmation;
 
 namespace MyApp.Tests.Integration.Tests.EndToEnd;
 

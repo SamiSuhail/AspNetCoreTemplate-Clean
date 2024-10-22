@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Interfaces.Commands.Auth.Login;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
 using MyApp.Domain.Access.Scope;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
@@ -33,8 +33,7 @@ public class LoginCommandHandler(
                 u.Email,
                 u.IsEmailConfirmed,
                 u.RefreshTokenVersion,
-                Scopes = u.UserScopes.Where(us => request.Scopes.Length == 0 || request.Scopes.Contains(us.Scope.Name))
-                    .Select(us => us.Scope.Name)
+                Scopes = u.UserScopes.Select(us => us.Scope.Name)
                     .ToArray(),
             })
             .FirstOrDefaultAsync(cancellationToken)
@@ -49,7 +48,7 @@ public class LoginCommandHandler(
 
         var scopes = ScopeCollection.Create(user.Scopes);
         var accessToken = jwtGenerator.CreateAccessToken(user.Id, user.Username, user.Email, scopes);
-        var refreshToken = jwtGenerator.CreateRefreshToken(user.Id, user.Username, user.Email, user.RefreshTokenVersion);
+        var refreshToken = jwtGenerator.CreateRefreshToken(user.Id, user.RefreshTokenVersion);
 
         return new(accessToken, refreshToken);
     }

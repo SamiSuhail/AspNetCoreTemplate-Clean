@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ResendConfirmation;
 
 namespace MyApp.Application.Handlers.Commands.Auth.Registration.ResendConfirmation;
 

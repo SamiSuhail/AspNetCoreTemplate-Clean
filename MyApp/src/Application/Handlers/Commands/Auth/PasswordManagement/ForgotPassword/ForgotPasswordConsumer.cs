@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using MyApp.Application.Infrastructure.Abstractions;
-using static MyApp.Application.Interfaces.Email.EmailConstants.ForgotPassword;
+using static MyApp.Presentation.Interfaces.Email.ForgotPasswordConstants;
 
 namespace MyApp.Application.Handlers.Commands.Auth.PasswordManagement.ForgotPassword;
 

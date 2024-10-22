@@ -2,17 +2,23 @@
 using System.Security.Claims;
 using FluentAssertions;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
+using MyApp.Infrastructure.Logging;
 
 namespace MyApp.Infrastructure.Auth;
 
 public class JwtReader(AuthSettings settings) : IJwtReader
 {
-    public AccessToken ReadAccessToken(string jwtBearer)
+    private readonly Logger<JwtReader> _logger = new(Log.Logger);
+    public AccessTokenData? ReadAccessToken(string jwtBearer)
     {
         var (identity, ex) = ReadTokenClaims(settings.Jwt.PublicKeyXml, jwtBearer);
 
         if (identity == null)
-            throw new InvalidOperationException("No identity could be generated with the provided access token.", ex);
+        {
+            _logger.ForContext(LogEventLevel.Verbose, nameof(jwtBearer), jwtBearer)
+                .Debug(ex, "No identity could be generated with the provided access token.");
+            return null;
+        }
 
         return new(
             UserId: int.Parse(GetClaim(identity, JwtClaims.UserId)),
@@ -22,16 +28,19 @@ public class JwtReader(AuthSettings settings) : IJwtReader
             );
     }
 
-    public RefreshToken? ReadRefreshToken(string jwtBearer)
+    public RefreshTokenData? ReadRefreshToken(string jwtBearer)
     {
-        var (identity, _) = ReadTokenClaims(settings.Jwt.PublicKeyXml, jwtBearer);
+        var (identity, ex) = ReadTokenClaims(settings.Jwt.PublicKeyXml, jwtBearer);
 
-        return identity == null 
-            ? null
-            : new(
+        if (identity == null)
+        {
+            _logger.ForContext(LogEventLevel.Verbose, nameof(jwtBearer), jwtBearer)
+                .Debug(ex, "No identity could be generated with the provided refresh token.");
+            return null;
+        }
+
+        return new(
             UserId: int.Parse(GetClaim(identity, JwtClaims.UserId)),
-            Username: GetClaim(identity, JwtClaims.Username),
-            Email: GetClaim(identity, JwtClaims.Email),
             Version: int.Parse(GetClaim(identity, JwtClaims.RefreshTokenVersion))
             );
     }

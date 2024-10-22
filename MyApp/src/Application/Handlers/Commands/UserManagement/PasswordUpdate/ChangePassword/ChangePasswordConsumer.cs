@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using MyApp.Application.Infrastructure.Abstractions;
-using static MyApp.Application.Interfaces.Email.EmailConstants.ChangePassword;
+using static MyApp.Presentation.Interfaces.Email.ChangePasswordConstants;
 
 namespace MyApp.Application.Handlers.Commands.UserManagement.PasswordUpdate.ChangePassword;
 

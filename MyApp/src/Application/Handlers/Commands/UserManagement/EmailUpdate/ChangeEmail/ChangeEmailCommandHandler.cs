@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ChangeEmail;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ChangeEmail;
 using MyApp.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
@@ -19,7 +19,7 @@ public class ChangeEmailCommandHandler(
 {
     public async Task Handle(ChangeEmailRequest request, CancellationToken cancellationToken)
     {
-        var (userId, username, oldEmail, _) = userContextAccessor.AccessToken;
+        var (userId, username, oldEmail, _) = userContextAccessor.UserData;
         var newEmail = request.Email;
 
         if (oldEmail == newEmail)

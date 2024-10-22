@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
+﻿using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Application.Startup.Behaviours;
 using MyApp.Utilities.Strings;
 

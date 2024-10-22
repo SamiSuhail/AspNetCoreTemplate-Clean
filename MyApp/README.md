@@ -4,7 +4,7 @@ This repository serves as a good starting point for a startup ASP.NET Core appli
 All you need to start the app locally is to install docker compose, and run the below command at the root solution directory (MyApp).
 
 ```
-docker-compose -f .\infra\docker-compose.yml --env-file .\infra\docker-compose.env up -d
+docker-compose -f .\build\docker-compose.yml --env-file .\build\docker-compose.env up -d
 ```
 
 Web UIs for local development:

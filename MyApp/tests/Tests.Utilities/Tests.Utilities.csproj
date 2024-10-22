@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\src\Application.Interfaces\Application.Interfaces.csproj" />
+		<ProjectReference Include="..\..\src\Presentation.Interfaces\Presentation.Interfaces.csproj" />
 		<ProjectReference Include="..\..\src\Domain\Domain.csproj" />
 	</ItemGroup>
 

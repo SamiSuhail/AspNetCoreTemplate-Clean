@@ -1,7 +1,7 @@
-﻿using MyApp.Domain.Shared.Confirmations;
+﻿using MyApp.Presentation.Interfaces.Email;
+using MyApp.Domain.Shared.Confirmations;
 using MyApp.Tests.System.Providers.Email;
 using MyApp.Utilities.Tasks;
-using static MyApp.Application.Interfaces.Email.EmailConstants;
 
 namespace MyApp.Tests.System.Utilities.Arrange;
 
@@ -10,13 +10,13 @@ public static class EmailProviderExtensions
     private const string CodePrefix = "Code: ";
 
     public static async Task<string> GetUserConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)
-        => await emailProvider.GetConfirmationCode(recipientAddress, SendUserConfirmation.Subject(username));
+        => await emailProvider.GetConfirmationCode(recipientAddress, SendUserConfirmationConstants.Subject(username));
     public static async Task<string> GetPasswordResetConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)
-        => await emailProvider.GetConfirmationCode(recipientAddress, ForgotPassword.Subject(username));
+        => await emailProvider.GetConfirmationCode(recipientAddress, ForgotPasswordConstants.Subject(username));
     public static async Task<string> GetChangePasswordConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)
-        => await emailProvider.GetConfirmationCode(recipientAddress, ChangePassword.Subject(username));
+        => await emailProvider.GetConfirmationCode(recipientAddress, ChangePasswordConstants.Subject(username));
     public static async Task<string> GetChangeEmailConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)
-        => await emailProvider.GetConfirmationCode(recipientAddress, ChangeEmail.Subject(username));
+        => await emailProvider.GetConfirmationCode(recipientAddress, ChangeEmailConstants.Subject(username));
 
     private static async Task<string> GetConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string subject)
     {

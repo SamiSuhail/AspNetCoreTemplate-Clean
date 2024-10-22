@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 

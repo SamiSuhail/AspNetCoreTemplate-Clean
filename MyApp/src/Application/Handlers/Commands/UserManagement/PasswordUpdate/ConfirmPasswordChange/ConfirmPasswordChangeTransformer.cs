@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
+﻿using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Application.Startup.Behaviours;
 using MyApp.Utilities.Strings;
 

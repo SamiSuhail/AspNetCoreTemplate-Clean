@@ -4,7 +4,7 @@ using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Domain.Shared.Confirmations;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ResetPassword;
 
 namespace MyApp.Application.Handlers.Commands.Auth.PasswordManagement.ResetPassword;
 

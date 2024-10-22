@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Interfaces.Commands.Infra.CreateInstance;
+using MyApp.Presentation.Interfaces.Http.Commands.Infra.CreateInstance;
 using MyApp.Domain.Infra.Instance;
 using MyApp.Domain.Infra.Instance.Failures;
 

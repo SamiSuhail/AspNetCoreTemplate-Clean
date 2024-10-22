@@ -1,10 +1,10 @@
 ﻿namespace MyApp.Application.Infrastructure.Abstractions.Auth;
 
-public record AccessToken(int UserId, string Username, string Email, string[] Scopes);
-public record RefreshToken(int UserId, string Username, string Email, int Version);
+public record AccessTokenData(int UserId, string Username, string Email, string[] Scopes);
+public record RefreshTokenData(int UserId, int Version);
 
 public interface IJwtReader
 {
-    AccessToken ReadAccessToken(string jwtBearer);
-    RefreshToken? ReadRefreshToken(string jwtBearer);
+    AccessTokenData? ReadAccessToken(string jwtBearer);
+    RefreshTokenData? ReadRefreshToken(string jwtBearer);
 }

@@ -1,7 +1,7 @@
-﻿using MyApp.Application.Interfaces.Commands.Auth.Login;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
-using MyApp.Application.Interfaces.Commands.Infra.CreateInstance;
-using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ChangeEmail;
+﻿using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
+using MyApp.Presentation.Interfaces.Http.Commands.Infra.CreateInstance;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ChangeEmail;
 
 namespace MyApp.Tests.Utilities.Utilities.Arrange;
 

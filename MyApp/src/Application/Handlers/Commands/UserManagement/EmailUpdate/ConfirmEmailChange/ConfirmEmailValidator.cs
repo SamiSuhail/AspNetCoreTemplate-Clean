@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Domain.Shared.Confirmations;
 
 namespace MyApp.Application.Handlers.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;

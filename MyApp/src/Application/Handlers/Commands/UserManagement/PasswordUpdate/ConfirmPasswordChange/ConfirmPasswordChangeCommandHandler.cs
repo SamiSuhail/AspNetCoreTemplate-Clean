@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Shared.Confirmations;
 using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
@@ -14,7 +14,7 @@ public class ConfirmPasswordChangeCommandHandler(IUserContextAccessor userContex
 {
     public async Task Handle(ConfirmPasswordChangeRequest request, CancellationToken cancellationToken)
     {
-        var (userId, _, _, _) = userContextAccessor.AccessToken;
+        var (userId, _, _, _) = userContextAccessor.UserData;
 
         var user = await dbContext.Set<UserEntity>()
             .Include(u => u.PasswordChangeConfirmation)
