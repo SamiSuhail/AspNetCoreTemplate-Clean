@@ -1,8 +1,8 @@
-﻿using MyApp.Application.Handlers.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Domain.Auth.PasswordResetConfirmation;
+﻿using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Domain.Auth.User;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Presentation.Interfaces.Messaging;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -53,7 +53,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        MockBag.AssertProduced<ForgotPasswordMessage>();
+        MockBag.AssertProduced<PasswordResetSendConfirmationMessage>();
     }
 
     [Theory]
@@ -96,7 +96,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        MockBag.AssertProduced<ForgotPasswordMessage>(Times.Never());
+        MockBag.AssertProduced<PasswordResetSendConfirmationMessage>(Times.Never());
     }
 
     [Theory]
@@ -106,7 +106,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         await ArrangeUserAndRequest(userIsConfirmed);
-        MockBag.ArrangeMessageThrows<ForgotPasswordMessage>();
+        MockBag.ArrangeMessageThrows<PasswordResetSendConfirmationMessage>();
 
         // Act
         await UnauthorizedAppClient.ForgotPassword(_request);

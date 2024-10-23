@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using MyApp.Application.Features.Cleanup.Confirmations;
 using MyApp.Application.Infrastructure;
+using MyApp.Application.Infrastructure.BackgroundJobs.Cleanup.Confirmations;
 using Quartz;
 
 namespace MyApp.Infrastructure.BackgroundJobs.Jobs;

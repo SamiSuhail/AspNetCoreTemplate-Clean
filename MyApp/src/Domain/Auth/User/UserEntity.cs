@@ -1,10 +1,9 @@
-﻿using MyApp.Domain.Auth.UserConfirmation;
-using MyApp.Domain.Auth.PasswordResetConfirmation;
+﻿using MyApp.Domain.Access.Scope;
 using MyApp.Domain.Auth.EmailChangeConfirmation;
-using MyApp.Domain.Shared;
-using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
+using MyApp.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Domain.Auth.UserConfirmation;
 using MyApp.Domain.Infra.Instance;
-using MyApp.Domain.Access.Scope;
+using MyApp.Domain.Shared;
 
 namespace MyApp.Domain.Auth.User;
 
@@ -23,7 +22,6 @@ public class UserEntity : ICreationAudited
     public PasswordResetConfirmationEntity? PasswordResetConfirmation { get; private set; }
     public UserConfirmationEntity? UserConfirmation { get; private set; }
     public EmailChangeConfirmationEntity? EmailChangeConfirmation { get; private set; }
-    public PasswordChangeConfirmationEntity? PasswordChangeConfirmation { get; private set; }
     public ICollection<UserScopeEntity> UserScopes { get; private set; } = default!;
 
     public static UserEntity CreateConfirmed(int instanceId, string username, string password, string email)
@@ -63,12 +61,6 @@ public class UserEntity : ICreationAudited
     public void UpdatePassword(string password)
     {
         PasswordHash = password.Hash();
-    }
-
-    public void ConfirmPasswordChange(string passwordHash)
-    {
-        PasswordHash = passwordHash;
-        SignOutOnAllDevices();
     }
 
     public void ConfirmEmailChange()

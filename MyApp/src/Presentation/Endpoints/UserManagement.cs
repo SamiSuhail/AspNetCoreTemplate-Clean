@@ -1,11 +1,10 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using MyApp.Application.Handlers.Commands.UserManagement.SignOutOnAllDevices;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyApp.Application.Modules.Commands.UserManagement.SignOutOnAllDevices;
+using MyApp.Presentation.Endpoints.Core;
 using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ChangeEmail;
 using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
-using MyApp.Presentation.Endpoints.Core;
 
 namespace MyApp.Presentation.Endpoints;
 using CustomNoContent = Results<NoContent, BadRequest<ValidationProblemDetails>, UnauthorizedHttpResult>;

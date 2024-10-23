@@ -1,4 +1,6 @@
-﻿global using Microsoft.AspNetCore.Builder;
+﻿global using MassTransit;
+global using MediatR;
+global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Http.HttpResults;

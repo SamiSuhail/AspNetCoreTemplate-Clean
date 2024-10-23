@@ -579,17 +579,7 @@
         "additionalProperties": false
       },
       "ChangePasswordRequest": {
-        "required": [
-          "newPassword"
-        ],
         "type": "object",
-        "properties": {
-          "newPassword": {
-            "maxLength": 128,
-            "minLength": 10,
-            "type": "string"
-          }
-        },
         "additionalProperties": false
       },
       "ConfirmEmailChangeRequest": {
@@ -614,13 +604,17 @@
       },
       "ConfirmPasswordChangeRequest": {
         "required": [
-          "code"
+          "code",
+          "password"
         ],
         "type": "object",
         "properties": {
           "code": {
             "maxLength": 6,
             "minLength": 6,
+            "type": "string"
+          },
+          "password": {
             "type": "string"
           }
         },

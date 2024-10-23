@@ -12,9 +12,7 @@ public static class EmailProviderExtensions
     public static async Task<string> GetUserConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)
         => await emailProvider.GetConfirmationCode(recipientAddress, SendUserConfirmationConstants.Subject(username));
     public static async Task<string> GetPasswordResetConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)
-        => await emailProvider.GetConfirmationCode(recipientAddress, ForgotPasswordConstants.Subject(username));
-    public static async Task<string> GetChangePasswordConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)
-        => await emailProvider.GetConfirmationCode(recipientAddress, ChangePasswordConstants.Subject(username));
+        => await emailProvider.GetConfirmationCode(recipientAddress, PasswordResetConstants.Subject(username));
     public static async Task<string> GetChangeEmailConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)
         => await emailProvider.GetConfirmationCode(recipientAddress, ChangeEmailConstants.Subject(username));
 

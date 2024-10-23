@@ -1,5 +1,5 @@
-﻿using MyApp.Application.Handlers.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Application.Infrastructure.Abstractions;
+﻿using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Presentation.Interfaces.Messaging;
 
 namespace MyApp.Tests.Integration.Tests.EndToEnd;
 

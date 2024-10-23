@@ -1,10 +1,9 @@
-﻿using MyApp.Domain.Auth.EmailChangeConfirmation;
+﻿using System.Linq.Expressions;
+using MyApp.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.UserConfirmation;
 using MyApp.Domain.Shared;
-using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
-using System.Linq.Expressions;
 
 namespace MyApp.Tests.Integration.Utilities.Arrange;
 
@@ -54,7 +53,6 @@ public static class DbContextUserExtensions
         await dbContext.ArrangeExpireEntities<UserConfirmationEntity>(userId);
         await dbContext.ArrangeExpireEntities<PasswordResetConfirmationEntity>(userId);
         await dbContext.ArrangeExpireEntities<EmailChangeConfirmationEntity>(userId);
-        await dbContext.ArrangeExpireEntities<PasswordChangeConfirmationEntity>(userId);
     }
 
     public static async Task ArrangeExpireEntities<TEntity>(this IBaseDbContext dbContext, int userId) 

@@ -68,7 +68,7 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.ResetPassword(request);
 
         // Assert
-        AssertInvalidFailure(response);
+        response.AssertSingleBadRequestError(PasswordResetConfirmationCodeInvalidFailure.Key, PasswordResetConfirmationCodeInvalidFailure.Message);
     }
 
     [Theory]
@@ -84,12 +84,7 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.ResetPassword(_request);
 
         // Assert
-        AssertInvalidFailure(response);
-    }
-
-    private static void AssertInvalidFailure(IApiResponse response)
-    {
-        response.AssertSingleBadRequestError(PasswordResetConfirmationCodeInvalidFailure.Key, PasswordResetConfirmationCodeInvalidFailure.Message);
+        response.AssertSingleBadRequestError(PasswordResetExpiredFailure.Key, PasswordResetExpiredFailure.Message);
     }
 
     private async Task ArrangePasswordResetAndRequest(bool userIsConfirmed)

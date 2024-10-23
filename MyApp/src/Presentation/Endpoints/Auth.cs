@@ -1,7 +1,7 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using MyApp.Application.Handlers.Commands.Auth.Login;
-using MyApp.Application.Handlers.Commands.Auth.Registration.Register;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyApp.Application.Modules.Commands.Auth.Login;
+using MyApp.Application.Modules.Commands.Auth.Registration.Register;
+using MyApp.Presentation.Endpoints.Core;
 using MyApp.Presentation.Interfaces.Http;
 using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
 using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ForgotPassword;
@@ -10,7 +10,6 @@ using MyApp.Presentation.Interfaces.Http.Commands.Auth.RefreshToken;
 using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ConfirmUserRegistration;
 using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
 using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ResendConfirmation;
-using MyApp.Presentation.Endpoints.Core;
 using MyApp.Presentation.Startup.Filters;
 
 namespace MyApp.Presentation.Endpoints;

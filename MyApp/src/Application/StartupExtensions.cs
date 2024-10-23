@@ -1,4 +1,5 @@
-﻿using MyApp.Application.Startup;
+﻿using MyApp.Application.Infrastructure.Repositories.PasswordReset;
+using MyApp.Application.Startup;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +9,8 @@ public static class StartupExtensions
     {
         services.AddCustomMediatR()
             .AddCustomRequestTransformers()
-            .AddCustomValidators();
+            .AddCustomValidators()
+            .AddTransient<IPasswordResetRepository, PasswordResetRepository>();
 
         return services;
     }

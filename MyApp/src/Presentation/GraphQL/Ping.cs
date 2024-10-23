@@ -1,6 +1,5 @@
 ﻿using HotChocolate.Authorization;
-using MediatR;
-using MyApp.Application.Handlers.Queries.Ping;
+using MyApp.Application.Modules.Queries.Ping;
 using MyApp.Presentation.Interfaces.Http.Queries.Ping;
 
 namespace MyApp.Presentation.GraphQL;

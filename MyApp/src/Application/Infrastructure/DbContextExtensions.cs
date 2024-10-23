@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;

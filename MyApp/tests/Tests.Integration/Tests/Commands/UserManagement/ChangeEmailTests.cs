@@ -1,14 +1,13 @@
-﻿using MyApp.Application.Handlers.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Domain.Auth.EmailChangeConfirmation;
+﻿using MyApp.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;
+using MyApp.Presentation.Interfaces.Messaging;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 
 public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    private readonly ChangeEmailRequest _request = new(RandomData.Email);
+    private readonly Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ChangeEmail.ChangeEmailRequest _request = new(RandomData.Email);
 
     [Fact]
     public async Task GivenHappyPath_ThenStoresChangeEmailConfirmation()
@@ -119,7 +118,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSingleBadRequestError(EmailIsIdenticalFailure.Key, EmailIsIdenticalFailure.Message);
-        await AssertNoChangesOccured();
+        await AssertNoChangesOccurred();
     }
 
     [Theory]
@@ -137,10 +136,10 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSingleBadRequestError(UserConflictFailure.EmailTakenKey, UserConflictFailure.EmailTakenMessage);
-        await AssertNoChangesOccured();
+        await AssertNoChangesOccurred();
     }
 
-    private async Task AssertNoChangesOccured()
+    private async Task AssertNoChangesOccurred()
     {
         var user = await AssertDbContext.GetUser(User.Entity.Id);
         user.EmailChangeConfirmation.Should().BeNull();

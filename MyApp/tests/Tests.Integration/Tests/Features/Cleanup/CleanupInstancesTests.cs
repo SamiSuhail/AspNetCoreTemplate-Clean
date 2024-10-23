@@ -1,5 +1,5 @@
-﻿using MyApp.Application.Features.Cleanup.Instances;
-using MyApp.Application.Infrastructure;
+﻿using MyApp.Application.Infrastructure;
+using MyApp.Application.Infrastructure.BackgroundJobs.Cleanup.Instances;
 using MyApp.Domain.Infra.Instance;
 
 namespace MyApp.Tests.Integration.Tests.Features.Cleanup;

@@ -1,9 +1,8 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyApp.Application.Handlers.Queries.Ping;
-using MyApp.Presentation.Interfaces.Http.Queries.Ping;
+using MyApp.Application.Modules.Queries.Ping;
 using MyApp.Presentation.Endpoints.Core;
+using MyApp.Presentation.Interfaces.Http.Queries.Ping;
 
 
 namespace MyApp.Presentation.Endpoints;
