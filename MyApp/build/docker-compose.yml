@@ -101,6 +101,10 @@ services:
             Server__AdminAuth__Email: ${SERVER_ADMIN_EMAIL}
             Email__Host: ${EMAIL_INTERNAL_HOST}
             Email__Port: ${EMAIL_IMAP_PORT}
+            Email__Users__Default__EmailAddress: ${EMAIL_USERDEFAULT_EMAILADDRESS}
+            Email__Users__Default__Password: ${EMAIL_USERDEFAULT_PASSWORD}
+            Email__Users__Other__EmailAddress: ${EMAIL_USEROTHER_EMAILADDRESS}
+            Email__Users__Other__Password: ${EMAIL_USEROTHER_PASSWORD}
 
     pgadmin:
         image: dpage/pgadmin4
@@ -118,16 +122,19 @@ services:
               target: /pgadmin4/servers.json
 
     email:
-        image: jijiechen/papercut:latest
+        image: greenmail/standalone:latest
         container_name: email
         hostname: ${EMAIL_INTERNAL_HOST}
         ports:
-            - ${EMAIL_WEBUI_PORT}:${EMAIL_WEBUI_PORT}
             - ${EMAIL_SMTP_PORT}:${EMAIL_SMTP_PORT}
             - ${EMAIL_POP3_PORT}:${EMAIL_POP3_PORT}
             - ${EMAIL_IMAP_PORT}:${EMAIL_IMAP_PORT}
+            - ${EMAIL_SMTPS_PORT}:${EMAIL_SMTPS_PORT}
+            - ${EMAIL_POP3S_PORT}:${EMAIL_POP3S_PORT}
+            - ${EMAIL_IMAPS_PORT}:${EMAIL_IMAPS_PORT}
+            - ${EMAIL_API_PORT}:8080
         environment:
-            PAPERCUT_USE_SSL: "false"
+            GREENMAIL_USERS: ${EMAIL_USERDEFAULT_EMAILADDRESS}:${EMAIL_USERDEFAULT_PASSWORD},${EMAIL_USEROTHER_EMAILADDRESS}:${EMAIL_USEROTHER_PASSWORD}
     
     queue:
         image: rabbitmq:3-management

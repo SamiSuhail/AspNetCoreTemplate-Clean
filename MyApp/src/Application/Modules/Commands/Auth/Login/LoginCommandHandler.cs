@@ -1,11 +1,11 @@
 ﻿using MediatR;
-using MyApp.Application.Infrastructure;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
 using MyApp.Domain.Access.Scope;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
+using MyApp.Application.Infrastructure.Repositories.Instance;
 
 namespace MyApp.Application.Modules.Commands.Auth.Login;
 

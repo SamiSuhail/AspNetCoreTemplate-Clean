@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using MyApp.Application.Infrastructure;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Infrastructure.Repositories.Instance;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;

@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using MyApp.Domain.Auth.User;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Application.Infrastructure;
+using MyApp.Application.Infrastructure.Repositories.User;
+using MyApp.Domain.Auth.User;
 
 namespace MyApp.Application.Modules.Commands.UserManagement.SignOutOnAllDevices;
 

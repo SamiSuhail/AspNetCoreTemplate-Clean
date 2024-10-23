@@ -19,7 +19,7 @@ public static class ApplicationClientExtensions
     {
         var registerRequest = RandomRequests.Register with
         {
-            Email = GlobalContext.ServerSettings.AdminAuth.Email,
+            Email = GlobalContext.EmailSettings.Users.Default.EmailAddress,
         };
         var registerResponse = await client.Register(registerRequest, instanceName);
         registerResponse.AssertSuccess();

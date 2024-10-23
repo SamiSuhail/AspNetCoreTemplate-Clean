@@ -1,5 +1,5 @@
-﻿using MyApp.Application.Infrastructure;
-using MyApp.Domain.Auth.User;
+﻿using MyApp.Domain.Auth.User;
+using MyApp.Application.Infrastructure.Repositories.User;
 
 namespace MyApp.Tests.Integration.Utilities;
 

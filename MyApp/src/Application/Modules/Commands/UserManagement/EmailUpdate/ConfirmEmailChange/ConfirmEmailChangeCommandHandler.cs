@@ -1,12 +1,12 @@
 ﻿using MediatR;
-using MyApp.Application.Infrastructure;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Abstractions.Database;
-using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
+using MyApp.Application.Infrastructure.Repositories.User;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.Shared.Confirmations;
 using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 
 namespace MyApp.Application.Modules.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
 

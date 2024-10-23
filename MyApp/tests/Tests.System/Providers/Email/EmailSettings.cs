@@ -6,18 +6,17 @@ public class EmailSettings : BaseSettings<EmailSettings>
 {
     public required string Host { get; set; }
     public required int Port { get; set; }
-    public required EmailAddressesSettings Addresses { get; set; }
-    public EmailAuthSettings? Auth { get; set; }
+    public required EmailUsersSettings Users { get; set; }
 }
 
-public class EmailAuthSettings
+public class EmailUsersSettings
 {
-    public required string Username { get; set; }
+    public required EmailUser Default { get; set; }
+    public required EmailUser Other { get; set; }
+}
+
+public class EmailUser
+{
+    public required string EmailAddress { get; set; }
     public required string Password { get; set; }
-}
-
-public class EmailAddressesSettings
-{
-    public required string Default { get; set; }
-    public required string Other { get; set; }
 }

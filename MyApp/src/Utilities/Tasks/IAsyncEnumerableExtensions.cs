@@ -84,7 +84,10 @@ public static class IAsyncEnumerableExtensions
             yield return await task;
         }
 
-        var remainingResults = await Task.WhenAll(tasks);
+        if (counter == 0)
+            yield break;
+
+        var remainingResults = await Task.WhenAll(tasks.Where(t => t != null));
         foreach (var result in remainingResults)
         {
             if (cancellationToken.IsCancellationRequested)

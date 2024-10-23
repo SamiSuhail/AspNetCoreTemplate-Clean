@@ -1,4 +1,5 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Database;
+using MyApp.Application.Infrastructure.Repositories.User;
 using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Domain.Auth.User;
 using MyApp.Domain.Shared.Confirmations;

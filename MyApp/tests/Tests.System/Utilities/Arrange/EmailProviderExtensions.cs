@@ -18,7 +18,8 @@ public static class EmailProviderExtensions
 
     private static async Task<string> GetConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string subject)
     {
-        var message = await emailProvider.GetRecentEmailsWhereSubjectContains(subject, recipientAddress)
+        var message = await emailProvider.GetEmails(inbox => 
+                inbox.GetRecentEmailsWhereSubjectContains(subject, recipientAddress))
             .FirstOrDefaultAsync();
         message.Should().NotBeNull();
         return GetCodeFromMessage(message!.TextBody);
