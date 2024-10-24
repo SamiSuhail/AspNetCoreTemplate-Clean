@@ -2,7 +2,7 @@
 
 namespace MyApp.Application.Infrastructure;
 
-public static class DbContextExtensions
+public static class IQueryableExtensions
 {
     public static async Task<bool> NoneAsync<TEntity>(
         this IQueryable<TEntity> entities,
