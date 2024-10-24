@@ -10,7 +10,7 @@ public static class EmailProviderExtensions
     private const string CodePrefix = "Code: ";
 
     public static async Task<string> GetUserConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)
-        => await emailProvider.GetConfirmationCode(recipientAddress, SendUserConfirmationConstants.Subject(username));
+        => await emailProvider.GetConfirmationCode(recipientAddress, RegisterUserConstants.Subject(username));
     public static async Task<string> GetPasswordResetConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)
         => await emailProvider.GetConfirmationCode(recipientAddress, PasswordResetConstants.Subject(username));
     public static async Task<string> GetChangeEmailConfirmationCode(this EmailProvider emailProvider, string recipientAddress, string username)

@@ -1,4 +1,5 @@
-﻿using MyApp.Application.Infrastructure.Abstractions;
+﻿using MassTransit;
+using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure;
 using MyApp.Infrastructure.Database;
 using MyApp.Infrastructure.Startup;
@@ -8,14 +9,14 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class StartupExtensions
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices<TPresentationAssemblyMarker>(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IClock, Clock>()
             .AddCustomHttpContextAccessors()
             .AddCustomAuth(configuration)
             .AddCustomDatabase(configuration)
             .AddCustomEmail(configuration)
-            .AddCustomMessaging(configuration)
+            .AddCustomMessaging<TPresentationAssemblyMarker>(configuration)
             .AddCustomLogging(configuration)
             .AddCustomBackgroundJobs(configuration);
 

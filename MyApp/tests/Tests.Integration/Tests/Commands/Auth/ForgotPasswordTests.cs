@@ -53,7 +53,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        MockBag.AssertProduced<PasswordResetSendConfirmationMessage>();
+        MockBag.AssertProduced<SendPasswordResetConfirmationMessage>();
     }
 
     [Theory]
@@ -96,7 +96,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        MockBag.AssertProduced<PasswordResetSendConfirmationMessage>(Times.Never());
+        MockBag.AssertProduced<SendPasswordResetConfirmationMessage>(Times.Never());
     }
 
     [Theory]
@@ -106,7 +106,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         await ArrangeUserAndRequest(userIsConfirmed);
-        MockBag.ArrangeMessageThrows<PasswordResetSendConfirmationMessage>();
+        MockBag.ArrangeMessageThrows<SendPasswordResetConfirmationMessage>();
 
         // Act
         await UnauthorizedAppClient.ForgotPassword(_request);

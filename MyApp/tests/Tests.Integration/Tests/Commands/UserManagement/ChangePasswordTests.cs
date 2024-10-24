@@ -16,7 +16,7 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        MockBag.AssertProduced<PasswordResetSendConfirmationMessage>();
+        MockBag.AssertProduced<SendPasswordResetConfirmationMessage>();
     }
 
     [Fact]
@@ -70,7 +70,7 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenMessageProducerThrows_ThenNoDataSaved()
     {
         // Arrange
-        MockBag.ArrangeMessageThrows<PasswordResetSendConfirmationMessage>();
+        MockBag.ArrangeMessageThrows<SendPasswordResetConfirmationMessage>();
 
         // Act
         var response = await AppClient.ChangePassword(_request);
@@ -86,7 +86,7 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         var existingConfirmation = await ArrangeExistingConfirmation();
-        MockBag.ArrangeMessageThrows<PasswordResetSendConfirmationMessage>();
+        MockBag.ArrangeMessageThrows<SendPasswordResetConfirmationMessage>();
 
         // Act
         var response = await AppClient.ChangePassword(_request);
@@ -110,6 +110,6 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         var user = await AssertDbContext.GetUser(User.Entity.Id);
         user.PasswordResetConfirmation.Should().BeNull();
-        MockBag.AssertProduced<PasswordResetSendConfirmationMessage>(Times.Never());
+        MockBag.AssertProduced<SendPasswordResetConfirmationMessage>(Times.Never());
     }
 }

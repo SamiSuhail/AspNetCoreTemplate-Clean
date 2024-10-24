@@ -1,5 +1,4 @@
 ﻿using MassTransit;
-using MyApp.Application;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure.Messaging;
 using MyApp.Utilities.Settings;
@@ -8,17 +7,10 @@ namespace MyApp.Infrastructure.Startup;
 
 public static class MessagingStartupExtensions
 {
-    public static IServiceCollection AddCustomMessaging(this IServiceCollection services, IConfiguration configuration)
-        => services.AddCustomMessaging(configuration, x =>
-        {
-            x.AddConsumersFromNamespaceContaining<IApplicationAssemblyMarker>();
-            x.AddConsumersFromNamespaceContaining<IInfrastructureAssemblyMarker>();
-        });
-
-    public static IServiceCollection AddCustomMessaging(
+    public static IServiceCollection AddCustomMessaging<TPresentationAssemblyMarker>(
         this IServiceCollection services,
-        IConfiguration configuration,
-        Action<IBusRegistrationConfigurator> setupConsumers)
+        IConfiguration configuration
+        )
     {
         services.AddCustomSettings<MessagingSettings>(configuration);
 
@@ -37,7 +29,7 @@ public static class MessagingStartupExtensions
         {
             x.SetKebabCaseEndpointNameFormatter();
 
-            setupConsumers(x);
+            x.AddConsumersFromNamespaceContaining<TPresentationAssemblyMarker>();
 
             x.UsingRabbitMq((context, cfg) =>
             {

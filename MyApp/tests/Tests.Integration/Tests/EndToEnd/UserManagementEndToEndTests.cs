@@ -28,10 +28,10 @@ public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFa
 
     private async Task<(string OldEmailCode, string NewEmailCode)> TestChangeEmail()
     {
-        ChangeEmailMessage message = null!;
+        SendChangeEmailConfirmationMessage message = null!;
         MockBag.Get<IMessageProducer>()
-            .Setup(m => m.Send(It.IsAny<ChangeEmailMessage>(), It.IsAny<CancellationToken>()))
-            .Callback<ChangeEmailMessage, CancellationToken>((m, _) => message = m)
+            .Setup(m => m.Send(It.IsAny<SendChangeEmailConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<SendChangeEmailConfirmationMessage, CancellationToken>((m, _) => message = m)
             .Returns(Task.CompletedTask);
 
         var response = await AppClient.ChangeEmail(new(RandomData.Email));

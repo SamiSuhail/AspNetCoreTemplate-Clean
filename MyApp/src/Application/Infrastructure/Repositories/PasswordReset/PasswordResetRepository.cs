@@ -39,7 +39,7 @@ public class PasswordResetRepository(
         await dbContext.WrapInTransaction(async () =>
         {
             await dbContext.SaveChangesAsync(cancellationToken);
-            await messageProducer.Send(new PasswordResetSendConfirmationMessage(username, email, newConfirmation.Code), cancellationToken);
+            await messageProducer.Send(new SendPasswordResetConfirmationMessage(username, email, newConfirmation.Code), cancellationToken);
         }, cancellationToken);
     }
 }

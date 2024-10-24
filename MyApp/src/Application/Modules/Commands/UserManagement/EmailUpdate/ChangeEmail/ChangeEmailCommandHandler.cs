@@ -42,7 +42,7 @@ public class ChangeEmailCommandHandler(
                 .ExecuteDeleteAsync(cancellationToken);
             await dbContext.SaveChangesAsync(cancellationToken);
             await messageProducer.Send(
-                new ChangeEmailMessage(
+                new SendChangeEmailConfirmationMessage(
                     username,
                     oldEmail,
                     newEmail,

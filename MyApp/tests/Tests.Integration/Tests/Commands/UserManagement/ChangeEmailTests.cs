@@ -50,7 +50,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        MockBag.AssertProduced<ChangeEmailMessage>();
+        MockBag.AssertProduced<SendChangeEmailConfirmationMessage>();
     }
 
     [Fact]
@@ -64,14 +64,14 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertInternalServerError();
-        MockBag.AssertProduced<ChangeEmailMessage>(Times.Never());
+        MockBag.AssertProduced<SendChangeEmailConfirmationMessage>(Times.Never());
     }
 
     [Fact]
     public async Task GivenMessageProducerError_ThenNoDataIsSaved()
     {
         // Arrange
-        MockBag.ArrangeMessageThrows<ChangeEmailMessage>();
+        MockBag.ArrangeMessageThrows<SendChangeEmailConfirmationMessage>();
 
         // Act
         var response = await AppClient.ChangeEmail(_request);
@@ -89,7 +89,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
         var emailChangeConfirmation = EmailChangeConfirmationEntity.Create(User.Entity.Id, RandomData.Email);
         ArrangeDbContext.Add(emailChangeConfirmation);
         await ArrangeDbContext.SaveChangesAsync();
-        MockBag.ArrangeMessageThrows<ChangeEmailMessage>();
+        MockBag.ArrangeMessageThrows<SendChangeEmailConfirmationMessage>();
 
         // Act
         var response = await AppClient.ChangeEmail(_request);
@@ -143,6 +143,6 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         var user = await AssertDbContext.GetUser(User.Entity.Id);
         user.EmailChangeConfirmation.Should().BeNull();
-        MockBag.AssertProduced<ChangeEmailMessage>(Times.Never());
+        MockBag.AssertProduced<SendChangeEmailConfirmationMessage>(Times.Never());
     }
 }

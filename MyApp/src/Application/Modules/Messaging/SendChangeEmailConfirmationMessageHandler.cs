@@ -5,9 +5,9 @@ using static MyApp.Presentation.Interfaces.Email.ChangeEmailConstants;
 
 namespace MyApp.Application.Modules.Messaging;
 
-public class ChangeEmailMessageHandler(IEmailSender emailSender) : IRequestHandler<ChangeEmailMessage>
+public class SendChangeEmailConfirmationMessageHandler(IEmailSender emailSender) : IRequestHandler<SendChangeEmailConfirmationMessage>
 {
-    public async Task Handle(ChangeEmailMessage request, CancellationToken cancellationToken)
+    public async Task Handle(SendChangeEmailConfirmationMessage request, CancellationToken cancellationToken)
     {
         var (username, oldEmail, newEmail, oldEmailCode, newEmailCode) = request;
 

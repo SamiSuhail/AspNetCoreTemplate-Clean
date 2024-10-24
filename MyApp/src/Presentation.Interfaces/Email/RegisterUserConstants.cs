@@ -2,7 +2,7 @@
 
 namespace MyApp.Presentation.Interfaces.Email;
 
-public static class SendUserConfirmationConstants
+public static class RegisterUserConstants
 {
     public const string SubjectTemplate = "Go2Gether User Confirmation - {0}";
     public const string MessageTemplate = """

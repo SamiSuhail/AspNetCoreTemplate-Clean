@@ -30,7 +30,7 @@ public class ResendConfirmationCommandHandler(IScopedDbContext dbContext, IMessa
         await dbContext.WrapInTransaction(async () =>
         {
             await dbContext.SaveChangesAsync(cancellationToken);
-            await messageProducer.Send(new SendUserConfirmationMessage(data.Username, request.Email, newConfirmation.Code), cancellationToken);
+            await messageProducer.Send(new SendRegisterUserConfirmationMessage(data.Username, request.Email, newConfirmation.Code), cancellationToken);
         }, cancellationToken);
     }
 }

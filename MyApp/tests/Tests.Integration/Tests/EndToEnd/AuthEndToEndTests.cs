@@ -42,8 +42,8 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
-        mock.Setup(m => m.Send(It.IsAny<SendUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
-            .Callback<SendUserConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
+        mock.Setup(m => m.Send(It.IsAny<SendRegisterUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<SendRegisterUserConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
             .Returns(Task.CompletedTask);
         var request = new ResendConfirmationRequest(Email);
         var response = await UnauthorizedAppClient.ResendConfirmation(request);
@@ -64,8 +64,8 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
-        mock.Setup(m => m.Send(It.IsAny<PasswordResetSendConfirmationMessage>(), It.IsAny<CancellationToken>()))
-            .Callback<PasswordResetSendConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
+        mock.Setup(m => m.Send(It.IsAny<SendPasswordResetConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<SendPasswordResetConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
             .Returns(Task.CompletedTask);
         var request = new ForgotPasswordRequest(Email, Username);
         var response = await UnauthorizedAppClient.ForgotPassword(request);

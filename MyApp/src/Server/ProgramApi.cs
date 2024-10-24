@@ -1,4 +1,5 @@
 using MyApp.Infrastructure.Logging;
+using MyApp.Presentation;
 using MyApp.Server.Settings;
 using MyApp.Utilities.Settings;
 
@@ -10,7 +11,7 @@ var configuration = builder.Configuration;
 configuration.AddInfrastructureAppsettings()
     .AddEnvironmentVariables();
 
-builder.Services.AddInfrastructureServices(configuration)
+builder.Services.AddInfrastructureServices<IPresentationAssemblyMarker>(configuration)
     .AddApplicationServices()
     .AddPresentationServices(builder.Environment);
 

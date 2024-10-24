@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Presentation.Interfaces.Messaging;
-using static MyApp.Presentation.Interfaces.Email.SendUserConfirmationConstants;
+using static MyApp.Presentation.Interfaces.Email.PasswordResetConstants;
 
 namespace MyApp.Application.Modules.Messaging;
 
-public class SendUserConfirmationMessageHandler(IEmailSender emailSender) : IRequestHandler<SendUserConfirmationMessage>
+public class SendPasswordResetConfirmationMessageHandler(IEmailSender emailSender) : IRequestHandler<SendPasswordResetConfirmationMessage>
 {
-    public async Task Handle(SendUserConfirmationMessage request, CancellationToken cancellationToken)
+    public async Task Handle(SendPasswordResetConfirmationMessage request, CancellationToken cancellationToken)
     {
         var (username, email, code) = request;
         var messageText = Message(code);
