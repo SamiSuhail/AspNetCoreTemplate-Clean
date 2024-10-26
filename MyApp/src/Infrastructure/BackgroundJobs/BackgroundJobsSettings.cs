@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Infrastructure;
+﻿using MyApp.Application.Modules.BackgroundJobs;
 using MyApp.Infrastructure.BackgroundJobs.Jobs;
 using MyApp.Utilities.Settings;
 

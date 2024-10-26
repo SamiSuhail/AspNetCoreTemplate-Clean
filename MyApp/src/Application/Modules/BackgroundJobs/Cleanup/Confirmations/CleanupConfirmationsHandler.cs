@@ -6,7 +6,7 @@ using MyApp.Domain.Shared.Confirmations;
 using MyApp.Domain.Shared;
 using MyApp.Application.Infrastructure.Abstractions.Database;
 
-namespace MyApp.Application.Infrastructure.BackgroundJobs.Cleanup.Confirmations;
+namespace MyApp.Application.Modules.BackgroundJobs.Cleanup.Confirmations;
 
 public class CleanupConfirmationsRequest() : IRequest;
 

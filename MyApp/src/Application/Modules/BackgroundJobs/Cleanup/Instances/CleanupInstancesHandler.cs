@@ -2,7 +2,7 @@
 using MyApp.Application.Infrastructure.Abstractions.Database;
 using MyApp.Domain.Infra.Instance;
 
-namespace MyApp.Application.Infrastructure.BackgroundJobs.Cleanup.Instances;
+namespace MyApp.Application.Modules.BackgroundJobs.Cleanup.Instances;
 
 public class CleanupInstancesRequest() : IRequest;
 

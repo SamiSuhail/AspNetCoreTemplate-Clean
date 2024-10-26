@@ -1,5 +1,4 @@
-﻿using MassTransit;
-using MyApp.Application.Infrastructure.Abstractions;
+﻿using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Infrastructure;
 using MyApp.Infrastructure.Database;
 using MyApp.Infrastructure.Startup;
