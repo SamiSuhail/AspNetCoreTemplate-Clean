@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MyApp.Application.Modules.BackgroundJobs;
+using MyApp.Application.Modules.BackgroundJobs.Cleanup.Instances;
 using Quartz;
 
 namespace MyApp.Infrastructure.BackgroundJobs.Jobs;

@@ -39,6 +39,24 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
+    public async Task GivenHappyPath_ThenIncrementsRefreshTokenVersion(bool userIsConfirmed)
+    {
+        // Arrange
+        await ArrangePasswordResetAndRequest(userIsConfirmed);
+        var refreshTokenVersion = (await ArrangeDbContext.GetUser(_userId)).RefreshTokenVersion;
+
+        // Act
+        var response = await UnauthorizedAppClient.ResetPassword(_request);
+
+        // Assert
+        response.AssertSuccess();
+        var user = await AssertDbContext.GetUser(_userId);
+        user.RefreshTokenVersion.Should().Be(refreshTokenVersion + 1);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
     public async Task GivenHappyPath_ThenDeletesPasswordResetConfirmation(bool userIsConfirmed)
     {
         // Arrange

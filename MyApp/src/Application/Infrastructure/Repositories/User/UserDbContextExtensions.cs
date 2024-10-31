@@ -9,7 +9,8 @@ public static class UserDbContextExtensions
         this IQueryable<UserEntity> users,
         int userId,
         CancellationToken cancellationToken = default)
-        => await users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        => await users.Where(u => u.Id == userId)
+            .FirstOrDefaultAsync(cancellationToken);
 
     public static async Task<UserEntity> FindUser(
         this IQueryable<UserEntity> users,

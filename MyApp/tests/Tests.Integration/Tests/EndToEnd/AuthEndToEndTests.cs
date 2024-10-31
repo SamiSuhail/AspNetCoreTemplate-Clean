@@ -21,10 +21,10 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task HappyPathTest()
     {
         await TestRegister();
+        await TestResetPassword(await TestForgotPassword());
         var userConfirmationCode = await TestResendConfirmation();
         await TestConfirmUserRegistration(userConfirmationCode);
-        var passwordResetConfirmationCode = await TestForgotPassword();
-        await TestResetPassword(passwordResetConfirmationCode);
+        await TestResetPassword(await TestForgotPassword());
         var loginResponse = await TestLogin();
         _graphqlClient = AppFactory.ArrangeGraphQLClientWithToken(loginResponse.AccessToken);
         await TestMe();

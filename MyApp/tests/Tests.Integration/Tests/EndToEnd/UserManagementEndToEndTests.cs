@@ -1,4 +1,6 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ChangePassword;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Presentation.Interfaces.Messaging;
 
 namespace MyApp.Tests.Integration.Tests.EndToEnd;
@@ -12,6 +14,7 @@ public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFa
         await TestRefreshTokenFailure(User.AccessToken, User.RefreshToken);
         var (oldEmailCode, newEmailCode) = await TestChangeEmail();
         await TestConfirmEmailChange(oldEmailCode, newEmailCode);
+        await TestConfirmPasswordChange(await TestChangePassword());
     }
 
     private async Task TestSignOutOnAllDevices()
@@ -46,6 +49,28 @@ public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFa
     private async Task TestConfirmEmailChange(string oldEmailCode, string newEmailCode)
     {
         var response = await AppClient.ConfirmEmailChange(new(oldEmailCode, newEmailCode));
+        response.AssertSuccess();
+    }
+
+    private async Task<string> TestChangePassword()
+    {
+        var code = string.Empty;
+        var mock = MockBag.Get<IMessageProducer>();
+        mock.Setup(m => m.Send(It.IsAny<SendPasswordResetConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<SendPasswordResetConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
+            .Returns(Task.CompletedTask);
+        var request = new ChangePasswordRequest();
+        var response = await AppClient.ChangePassword(request);
+        response.AssertSuccess();
+        mock.VerifyAll();
+        mock.Reset();
+        return code;
+    }
+
+    private async Task TestConfirmPasswordChange(string code)
+    {
+        var request = new ConfirmPasswordChangeRequest(code, User.Password);
+        var response = await AppClient.ConfirmPasswordChange(request);
         response.AssertSuccess();
     }
 }

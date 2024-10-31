@@ -151,7 +151,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
     private static void AssertInvalidFailure(IApiResponse response)
     {
-        response.AssertSingleBadRequestError(ForgotPasswordInvalidFailure.Key, ForgotPasswordInvalidFailure.Message);
+        response.AssertSingleBadRequestError(ForgotPasswordUserNotFoundFailure.Key, ForgotPasswordUserNotFoundFailure.Message);
     }
 
     private async Task ArrangeUserAndRequest(bool userIsConfirmed)

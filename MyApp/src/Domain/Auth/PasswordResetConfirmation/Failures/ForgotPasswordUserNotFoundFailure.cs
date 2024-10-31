@@ -1,14 +1,14 @@
 ﻿namespace MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 
-public class ForgotPasswordInvalidFailure : DomainFailure
+public class ForgotPasswordUserNotFoundFailure : DomainFailure
 {
-    private ForgotPasswordInvalidFailure() : base() { }
+    private ForgotPasswordUserNotFoundFailure() : base() { }
 
     public const string Key = "User";
     public const string Message = "No user was found with these email and username.";
 
     public static DomainException Exception()
-        => new ForgotPasswordInvalidFailure()
+        => new ForgotPasswordUserNotFoundFailure()
             .AddError(Key, Message)
             .ToException();
 }

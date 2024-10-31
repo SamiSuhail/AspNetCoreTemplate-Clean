@@ -1,6 +1,7 @@
 ﻿using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Presentation.Interfaces.Messaging;
+using MyApp.Tests.Integration.Clients;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 

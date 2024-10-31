@@ -21,7 +21,7 @@ public class ForgotPasswordCommandHandler(IScopedDbContext dbContext, IPasswordR
                 u.Id,
             })
             .FirstOrDefaultAsync(cancellationToken)
-            ?? throw ForgotPasswordInvalidFailure.Exception();
+            ?? throw ForgotPasswordUserNotFoundFailure.Exception();
 
         await passwordResetRepository.SendConfirmation(user.Id, username, email, cancellationToken);
     }
