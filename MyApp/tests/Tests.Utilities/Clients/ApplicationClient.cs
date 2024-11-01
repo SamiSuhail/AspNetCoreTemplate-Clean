@@ -9,7 +9,6 @@ using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ResendConfir
 using MyApp.Presentation.Interfaces.Http.Commands.Infra.CreateInstance;
 using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ChangeEmail;
 using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
-using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Presentation.Interfaces.Http.Queries.Ping;
 using Refit;
@@ -69,7 +68,7 @@ public interface IApplicationClient
     public Task<IApiResponse> ConfirmEmailChange(ConfirmEmailChangeRequest request);
 
     [Post("/api/user-management/change-password")]
-    public Task<IApiResponse> ChangePassword(ChangePasswordRequest request);
+    public Task<IApiResponse> ChangePassword();
 
     [Post("/api/user-management/confirm-password-change")]
     public Task<IApiResponse> ConfirmPasswordChange(ConfirmPasswordChangeRequest request);

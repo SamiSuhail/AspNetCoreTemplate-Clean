@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using MyApp.Application.Infrastructure.Abstractions.Auth;
 using MyApp.Application.Infrastructure.Repositories.PasswordReset;
-using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ChangePassword;
 
 namespace MyApp.Application.Modules.Commands.UserManagement.PasswordUpdate.ChangePassword;
+
+public record ChangePasswordRequest() : IRequest;
 
 public class ChangePasswordCommandHandler(
     IUserContextAccessor userContextAccessor,

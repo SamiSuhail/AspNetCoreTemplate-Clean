@@ -14,6 +14,6 @@ global using MyApp.Tests.Integration.Utilities.Arrange;
 global using MyApp.Tests.Integration.Utilities.Assert;
 global using MyApp.Tests.Utilities.Clients;
 global using MyApp.Tests.Utilities.Clients.Extensions;
-global using MyApp.Tests.Utilities.Utilities.Arrange;
+global using MyApp.Tests.Utilities.Arrange;
 global using Refit;
 global using StrawberryShake;

@@ -7,4 +7,6 @@ global using MyApp.Tests.System.Utilities.Arrange;
 global using MyApp.Tests.Utilities.Clients;
 global using MyApp.Tests.Utilities.Clients.Extensions;
 global using MyApp.Tests.Utilities.Core;
+global using MyApp.Tests.Utilities.Arrange;
+global using MyApp.Tests.Utilities.Assert;
 global using UserCredentials = (string Username, string Password, string Email);

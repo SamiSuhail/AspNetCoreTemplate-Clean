@@ -43,12 +43,10 @@ public static class InboxFilterExtensions
     public static async Task<IEnumerable<UniqueId>> GetRecentEmailsWhereSubjectContains(
         this IMailFolder inbox,
         string subjectFilter,
-        string recipientFilter,
         int sentSinceMinutesFilter = 5)
     {
         var uids = await inbox.SearchAsync(SearchQuery.SentSince(DateTime.UtcNow.AddMinutes(sentSinceMinutesFilter)));
         uids = await inbox.SearchIfAnyAsync(uids, SearchQuery.SubjectContains(subjectFilter));
-        uids = await inbox.SearchIfAnyAsync(uids, SearchQuery.ToContains(recipientFilter));
         return uids;
     }
 

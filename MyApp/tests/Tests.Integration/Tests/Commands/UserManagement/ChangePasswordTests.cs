@@ -1,19 +1,15 @@
-﻿using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ChangePassword;
-using MyApp.Domain.Auth.PasswordResetConfirmation;
+﻿using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Presentation.Interfaces.Messaging;
-using MyApp.Tests.Integration.Clients;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 
 public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    private readonly ChangePasswordRequest _request = new();
-
     [Fact]
     public async Task GivenHappyPath_ThenProducesMessage()
     {
         // Act
-        var response = await AppClient.ChangePassword(_request);
+        var response = await AppClient.ChangePassword();
 
         // Assert
         response.AssertSuccess();
@@ -24,7 +20,7 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenHappyPath_ThenStoresConfirmation()
     {
         // Act
-        var response = await AppClient.ChangePassword(_request);
+        var response = await AppClient.ChangePassword();
 
         // Assert
         response.AssertSuccess();
@@ -41,7 +37,7 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         var existingConfirmation = await ArrangeExistingConfirmation();
 
         // Act
-        var response = await AppClient.ChangePassword(_request);
+        var response = await AppClient.ChangePassword();
 
         // Assert
         response.AssertSuccess();
@@ -60,7 +56,7 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         var client = AppFactory.ArrangeClientWithCredentials(userId: int.MaxValue, User.Entity.Username, User.Entity.Email);
 
         // Act
-        var response = await client.ChangePassword(_request);
+        var response = await client.ChangePassword();
 
         // Assert
         response.AssertUserNotFoundFailure();
@@ -74,7 +70,7 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         MockBag.ArrangeMessageThrows<SendPasswordResetConfirmationMessage>();
 
         // Act
-        var response = await AppClient.ChangePassword(_request);
+        var response = await AppClient.ChangePassword();
 
         // Assert
         response.AssertInternalServerError();
@@ -90,7 +86,7 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         MockBag.ArrangeMessageThrows<SendPasswordResetConfirmationMessage>();
 
         // Act
-        var response = await AppClient.ChangePassword(_request);
+        var response = await AppClient.ChangePassword();
 
         // Assert
         response.AssertInternalServerError();

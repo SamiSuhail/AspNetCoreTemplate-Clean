@@ -490,16 +490,6 @@
           "UserManagement"
         ],
         "operationId": "ChangePassword",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangePasswordRequest"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -576,10 +566,6 @@
             "format": "email"
           }
         },
-        "additionalProperties": false
-      },
-      "ChangePasswordRequest": {
-        "type": "object",
         "additionalProperties": false
       },
       "ConfirmEmailChangeRequest": {

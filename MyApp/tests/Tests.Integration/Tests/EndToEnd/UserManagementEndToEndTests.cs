@@ -1,5 +1,4 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions;
-using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ChangePassword;
 using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 using MyApp.Presentation.Interfaces.Messaging;
 
@@ -59,8 +58,7 @@ public class UserManagementEndToEndTests(AppFactory appFactory) : BaseTest(appFa
         mock.Setup(m => m.Send(It.IsAny<SendPasswordResetConfirmationMessage>(), It.IsAny<CancellationToken>()))
             .Callback<SendPasswordResetConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
             .Returns(Task.CompletedTask);
-        var request = new ChangePasswordRequest();
-        var response = await AppClient.ChangePassword(request);
+        var response = await AppClient.ChangePassword();
         response.AssertSuccess();
         mock.VerifyAll();
         mock.Reset();
