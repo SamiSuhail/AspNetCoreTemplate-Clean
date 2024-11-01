@@ -1,7 +1,4 @@
-﻿using Serilog.Events;
-using Serilog;
-
-namespace MyApp.Infrastructure.Logging;
+﻿namespace MyApp.Infrastructure.Logging;
 
 public static class CustomBootstrapLogger
 {

@@ -1,8 +1,8 @@
-﻿using MyApp.Application.Handlers.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Domain.Auth.PasswordResetConfirmation;
+﻿using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Domain.Auth.User;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Presentation.Interfaces.Messaging;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -53,7 +53,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        MockBag.AssertProduced<ForgotPasswordMessage>();
+        MockBag.AssertProduced<SendPasswordResetConfirmationMessage>();
     }
 
     [Theory]
@@ -96,7 +96,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        MockBag.AssertProduced<ForgotPasswordMessage>(Times.Never());
+        MockBag.AssertProduced<SendPasswordResetConfirmationMessage>(Times.Never());
     }
 
     [Theory]
@@ -106,7 +106,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         await ArrangeUserAndRequest(userIsConfirmed);
-        MockBag.ArrangeMessageThrows<ForgotPasswordMessage>();
+        MockBag.ArrangeMessageThrows<SendPasswordResetConfirmationMessage>();
 
         // Act
         await UnauthorizedAppClient.ForgotPassword(_request);
@@ -151,7 +151,7 @@ public class ForgotPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 
     private static void AssertInvalidFailure(IApiResponse response)
     {
-        response.AssertSingleBadRequestError(ForgotPasswordInvalidFailure.Key, ForgotPasswordInvalidFailure.Message);
+        response.AssertSingleBadRequestError(ForgotPasswordUserNotFoundFailure.Key, ForgotPasswordUserNotFoundFailure.Message);
     }
 
     private async Task ArrangeUserAndRequest(bool userIsConfirmed)

@@ -8,7 +8,7 @@ public static class HttpContextStartupExtensions
     public static IServiceCollection AddCustomHttpContextAccessors(this IServiceCollection services)
     {
         services.AddHttpContextAccessor()
-            .AddScoped<IUserContextAccessor, HttpUserContextAccessor>();
+            .AddSingleton<IUserContextAccessor, HttpUserContextAccessor>();
 
         return services;
     }

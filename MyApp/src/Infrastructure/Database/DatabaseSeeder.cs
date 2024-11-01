@@ -56,12 +56,12 @@ public class DatabaseSeeder(
     {
         var existingUser = await _dbContext.Set<UserEntity>()
             .IgnoreQueryFilters()
-            .Where(u => u.Username == _adminUserSettings.Username)
+            .Where(u => u.Username == _adminUserSettings.Username && u.InstanceId == defaultInstanceId)
             .FirstOrDefaultAsync();
 
         if (existingUser == null)
         {
-            var newUser = UserEntity.CreateConfirmed(defaultInstanceId, _adminUserSettings.Username, _adminUserSettings.Password, "fake@email.com");
+            var newUser = UserEntity.CreateConfirmed(defaultInstanceId, _adminUserSettings.Username, _adminUserSettings.Password, _adminUserSettings.Email);
             _dbContext.Add(newUser);
             await _dbContext.SaveChangesAsync();
             return newUser.Id;

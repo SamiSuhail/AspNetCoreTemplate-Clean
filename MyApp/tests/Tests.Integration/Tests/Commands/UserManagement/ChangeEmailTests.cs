@@ -1,14 +1,13 @@
-﻿using MyApp.Application.Handlers.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Domain.Auth.EmailChangeConfirmation;
+﻿using MyApp.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.UserManagement.EmailChangeConfirmation.Failures;
+using MyApp.Presentation.Interfaces.Messaging;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 
 public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    private readonly ChangeEmailRequest _request = new(RandomData.Email);
+    private readonly Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ChangeEmail.ChangeEmailRequest _request = new(RandomData.Email);
 
     [Fact]
     public async Task GivenHappyPath_ThenStoresChangeEmailConfirmation()
@@ -51,7 +50,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        MockBag.AssertProduced<ChangeEmailMessage>();
+        MockBag.AssertProduced<SendChangeEmailConfirmationMessage>();
     }
 
     [Fact]
@@ -65,14 +64,14 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertInternalServerError();
-        MockBag.AssertProduced<ChangeEmailMessage>(Times.Never());
+        MockBag.AssertProduced<SendChangeEmailConfirmationMessage>(Times.Never());
     }
 
     [Fact]
     public async Task GivenMessageProducerError_ThenNoDataIsSaved()
     {
         // Arrange
-        MockBag.ArrangeMessageThrows<ChangeEmailMessage>();
+        MockBag.ArrangeMessageThrows<SendChangeEmailConfirmationMessage>();
 
         // Act
         var response = await AppClient.ChangeEmail(_request);
@@ -90,7 +89,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
         var emailChangeConfirmation = EmailChangeConfirmationEntity.Create(User.Entity.Id, RandomData.Email);
         ArrangeDbContext.Add(emailChangeConfirmation);
         await ArrangeDbContext.SaveChangesAsync();
-        MockBag.ArrangeMessageThrows<ChangeEmailMessage>();
+        MockBag.ArrangeMessageThrows<SendChangeEmailConfirmationMessage>();
 
         // Act
         var response = await AppClient.ChangeEmail(_request);
@@ -119,7 +118,7 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSingleBadRequestError(EmailIsIdenticalFailure.Key, EmailIsIdenticalFailure.Message);
-        await AssertNoChangesOccured();
+        await AssertNoChangesOccurred();
     }
 
     [Theory]
@@ -137,13 +136,13 @@ public class ChangeEmailTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSingleBadRequestError(UserConflictFailure.EmailTakenKey, UserConflictFailure.EmailTakenMessage);
-        await AssertNoChangesOccured();
+        await AssertNoChangesOccurred();
     }
 
-    private async Task AssertNoChangesOccured()
+    private async Task AssertNoChangesOccurred()
     {
         var user = await AssertDbContext.GetUser(User.Entity.Id);
         user.EmailChangeConfirmation.Should().BeNull();
-        MockBag.AssertProduced<ChangeEmailMessage>(Times.Never());
+        MockBag.AssertProduced<SendChangeEmailConfirmationMessage>(Times.Never());
     }
 }

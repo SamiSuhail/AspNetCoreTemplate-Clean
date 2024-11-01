@@ -26,13 +26,11 @@ public class JwtGenerator(AuthSettings authSettings, IClock clock) : IJwtGenerat
         return jwt;
     }
 
-    public string CreateRefreshToken(int userId, string username, string email, int version)
+    public string CreateRefreshToken(int userId, int version)
     {
         List<Claim> claims =
             [
                 new(JwtClaims.UserId, userId.ToString()),
-                new(JwtClaims.Username, username),
-                new(JwtClaims.Email, email),
                 new(JwtClaims.RefreshTokenVersion, version.ToString()),
             ];
 

@@ -1,8 +1,9 @@
 ﻿using HotChocolate.Authorization;
-using MediatR;
-using MyApp.Application.Interfaces.Queries.Auth;
+using MyApp.Application.Modules.Queries.Auth;
+using MyApp.Presentation.Interfaces.Http.Queries.Auth;
 
 namespace MyApp.Presentation.GraphQL;
+#pragma warning disable CA1822 // Mark members as static
 
 [Authorize]
 [ExtendObjectType<Me>]

@@ -1,0 +1,29 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS copy-files
+COPY --from=mcr.microsoft.com/dotnet/sdk:8.0 /usr/share/dotnet/shared /usr/share/dotnet/shared
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /app
+COPY src/ ./src
+COPY tests/ ./tests
+COPY MyApp.sln .
+COPY Directory.Build.props .
+
+FROM copy-files AS restore
+RUN dotnet restore "./MyApp.sln"
+
+FROM restore AS build
+RUN dotnet build "./MyApp.sln" -c $BUILD_CONFIGURATION
+
+FROM build AS publish
+RUN dotnet publish "./src/DbDeploy/DbDeploy.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/dbdeploy
+RUN dotnet publish "./src/Server/Server.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/server
+RUN dotnet publish "./tests/Tests.Integration/Tests.Integration.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/testsintegration
+RUN dotnet publish "./tests/Tests.System/Tests.System.csproj" -c $BUILD_CONFIGURATION  /p:UseAppHost=false -o /app/publish/testssystem
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+WORKDIR /app
+COPY --from=publish /app/publish/dbdeploy ./dbdeploy
+COPY --from=publish /app/publish/server ./server
+COPY --from=publish /app/publish/testsintegration ./testsintegration
+COPY --from=publish /app/publish/testssystem ./testssystem
+
+VOLUME /app

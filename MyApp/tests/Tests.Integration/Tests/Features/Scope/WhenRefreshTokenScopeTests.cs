@@ -1,5 +1,5 @@
 ﻿using MyApp.Application.Infrastructure.Abstractions.Auth;
-using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.RefreshToken;
 using MyApp.Domain.Access.Scope;
 
 namespace MyApp.Tests.Integration.Tests.Features.Scope;

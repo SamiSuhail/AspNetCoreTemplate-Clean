@@ -2,5 +2,8 @@
 
 public interface IUserContextAccessor
 {
-    AccessToken AccessToken { get; }
+    string JwtBearer { get; }
+    string? JwtBearerOrDefault { get; }
+    AccessTokenData UserData { get; }
+    AccessTokenData? UserDataOrDefault { get; }
 }

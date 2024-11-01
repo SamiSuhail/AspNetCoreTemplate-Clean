@@ -1,11 +1,10 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
-using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ChangePassword;
-using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
-using MyApp.Application.Interfaces.Commands.UserManagement.SignOutOnAllDevices;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyApp.Application.Modules.Commands.UserManagement.PasswordUpdate.ChangePassword;
+using MyApp.Application.Modules.Commands.UserManagement.SignOutOnAllDevices;
 using MyApp.Presentation.Endpoints.Core;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ChangeEmail;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
 
 namespace MyApp.Presentation.Endpoints;
 using CustomNoContent = Results<NoContent, BadRequest<ValidationProblemDetails>, UnauthorizedHttpResult>;
@@ -55,10 +54,9 @@ public class UserManagement : EndpointGroupBase
     public static async Task<CustomNoContent>
         ChangePassword(
         [FromServices] ISender sender,
-        [FromBody] ChangePasswordRequest request,
         CancellationToken cancellationToken)
     {
-        await sender.Send(request, cancellationToken);
+        await sender.Send(new ChangePasswordRequest(), cancellationToken);
         return TypedResults.NoContent();
     }
 

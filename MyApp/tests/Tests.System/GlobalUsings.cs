@@ -1,0 +1,12 @@
+﻿global using FluentAssertions;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using MyApp.Tests.System.Core;
+global using MyApp.Tests.System.Core.Settings;
+global using MyApp.Tests.System.Utilities.Arrange;
+global using MyApp.Tests.Utilities.Clients;
+global using MyApp.Tests.Utilities.Clients.Extensions;
+global using MyApp.Tests.Utilities.Core;
+global using MyApp.Tests.Utilities.Arrange;
+global using MyApp.Tests.Utilities.Assert;
+global using UserCredentials = (string Username, string Password, string Email);

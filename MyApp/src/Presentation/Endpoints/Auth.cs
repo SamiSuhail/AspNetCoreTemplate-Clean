@@ -1,16 +1,16 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using MyApp.Application.Handlers.Commands.Auth.Login;
-using MyApp.Application.Handlers.Commands.Auth.Registration.Register;
-using MyApp.Application.Interfaces;
-using MyApp.Application.Interfaces.Commands.Auth.Login;
-using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
-using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyApp.Application.Modules.Commands.Auth.Login;
+using MyApp.Application.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Application.Modules.Commands.Auth.Registration.Register;
 using MyApp.Presentation.Endpoints.Core;
+using MyApp.Presentation.Interfaces.Http;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.RefreshToken;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ConfirmUserRegistration;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ResendConfirmation;
 using MyApp.Presentation.Startup.Filters;
 
 namespace MyApp.Presentation.Endpoints;
@@ -91,9 +91,10 @@ public class Auth : EndpointGroupBase
         ForgotPassword(
         [FromServices] ISender sender,
         [FromBody] ForgotPasswordRequest request,
+        [FromHeader(Name = CustomHeaders.InstanceName)] string? instanceName,
         CancellationToken cancellationToken)
     {
-        await sender.Send(request, cancellationToken);
+        await sender.Send(new ForgotPasswordCommand(request, instanceName), cancellationToken);
         return TypedResults.NoContent();
     }
 

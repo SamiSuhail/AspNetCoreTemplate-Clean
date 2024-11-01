@@ -1,6 +1,7 @@
-﻿using MyApp.Domain;
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using MyApp.Application.Infrastructure.Abstractions.Logging;
+using MyApp.Domain;
 
 namespace MyApp.Presentation.Startup.Middleware;
 
@@ -12,9 +13,9 @@ public static class UnhandledExceptionConstants
 public class CustomExceptionHandler : IExceptionHandler
 {
     private readonly Dictionary<Type, Func<HttpContext, Exception, CancellationToken, Task>> _exceptionHandlers;
-    private readonly ILogger _logger;
+    private readonly ILogger<CustomExceptionHandler> _logger;
 
-    public CustomExceptionHandler(ILogger logger)
+    public CustomExceptionHandler(ILogger<CustomExceptionHandler> logger)
     {
         _logger = logger;
         _exceptionHandlers = new()

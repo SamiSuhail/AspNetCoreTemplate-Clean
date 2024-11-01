@@ -2,8 +2,8 @@
 
 namespace MyApp.Domain.Auth.PasswordResetConfirmation;
 
-public class PasswordResetConfirmationEntity : BaseConfirmationEntity
+public class PasswordResetConfirmationEntity : BaseConfirmationEntity<PasswordResetConfirmationEntity>
 {
-    public static PasswordResetConfirmationEntity Create(int userId)
-        => Create<PasswordResetConfirmationEntity>(userId);
+    public new static PasswordResetConfirmationEntity Create(int userId)
+        => BaseConfirmationEntity<PasswordResetConfirmationEntity>.Create(userId);
 }

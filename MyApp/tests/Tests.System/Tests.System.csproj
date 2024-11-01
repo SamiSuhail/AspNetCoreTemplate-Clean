@@ -19,6 +19,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="FluentAssertions" Version="6.12.1" />
+		<PackageReference Include="MailKit" Version="4.8.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0-rc.2.24473.5" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0-rc.2.24473.5" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0-rc.2.24473.5" />
@@ -33,7 +34,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\Application.Interfaces\Application.Interfaces.csproj" />
+	  <ProjectReference Include="..\..\src\Presentation.Interfaces\Presentation.Interfaces.csproj" />
 	  <ProjectReference Include="..\..\src\Utilities\Utilities.csproj" />
 	  <ProjectReference Include="..\Tests.Utilities\Tests.Utilities.csproj" />
 	</ItemGroup>

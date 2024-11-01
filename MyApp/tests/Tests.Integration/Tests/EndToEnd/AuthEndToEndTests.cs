@@ -1,13 +1,12 @@
-﻿using MyApp.Application.Handlers.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Application.Handlers.Commands.Auth.Registration;
-using MyApp.Application.Infrastructure.Abstractions;
-using MyApp.Application.Interfaces.Commands.Auth.Login;
-using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
-using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
+﻿using MyApp.Application.Infrastructure.Abstractions;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.RefreshToken;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ConfirmUserRegistration;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Presentation.Interfaces.Messaging;
 
 namespace MyApp.Tests.Integration.Tests.EndToEnd;
 
@@ -22,10 +21,10 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task HappyPathTest()
     {
         await TestRegister();
+        await TestResetPassword(await TestForgotPassword());
         var userConfirmationCode = await TestResendConfirmation();
         await TestConfirmUserRegistration(userConfirmationCode);
-        var passwordResetConfirmationCode = await TestForgotPassword();
-        await TestResetPassword(passwordResetConfirmationCode);
+        await TestResetPassword(await TestForgotPassword());
         var loginResponse = await TestLogin();
         _graphqlClient = AppFactory.ArrangeGraphQLClientWithToken(loginResponse.AccessToken);
         await TestMe();
@@ -43,8 +42,8 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
-        mock.Setup(m => m.Send(It.IsAny<SendUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
-            .Callback<SendUserConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
+        mock.Setup(m => m.Send(It.IsAny<SendRegisterUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<SendRegisterUserConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
             .Returns(Task.CompletedTask);
         var request = new ResendConfirmationRequest(Email);
         var response = await UnauthorizedAppClient.ResendConfirmation(request);
@@ -65,8 +64,8 @@ public class AuthEndToEndTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         var code = string.Empty;
         var mock = MockBag.Get<IMessageProducer>();
-        mock.Setup(m => m.Send(It.IsAny<ForgotPasswordMessage>(), It.IsAny<CancellationToken>()))
-            .Callback<ForgotPasswordMessage, CancellationToken>((request, _) => code = request.Code)
+        mock.Setup(m => m.Send(It.IsAny<SendPasswordResetConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Callback<SendPasswordResetConfirmationMessage, CancellationToken>((request, _) => code = request.Code)
             .Returns(Task.CompletedTask);
         var request = new ForgotPasswordRequest(Email, Username);
         var response = await UnauthorizedAppClient.ForgotPassword(request);

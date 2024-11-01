@@ -46,11 +46,8 @@ public static class SwaggerStartupExtensions
 
     public static WebApplication UseCustomSwagger(this WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
         return app;
     }

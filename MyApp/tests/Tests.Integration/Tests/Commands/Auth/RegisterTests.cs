@@ -1,7 +1,7 @@
-﻿using MyApp.Application.Handlers.Commands.Auth.Registration;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
-using MyApp.Domain.Auth.User;
+﻿using MyApp.Domain.Auth.User;
 using MyApp.Domain.Auth.User.Failures;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
+using MyApp.Presentation.Interfaces.Messaging;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -42,7 +42,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertSuccess();
-        MockBag.AssertProduced<SendUserConfirmationMessage>();
+        MockBag.AssertProduced<SendRegisterUserConfirmationMessage>();
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
 
         // Assert
         response.AssertBadRequest();
-        MockBag.AssertProduced<SendUserConfirmationMessage>(Times.Never());
+        MockBag.AssertProduced<SendRegisterUserConfirmationMessage>(Times.Never());
         await AssertUserNotExists(request.Username, request.Email);
     }
 
@@ -67,7 +67,7 @@ public class RegisterTests(AppFactory appFactory) : BaseTest(appFactory)
     public async Task GivenMessageProducerThrows_ThenNoDataIsPersisted()
     {
         // Arrange
-        MockBag.ArrangeMessageThrows<SendUserConfirmationMessage>();
+        MockBag.ArrangeMessageThrows<SendRegisterUserConfirmationMessage>();
 
         // Act
         var response = await UnauthorizedAppClient.Register(_request);

@@ -20,7 +20,7 @@ public abstract class BaseTest(AppFactory appFactory) : IAsyncLifetime, IClassFi
     public AppFactory AppFactory { get; private set; } = default!;
     public MockBag MockBag { get; private set; } = default!;
     public IApplicationClient UnauthorizedAppClient { get; private set; } = default!;
-    public IApplicationClient AppClient { get; private set; } = default!;
+    public IApplicationAdminClient AppClient { get; private set; } = default!;
     public IApplicationGraphQLClient UnauthorizedGraphQLClient { get; private set; } = default!;
     public IApplicationGraphQLClient GraphQLClient { get; private set; } = default!;
 

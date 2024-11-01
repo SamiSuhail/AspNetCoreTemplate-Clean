@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
+﻿using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ResetPassword;
 using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation.Failures;
 using MyApp.Domain.Auth.User;
@@ -39,6 +39,24 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
+    public async Task GivenHappyPath_ThenIncrementsRefreshTokenVersion(bool userIsConfirmed)
+    {
+        // Arrange
+        await ArrangePasswordResetAndRequest(userIsConfirmed);
+        var refreshTokenVersion = (await ArrangeDbContext.GetUser(_userId)).RefreshTokenVersion;
+
+        // Act
+        var response = await UnauthorizedAppClient.ResetPassword(_request);
+
+        // Assert
+        response.AssertSuccess();
+        var user = await AssertDbContext.GetUser(_userId);
+        user.RefreshTokenVersion.Should().Be(refreshTokenVersion + 1);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
     public async Task GivenHappyPath_ThenDeletesPasswordResetConfirmation(bool userIsConfirmed)
     {
         // Arrange
@@ -68,7 +86,7 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.ResetPassword(request);
 
         // Assert
-        AssertInvalidFailure(response);
+        response.AssertSingleBadRequestError(PasswordResetConfirmationCodeInvalidFailure.Key, PasswordResetConfirmationCodeInvalidFailure.Message);
     }
 
     [Theory]
@@ -84,12 +102,7 @@ public class ResetPasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         var response = await UnauthorizedAppClient.ResetPassword(_request);
 
         // Assert
-        AssertInvalidFailure(response);
-    }
-
-    private static void AssertInvalidFailure(IApiResponse response)
-    {
-        response.AssertSingleBadRequestError(PasswordResetConfirmationCodeInvalidFailure.Key, PasswordResetConfirmationCodeInvalidFailure.Message);
+        response.AssertSingleBadRequestError(PasswordResetExpiredFailure.Key, PasswordResetExpiredFailure.Message);
     }
 
     private async Task ArrangePasswordResetAndRequest(bool userIsConfirmed)

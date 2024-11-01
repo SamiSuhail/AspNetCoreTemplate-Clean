@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Features.Cleanup.Confirmations;
+﻿using MyApp.Application.Modules.BackgroundJobs.Cleanup.Confirmations;
 using MyApp.Domain.Auth.EmailChangeConfirmation;
 using MyApp.Domain.Auth.PasswordResetConfirmation;
 using MyApp.Domain.Auth.UserConfirmation;
@@ -23,6 +23,20 @@ public class CleanupConfirmationsTests(AppFactory appFactory) : BaseTest(appFact
         await AssertConfirmationsCleanedUp(userId);
     }
 
+    [Fact]
+    public async Task GivenConfirmationsNotExpired_ThenConfirmationsAreNotDeleted()
+    {
+        // Arrange
+        int userId = await CreateUserAndConfirmations();
+
+        // Act
+        await ScopedServices.GetRequiredService<ISender>()
+            .Send(new CleanupConfirmationsRequest());
+
+        // Assert
+        await AssertConfirmationsNotCleanedUp(userId);
+    }
+
     private async Task<int> CreateUserAndConfirmations()
     {
         var user = await ArrangeDbContext.ArrangeRandomUnconfirmedUser();
@@ -45,6 +59,23 @@ public class CleanupConfirmationsTests(AppFactory appFactory) : BaseTest(appFact
         results.All(r => r == true).Should().BeTrue();
 
         async Task<bool> CheckIsDeleted<TConfirmationEntity>(int userId) where TConfirmationEntity : class, IOwnedByUser
+        {
+            return !await CreateDbContext().Set<TConfirmationEntity>()
+                .IgnoreQueryFilters()
+                .AnyAsync(uc => uc.UserId == userId);
+        }
+    }
+
+    private async Task AssertConfirmationsNotCleanedUp(int userId)
+    {
+        var results = await Task.WhenAll(
+            CheckIsNotDeleted<UserConfirmationEntity>(userId),
+            CheckIsNotDeleted<PasswordResetConfirmationEntity>(userId),
+            CheckIsNotDeleted<EmailChangeConfirmationEntity>(userId));
+
+        results.All(r => r == false).Should().BeTrue();
+
+        async Task<bool> CheckIsNotDeleted<TConfirmationEntity>(int userId) where TConfirmationEntity : class, IOwnedByUser
         {
             return !await CreateDbContext().Set<TConfirmationEntity>()
                 .IgnoreQueryFilters()

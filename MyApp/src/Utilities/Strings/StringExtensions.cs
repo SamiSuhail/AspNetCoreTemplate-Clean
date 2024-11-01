@@ -16,7 +16,7 @@ public static class StringExtensions
         => s.ReplaceMany(string.Empty, oldValues);
 
     public static bool IsAlphanumeric(this string s, params char[] exclude)
-        => s.All(c => c.IsAlphanumeric() || exclude.Any(ec => ec == c));
+        => s.All(c => char.IsLetterOrDigit(c) || exclude.Any(ec => ec == c));
 
     public static string ReplaceMany(this string s, string newVal, params string[] oldValues)
     {

@@ -1,8 +1,9 @@
 ﻿using HotChocolate.Authorization;
-using MediatR;
-using MyApp.Application.Interfaces.Queries.Ping;
+using MyApp.Application.Modules.Queries.Ping;
+using MyApp.Presentation.Interfaces.Http.Queries.Ping;
 
 namespace MyApp.Presentation.GraphQL;
+#pragma warning disable CA1822 // Mark members as static
 
 public class Ping
 {

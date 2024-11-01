@@ -11,7 +11,7 @@ public static class BaseConfirmationConfigurationExtensions
     public static void ConfigureConfirmation<TConfirmationEntity>(
         this EntityTypeBuilder<TConfirmationEntity> builder,
         Expression<Func<UserEntity, TConfirmationEntity?>> navigationPropertyGetter
-        ) where TConfirmationEntity : BaseConfirmationEntity
+        ) where TConfirmationEntity : BaseConfirmationEntity<TConfirmationEntity>, new()
     {
         var (schemaName, tableName) = ConfirmationConfigurations.Get<TConfirmationEntity>();
         builder.ToTable(tableName, schemaName);

@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Interfaces.Commands.Auth.Login;
+﻿using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
 using MyApp.Domain.Access.Scope;
 
 namespace MyApp.Tests.Integration.Tests.Features.Scope;

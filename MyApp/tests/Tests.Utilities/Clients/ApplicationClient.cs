@@ -1,20 +1,25 @@
-﻿using MyApp.Application.Interfaces;
-using MyApp.Application.Interfaces.Commands.Auth.Login;
-using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ForgotPassword;
-using MyApp.Application.Interfaces.Commands.Auth.PasswordManagement.ResetPassword;
-using MyApp.Application.Interfaces.Commands.Auth.RefreshToken;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ConfirmUserRegistration;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.Register;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
-using MyApp.Application.Interfaces.Commands.Infra.CreateInstance;
-using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ChangeEmail;
-using MyApp.Application.Interfaces.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
-using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ChangePassword;
-using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
-using MyApp.Application.Interfaces.Queries.Ping;
+﻿using MyApp.Presentation.Interfaces.Http;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ForgotPassword;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ResetPassword;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.RefreshToken;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ConfirmUserRegistration;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.Register;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Presentation.Interfaces.Http.Commands.Infra.CreateInstance;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ChangeEmail;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.EmailUpdate.ConfirmEmailChange;
+using MyApp.Presentation.Interfaces.Http.Commands.UserManagement.PasswordUpdate.ConfirmPasswordChange;
+using MyApp.Presentation.Interfaces.Http.Queries.Ping;
 using Refit;
 
 namespace MyApp.Tests.Utilities.Clients;
+
+public interface IApplicationAdminClient : IApplicationClient
+{
+    [Post("/api/infra/instance/create")]
+    public Task<IApiResponse> CreateInstance(CreateInstanceRequest request);
+}
 
 public interface IApplicationClient
 {
@@ -49,6 +54,9 @@ public interface IApplicationClient
     [Post("/api/auth/forgot-password")]
     public Task<IApiResponse> ForgotPassword(ForgotPasswordRequest request);
 
+    [Post("/api/auth/forgot-password")]
+    public Task<IApiResponse> ForgotPassword(ForgotPasswordRequest request, [Header(CustomHeaders.InstanceName)] string instanceName);
+
     [Post("/api/auth/reset-password")]
     public Task<IApiResponse> ResetPassword(ResetPasswordRequest request);
 
@@ -63,12 +71,8 @@ public interface IApplicationClient
     public Task<IApiResponse> ConfirmEmailChange(ConfirmEmailChangeRequest request);
 
     [Post("/api/user-management/change-password")]
-    public Task<IApiResponse> ChangePassword(ChangePasswordRequest request);
+    public Task<IApiResponse> ChangePassword();
 
     [Post("/api/user-management/confirm-password-change")]
     public Task<IApiResponse> ConfirmPasswordChange(ConfirmPasswordChangeRequest request);
-
-
-    [Post("/api/infra/instance/create")]
-    public Task<IApiResponse> CreateInstance(CreateInstanceRequest request);
 }

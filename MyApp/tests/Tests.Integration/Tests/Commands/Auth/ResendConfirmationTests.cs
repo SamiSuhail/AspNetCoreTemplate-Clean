@@ -1,9 +1,9 @@
-﻿using MyApp.Domain.Auth.UserConfirmation;
-using MyApp.Domain.Auth.UserConfirmation.Failures;
+﻿using MyApp.Application.Infrastructure.Abstractions;
 using MyApp.Domain.Auth.User;
-using MyApp.Application.Infrastructure.Abstractions;
-using MyApp.Application.Interfaces.Commands.Auth.Registration.ResendConfirmation;
-using MyApp.Application.Handlers.Commands.Auth.Registration;
+using MyApp.Domain.Auth.UserConfirmation;
+using MyApp.Domain.Auth.UserConfirmation.Failures;
+using MyApp.Presentation.Interfaces.Http.Commands.Auth.Registration.ResendConfirmation;
+using MyApp.Presentation.Interfaces.Messaging;
 
 namespace MyApp.Tests.Integration.Tests.Commands.Auth;
 
@@ -43,7 +43,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertSuccess();
-        MockBag.AssertProduced<SendUserConfirmationMessage>();
+        MockBag.AssertProduced<SendRegisterUserConfirmationMessage>();
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
 
         // Assert
         response.AssertBadRequest();
-        MockBag.AssertProduced<SendUserConfirmationMessage>(Times.Never());
+        MockBag.AssertProduced<SendRegisterUserConfirmationMessage>(Times.Never());
         await AssertUserConfirmationUnchanged();
     }
 
@@ -69,7 +69,7 @@ public class ResendConfirmationTests(AppFactory appFactory) : BaseTest(appFactor
     {
         // Arrange
         MockBag.Get<IMessageProducer>()
-            .Setup(m => m.Send(It.IsAny<SendUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
+            .Setup(m => m.Send(It.IsAny<SendRegisterUserConfirmationMessage>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception());
 
         // Act

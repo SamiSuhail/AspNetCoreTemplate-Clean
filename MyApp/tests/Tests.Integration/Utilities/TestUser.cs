@@ -22,7 +22,7 @@ public class TestUser
         await dbContext.ArrangeScopesForUser(CustomScopes.All, user.Id);
         var jwtGenerator = sp.GetRequiredService<IJwtGenerator>();
         var accessToken = jwtGenerator.CreateAccessToken(user.Id, user.Username, user.Email, ScopeCollection.Create(CustomScopes.All));
-        var refreshToken = jwtGenerator.CreateRefreshToken(user.Id, user.Username, user.Email, user.RefreshTokenVersion);
+        var refreshToken = jwtGenerator.CreateRefreshToken(user.Id, user.RefreshTokenVersion);
         return new()
         {
             AccessToken = accessToken,

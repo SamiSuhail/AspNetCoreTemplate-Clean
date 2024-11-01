@@ -10,7 +10,7 @@ public static class MediatRStartupExtensions
         services.AddMediatR(config =>
          {
              config.RegisterServicesFromAssemblyContaining<IApplicationAssemblyMarker>();
-             config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+             config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
          });
 
         return services;

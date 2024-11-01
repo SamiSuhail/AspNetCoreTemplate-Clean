@@ -1,10 +1,24 @@
 {
   "Server": {
-    "BaseUrl": "https://localhost:7018",
-    "Auth": {
-      "Username": "SomeUsername",
-      "Email": "user@email.com",
-      "Password": "SomeSecretPassword"
+    "BaseUrl": "http://localhost:7018",
+    "AdminAuth": {
+      "Username": "admin1",
+      "Email": "admin@localhost",
+      "Password": "password1!"
+    }
+  },
+  "Email": {
+    "Host": "localhost",
+    "Port": 3143,
+    "Users": {
+      "Default": {
+        "EmailAddress": "user1@localhost",
+        "Password": "password1!"
+      },
+      "Other": {
+        "EmailAddress": "user2@localhost",
+        "Password": "password1!"
+      }
     }
   }
 }

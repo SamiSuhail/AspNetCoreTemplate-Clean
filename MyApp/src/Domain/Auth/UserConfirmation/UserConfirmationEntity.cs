@@ -2,11 +2,11 @@
 
 namespace MyApp.Domain.Auth.UserConfirmation;
 
-public class UserConfirmationEntity : BaseConfirmationEntity
+public class UserConfirmationEntity : BaseConfirmationEntity<UserConfirmationEntity>
 {
-    public static UserConfirmationEntity Create(int userId)
-        => Create<UserConfirmationEntity>(userId);
+    public new static UserConfirmationEntity Create(int userId)
+        => BaseConfirmationEntity<UserConfirmationEntity>.Create(userId);
 
-    public static UserConfirmationEntity Create()
-        => Create<UserConfirmationEntity>();
+    public new static UserConfirmationEntity Create()
+        => BaseConfirmationEntity<UserConfirmationEntity>.Create();
 }

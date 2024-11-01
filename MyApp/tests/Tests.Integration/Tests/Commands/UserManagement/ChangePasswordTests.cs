@@ -1,39 +1,33 @@
-﻿using MyApp.Application.Handlers.Commands.UserManagement.PasswordUpdate.ChangePassword;
-using MyApp.Application.Interfaces.Commands.UserManagement.PasswordUpdate.ChangePassword;
-using MyApp.Domain.Auth.User;
-using MyApp.Domain.UserManagement.PasswordChangeConfirmation;
-using MyApp.Domain.UserManagement.PasswordChangeConfirmation.Failures;
+﻿using MyApp.Domain.Auth.PasswordResetConfirmation;
+using MyApp.Presentation.Interfaces.Messaging;
 
 namespace MyApp.Tests.Integration.Tests.Commands.UserManagement;
 
 public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
 {
-    private ChangePasswordRequest _request = new(RandomData.Password);
-
     [Fact]
     public async Task GivenHappyPath_ThenProducesMessage()
     {
         // Act
-        var response = await AppClient.ChangePassword(_request);
+        var response = await AppClient.ChangePassword();
 
         // Assert
         response.AssertSuccess();
-        MockBag.AssertProduced<ChangePasswordMessage>();
+        MockBag.AssertProduced<SendPasswordResetConfirmationMessage>();
     }
 
     [Fact]
     public async Task GivenHappyPath_ThenStoresConfirmation()
     {
         // Act
-        var response = await AppClient.ChangePassword(_request);
+        var response = await AppClient.ChangePassword();
 
         // Assert
         response.AssertSuccess();
         var user = await AssertDbContext.GetUser(User.Entity.Id);
-        user.PasswordChangeConfirmation.Should().NotBeNull();
+        user.PasswordResetConfirmation.Should().NotBeNull();
         using var _ = new AssertionScope();
-        _request.NewPassword.Verify(user.PasswordChangeConfirmation!.NewPasswordHash).Should().BeTrue();
-        user.PasswordChangeConfirmation.CreatedAt.ShouldBeNow();
+        user.PasswordResetConfirmation!.CreatedAt.ShouldBeNow();
     }
 
     [Fact]
@@ -43,17 +37,16 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         var existingConfirmation = await ArrangeExistingConfirmation();
 
         // Act
-        var response = await AppClient.ChangePassword(_request);
+        var response = await AppClient.ChangePassword();
 
         // Assert
         response.AssertSuccess();
         var user = await AssertDbContext.GetUser(User.Entity.Id);
-        user.PasswordChangeConfirmation.Should().NotBeNull();
+        user.PasswordResetConfirmation.Should().NotBeNull();
         using var _ = new AssertionScope();
-        user.PasswordChangeConfirmation!.Id.Should().NotBe(existingConfirmation.Id);
-        user.PasswordChangeConfirmation.Code.Should().NotBe(existingConfirmation.Code);
-        user.PasswordChangeConfirmation.NewPasswordHash.Should().NotBe(existingConfirmation.NewPasswordHash);
-        user.PasswordChangeConfirmation.CreatedAt.ShouldBeNow();
+        user.PasswordResetConfirmation!.Id.Should().NotBe(existingConfirmation.Id);
+        user.PasswordResetConfirmation.Code.Should().NotBe(existingConfirmation.Code);
+        user.PasswordResetConfirmation.CreatedAt.ShouldBeNow();
     }
 
     [Fact]
@@ -63,40 +56,26 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
         var client = AppFactory.ArrangeClientWithCredentials(userId: int.MaxValue, User.Entity.Username, User.Entity.Email);
 
         // Act
-        var response = await client.ChangePassword(_request);
+        var response = await client.ChangePassword();
 
         // Assert
         response.AssertUserNotFoundFailure();
-        await AssertNoChangesOccured();
-    }
-
-    [Fact]
-    public async Task GivenPasswordIdentical_ReturnsInvalidFailure()
-    {
-        // Arrange
-        _request = _request with { NewPassword = User.Password };
-
-        // Act
-        var response = await AppClient.ChangePassword(_request);
-
-        // Assert
-        response.AssertSingleBadRequestError(PasswordIsIdenticalFailure.Key, PasswordIsIdenticalFailure.Message);
-        await AssertNoChangesOccured();
+        await AssertNoChangesOccurred();
     }
 
     [Fact]
     public async Task GivenMessageProducerThrows_ThenNoDataSaved()
     {
         // Arrange
-        MockBag.ArrangeMessageThrows<ChangePasswordMessage>();
+        MockBag.ArrangeMessageThrows<SendPasswordResetConfirmationMessage>();
 
         // Act
-        var response = await AppClient.ChangePassword(_request);
+        var response = await AppClient.ChangePassword();
 
         // Assert
         response.AssertInternalServerError();
         var user = await AssertDbContext.GetUser(User.Entity.Id);
-        user.PasswordChangeConfirmation.Should().BeNull();
+        user.PasswordResetConfirmation.Should().BeNull();
     }
 
     [Fact]
@@ -104,30 +83,30 @@ public class ChangePasswordTests(AppFactory appFactory) : BaseTest(appFactory)
     {
         // Arrange
         var existingConfirmation = await ArrangeExistingConfirmation();
-        MockBag.ArrangeMessageThrows<ChangePasswordMessage>();
+        MockBag.ArrangeMessageThrows<SendPasswordResetConfirmationMessage>();
 
         // Act
-        var response = await AppClient.ChangePassword(_request);
+        var response = await AppClient.ChangePassword();
 
         // Assert
         response.AssertInternalServerError();
         var user = await AssertDbContext.GetUser(User.Entity.Id);
-        user.PasswordChangeConfirmation.Should().NotBeNull();
-        user.PasswordChangeConfirmation!.Id.Should().Be(existingConfirmation.Id);
+        user.PasswordResetConfirmation.Should().NotBeNull();
+        user.PasswordResetConfirmation!.Id.Should().Be(existingConfirmation.Id);
     }
 
-    private async Task<PasswordChangeConfirmationEntity> ArrangeExistingConfirmation()
+    private async Task<PasswordResetConfirmationEntity> ArrangeExistingConfirmation()
     {
-        var existingConfirmation = PasswordChangeConfirmationEntity.Create(User.Entity.Id, RandomData.Password);
+        var existingConfirmation = PasswordResetConfirmationEntity.Create(User.Entity.Id);
         ArrangeDbContext.Add(existingConfirmation);
         await ArrangeDbContext.SaveChangesAsync();
         return existingConfirmation;
     }
 
-    private async Task AssertNoChangesOccured()
+    private async Task AssertNoChangesOccurred()
     {
         var user = await AssertDbContext.GetUser(User.Entity.Id);
-        user.PasswordChangeConfirmation.Should().BeNull();
-        MockBag.AssertProduced<ChangePasswordMessage>(Times.Never());
+        user.PasswordResetConfirmation.Should().BeNull();
+        MockBag.AssertProduced<SendPasswordResetConfirmationMessage>(Times.Never());
     }
 }

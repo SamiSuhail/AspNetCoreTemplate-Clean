@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Interfaces.Commands.Auth.Login;
+﻿using MyApp.Presentation.Interfaces.Http.Commands.Auth.Login;
 using MyApp.Domain.Auth.User.Failures;
 using MyApp.Domain.Infra.Instance.Failures;
 

@@ -2,7 +2,8 @@
 
 namespace MyApp.Domain.Shared.Confirmations;
 
-public abstract class BaseConfirmationEntity : ICreationAudited, IOwnedByUser
+public abstract class BaseConfirmationEntity<TEntity> : ICreationAudited, IOwnedByUser 
+    where TEntity : BaseConfirmationEntity<TEntity>, new()
 {
     public int Id { get; protected set; }
     public int UserId { get; protected set; }
@@ -11,14 +12,14 @@ public abstract class BaseConfirmationEntity : ICreationAudited, IOwnedByUser
 
     public UserEntity User { get; protected set; } = default!;
 
-    protected static TEntity Create<TEntity>(int userId) where TEntity : BaseConfirmationEntity, new()
+    protected static TEntity Create(int userId)
     {
-        var confirmation = Create<TEntity>();
+        var confirmation = Create();
         confirmation.UserId = userId;
         return confirmation;
     }
 
-    protected static TEntity Create<TEntity>() where TEntity : BaseConfirmationEntity, new()
+    protected static TEntity Create()
     {
         return new()
         {

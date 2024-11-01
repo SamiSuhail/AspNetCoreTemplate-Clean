@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Interfaces.Queries.Ping;
+﻿using MyApp.Presentation.Interfaces.Http.Queries.Ping;
 
 namespace MyApp.Tests.Integration.Tests.Queries.Ping;
 
