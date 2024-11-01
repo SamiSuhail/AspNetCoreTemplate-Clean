@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Modules.Commands.Auth.Login;
+using MyApp.Application.Modules.Commands.Auth.PasswordManagement.ForgotPassword;
 using MyApp.Application.Modules.Commands.Auth.Registration.Register;
 using MyApp.Presentation.Endpoints.Core;
 using MyApp.Presentation.Interfaces.Http;
@@ -90,9 +91,10 @@ public class Auth : EndpointGroupBase
         ForgotPassword(
         [FromServices] ISender sender,
         [FromBody] ForgotPasswordRequest request,
+        [FromHeader(Name = CustomHeaders.InstanceName)] string? instanceName,
         CancellationToken cancellationToken)
     {
-        await sender.Send(request, cancellationToken);
+        await sender.Send(new ForgotPasswordCommand(request, instanceName), cancellationToken);
         return TypedResults.NoContent();
     }
 

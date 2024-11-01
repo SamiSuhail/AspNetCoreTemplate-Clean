@@ -54,6 +54,9 @@ public interface IApplicationClient
     [Post("/api/auth/forgot-password")]
     public Task<IApiResponse> ForgotPassword(ForgotPasswordRequest request);
 
+    [Post("/api/auth/forgot-password")]
+    public Task<IApiResponse> ForgotPassword(ForgotPasswordRequest request, [Header(CustomHeaders.InstanceName)] string instanceName);
+
     [Post("/api/auth/reset-password")]
     public Task<IApiResponse> ResetPassword(ResetPasswordRequest request);
 

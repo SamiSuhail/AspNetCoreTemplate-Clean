@@ -1,5 +1,3 @@
-﻿using MediatR;
+﻿namespace MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ForgotPassword;
 
-namespace MyApp.Presentation.Interfaces.Http.Commands.Auth.PasswordManagement.ForgotPassword;
-
-public record ForgotPasswordRequest(string Email, string Username) : IRequest;
+public record ForgotPasswordRequest(string Email, string Username);

@@ -186,6 +186,15 @@
           "Auth"
         ],
         "operationId": "ForgotPassword",
+        "parameters": [
+          {
+            "name": "MyApp-InstanceName",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {

@@ -7,7 +7,7 @@ public class ForgotPasswordTests(TestFixture fixture) : AuthenticatedBaseTest(fi
     public async Task GivenHappyPath_ThenConfirmationCodeReceived()
     {
         // Act
-        var response = await UnauthorizedAppClient.ForgotPassword(new(UserCredentials.Email, UserCredentials.Username));
+        var response = await UnauthorizedAppClient.ForgotPassword(new(UserCredentials.Email, UserCredentials.Username), InstanceName);
 
         // Assert
         response.AssertSuccess();
