@@ -3,9 +3,6 @@
 	<PropertyGroup>
 		<RootNamespace>MyApp.Server</RootNamespace>
 		<TargetFramework>net9.0</TargetFramework>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..</DockerfileContext>
-		<UserSecretsId>80e2b16e-c22e-4216-9071-dbbe7bbae40e</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>

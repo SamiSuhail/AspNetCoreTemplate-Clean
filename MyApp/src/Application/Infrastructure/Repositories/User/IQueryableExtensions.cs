@@ -3,7 +3,7 @@ using MyApp.Domain.Auth.User;
 
 namespace MyApp.Application.Infrastructure.Repositories.User;
 
-public static class UserDbContextExtensions
+public static class IQueryableExtensions
 {
     public static async Task<UserEntity?> FindUserOrDefault(
         this IQueryable<UserEntity> users,
