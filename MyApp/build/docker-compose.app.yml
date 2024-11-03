@@ -1,0 +1,36 @@
+services:
+    dbdeploy:
+        image: ${DOCKER_REGISTRY-}dbdeploy
+        container_name: dbdeploy
+        restart: on-failure
+        build:
+            context: ../
+            dockerfile: ./build/Dockerfile.dbdeploy
+        environment:
+            ConnectionStrings__Default: Server=${DB_INTERNAL_HOST};Port=${DB_PORT};Database=${DB_NAME};User Id=${DB_USERNAME};Password=${DB_PASSWORD};
+
+    server:
+        image: ${DOCKER_REGISTRY-}server
+        container_name: server
+        hostname: ${SERVER_INTERNAL_HOST}
+        depends_on:
+            dbdeploy:
+                condition: service_completed_successfully
+        build:
+            context: ../
+            dockerfile: ./build/Dockerfile.server
+        ports:
+            - ${SERVER_PORT}:${SERVER_PORT}
+        environment:
+            Server__UrlsJoined: http://+:${SERVER_PORT}
+            ConnectionStrings__Database: Server=${DB_INTERNAL_HOST};Port=${DB_PORT};Database=${DB_NAME};User Id=${DB_USERNAME};Password=${DB_PASSWORD};
+            Email__SMTPHost: ${EMAIL_INTERNAL_HOST}
+            Email__SMTPPort: ${EMAIL_SMTP_PORT}
+            Messaging__Host: ${QUEUE_INTERNAL_HOST}
+            Messaging__Port: ${QUEUE_PORT}
+            Messaging__ManagementPort: ${QUEUE_WEBUI_PORT}
+            Messaging__User: ${QUEUE_USERNAME}
+            Messaging__Pass: ${QUEUE_PASSWORD}
+            Auth__AdminUser__Username: ${SERVER_ADMIN_USERNAME}
+            Auth__AdminUser__Password: ${SERVER_ADMIN_PASSWORD}
+            Auth__AdminUser__Email: ${SERVER_ADMIN_EMAIL}

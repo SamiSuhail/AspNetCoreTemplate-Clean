@@ -1,0 +1,21 @@
+services:
+    base:
+        image: ${DOCKER_REGISTRY-}base
+        container_name: base
+        build:
+            context: ../
+            dockerfile: ./build/Dockerfile.base
+
+    testsintegration:
+        image: ${DOCKER_REGISTRY-}testsintegration
+        container_name: testsintegration
+        depends_on:
+            base:
+                condition: service_completed_successfully
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        build:
+            context: ../
+            dockerfile: ./build/Dockerfile.testsintegration
+        environment:
+            TESTCONTAINERS_HOST_OVERRIDE: host.docker.internal

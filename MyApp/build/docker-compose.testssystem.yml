@@ -1,0 +1,19 @@
+services:
+    testssystem:
+        image: ${DOCKER_REGISTRY-}testssystem
+        container_name: testssystem
+        restart: on-failure
+        build:
+            context: ../
+            dockerfile: ./build/Dockerfile.testssystem
+        environment:
+            Server__BaseUrl: http://${SERVER_INTERNAL_HOST}:${SERVER_PORT}
+            Server__AdminAuth__Username: ${SERVER_ADMIN_USERNAME}
+            Server__AdminAuth__Password: ${SERVER_ADMIN_PASSWORD}
+            Server__AdminAuth__Email: ${SERVER_ADMIN_EMAIL}
+            Email__Host: ${EMAIL_INTERNAL_HOST}
+            Email__Port: ${EMAIL_IMAP_PORT}
+            Email__Users__Default__EmailAddress: ${EMAIL_USERDEFAULT_EMAILADDRESS}
+            Email__Users__Default__Password: ${EMAIL_USERDEFAULT_PASSWORD}
+            Email__Users__Other__EmailAddress: ${EMAIL_USEROTHER_EMAILADDRESS}
+            Email__Users__Other__Password: ${EMAIL_USEROTHER_PASSWORD}
