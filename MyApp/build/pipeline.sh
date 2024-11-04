@@ -7,23 +7,28 @@ ENV_FILE="$BUILD_DIR/docker-compose.env"
 # Function to wait for containers and check status
 wait_for_containers() {
     local compose_file=$1
-    local wait_type=$2
-    if [ "$wait_type" != "completed" ] 
-    && [ "$wait_type" != "running" ]; then
-        echo "Error: wait_type must be either 'completed' or 'running'"
+    local acceptable_statuses=$2 # Pipe-separated list of acceptable statuses
+    
+    # Validate input
+    if [ -z "$acceptable_statuses" ]; then
+        echo "Error: acceptable_statuses must be provided as pipe-separated list (e.g. 'exited|dead')"
         exit 1
     fi
 
-    echo "Waiting for containers from $compose_file to be ${wait_type}..."
+    echo "Waiting for containers from $compose_file to reach acceptable status..."
     local timeout=30 # 30 seconds timeout
     local start_time=$SECONDS
     
     while true; do
-        if [ "$wait_type" = "completed" ]; then
-            local pending=$(docker-compose -f "$compose_file" --env-file "$ENV_FILE" ps --services --filter "status=running")
-        else
-            local pending=$(docker-compose -f "$compose_file" --env-file "$ENV_FILE" ps --services --filter "status=starting")
-        fi
+        # Get containers not in acceptable status by excluding those matching acceptable statuses
+        local pending=""
+        for status in $(echo $acceptable_statuses | tr "|" "\n"); do
+            if [ -z "$pending" ]; then
+                pending=$(docker-compose -f "$compose_file" --env-file "$ENV_FILE" ps --services --filter "status=$status")
+            else
+                pending=$(echo "$pending" | grep -v -f <(docker-compose -f "$compose_file" --env-file "$ENV_FILE" ps --services --filter "status=$status"))
+            fi
+        done
         
         if [ -z "$pending" ]; then
             break
@@ -46,9 +51,10 @@ wait_for_containers() {
         if [ ! -z "$container" ]; then
             local status=$(docker inspect "$container" --format='{{.State.Status}}')
             local exit_code=$(docker inspect "$container" --format='{{.State.ExitCode}}')
-
-            echo "Container $container failed with exit code $exit_code"
-            failed=true
+            
+            if [ "$exit_code" != "0" ]; then
+                echo "Container $container failed with exit code $exit_code"
+                failed=true
             fi
         fi
     done < <(docker-compose -f "$compose_file" --env-file "$ENV_FILE" ps -q)
@@ -60,17 +66,17 @@ wait_for_containers() {
 
 echo "Step 1: Running build containers..."
 docker-compose -f "$BUILD_DIR/docker-compose.build.yml" --env-file "$ENV_FILE" up --build -d
-wait_for_containers "$BUILD_DIR/docker-compose.build.yml" "completed"
 
 echo "Step 2: Running root containers..."
+wait_for_containers "$BUILD_DIR/docker-compose.build.yml" "exited"
 docker-compose -f "$BUILD_DIR/docker-compose.root.yml" --env-file "$ENV_FILE" up --build -d
-wait_for_containers "$BUILD_DIR/docker-compose.root.yml" "running"
 
 echo "Step 3: Running app containers..."
+wait_for_containers "$BUILD_DIR/docker-compose.root.yml" "up"
 docker-compose -f "$BUILD_DIR/docker-compose.app.yml" --env-file "$ENV_FILE" up --build -d
-wait_for_containers "$BUILD_DIR/docker-compose.app.yml" "running"
 
 echo "Step 4: Running system tests..."
+wait_for_containers "$BUILD_DIR/docker-compose.app.yml" "up|exited"
 docker-compose -f "$BUILD_DIR/docker-compose.testssystem.yml" --env-file "$ENV_FILE" up --build -d
 
 echo "Done!"
