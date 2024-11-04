@@ -1,47 +1,42 @@
 #!/bin/bash
 set -e
 
-# Function to wait for containers to exit and check status
-wait_for_exit() {
+BUILD_DIR="build"
+ENV_FILE="$BUILD_DIR/docker-compose.env"
+
+# Function to wait for containers and check status
+wait_for_containers() {
     local compose_file=$1
-    echo "Waiting for containers from $compose_file to exit..."
-    
-    # Wait for all containers to stop
-    while true; do
-        local running=$(docker-compose -f "$compose_file" --env-file build/docker-compose.env ps --services --filter "status=running")
-        if [ -z "$running" ]; then
-            break
-        fi
-        sleep 5
-    done
-
-    # Check exit codes
-    local failed=false
-    while IFS= read -r container; do
-        if [ ! -z "$container" ]; then
-            local exit_code=$(docker inspect "$container" --format='{{.State.ExitCode}}')
-            if [ "$exit_code" != "0" ]; then
-                echo "Container $container failed with exit code $exit_code"
-                failed=true
-            fi
-        fi
-    done < <(docker-compose -f "$compose_file" --env-file build/docker-compose.env ps -q)
-
-    if [ "$failed" = true ]; then
+    local wait_type=$2
+    if [ "$wait_type" != "completed" ] 
+    && [ "$wait_type" != "running" ]; then
+        echo "Error: wait_type must be either 'completed' or 'running'"
         exit 1
     fi
-}
 
-wait_for_running_or_exit() {
-    local compose_file=$1
-    echo "Waiting for containers from $compose_file to be running or exited..."
+    echo "Waiting for containers from $compose_file to be ${wait_type}..."
+    local timeout=30 # 30 seconds timeout
+    local start_time=$SECONDS
     
-    # Wait for containers to be either running or exited
     while true; do
-        local starting=$(docker-compose -f "$compose_file" --env-file build/docker-compose.env ps --services --filter "status=starting")
-        if [ -z "$starting" ]; then
+        if [ "$wait_type" = "completed" ]; then
+            local pending=$(docker-compose -f "$compose_file" --env-file "$ENV_FILE" ps --services --filter "status=running")
+        else
+            local pending=$(docker-compose -f "$compose_file" --env-file "$ENV_FILE" ps --services --filter "status=starting")
+        fi
+        
+        if [ -z "$pending" ]; then
             break
         fi
+        
+        # Check if we've exceeded timeout
+        local elapsed=$(( SECONDS - start_time ))
+        if [ $elapsed -gt $timeout ]; then
+            echo "Timeout waiting for containers. Current state:"
+            docker-compose -f "$compose_file" --env-file "$ENV_FILE" ps
+            exit 1
+        fi
+        
         sleep 5
     done
 
@@ -51,13 +46,12 @@ wait_for_running_or_exit() {
         if [ ! -z "$container" ]; then
             local status=$(docker inspect "$container" --format='{{.State.Status}}')
             local exit_code=$(docker inspect "$container" --format='{{.State.ExitCode}}')
-            
-            if [ "$status" = "exited" ] && [ "$exit_code" != "0" ]; then
-                echo "Container $container failed with exit code $exit_code"
-                failed=true
+
+            echo "Container $container failed with exit code $exit_code"
+            failed=true
             fi
         fi
-    done < <(docker-compose -f "$compose_file" --env-file build/docker-compose.env ps -q)
+    done < <(docker-compose -f "$compose_file" --env-file "$ENV_FILE" ps -q)
 
     if [ "$failed" = true ]; then
         exit 1
@@ -65,18 +59,18 @@ wait_for_running_or_exit() {
 }
 
 echo "Step 1: Running build containers..."
-docker-compose -f build/docker-compose.build.yml --env-file build/docker-compose.env up --build -d
-wait_for_exit build/docker-compose.build.yml
+docker-compose -f "$BUILD_DIR/docker-compose.build.yml" --env-file "$ENV_FILE" up --build -d
+wait_for_containers "$BUILD_DIR/docker-compose.build.yml" "completed"
 
 echo "Step 2: Running root containers..."
-docker-compose -f build/docker-compose.root.yml --env-file build/docker-compose.env up --build -d
-wait_for_running_or_exit build/docker-compose.root.yml
+docker-compose -f "$BUILD_DIR/docker-compose.root.yml" --env-file "$ENV_FILE" up --build -d
+wait_for_containers "$BUILD_DIR/docker-compose.root.yml" "running"
 
 echo "Step 3: Running app containers..."
-docker-compose -f build/docker-compose.app.yml --env-file build/docker-compose.env up --build -d
-wait_for_running_or_exit build/docker-compose.app.yml
+docker-compose -f "$BUILD_DIR/docker-compose.app.yml" --env-file "$ENV_FILE" up --build -d
+wait_for_containers "$BUILD_DIR/docker-compose.app.yml" "running"
 
 echo "Step 4: Running system tests..."
-docker-compose -f build/docker-compose.testssystem.yml --env-file build/docker-compose.env up --build -d
+docker-compose -f "$BUILD_DIR/docker-compose.testssystem.yml" --env-file "$ENV_FILE" up --build -d
 
-echo "Done!" 
+echo "Done!"
