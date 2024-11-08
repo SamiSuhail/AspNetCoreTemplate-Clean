@@ -1,4 +1,4 @@
-name: Docker Pipeline
+name: MyApp CI/CD
 
 on:
   push:
@@ -17,10 +17,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Run build containers
-        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.build.yml --env-file ${{ env.ENV_FILE }} up --build -d
+      - name: Build solution
+        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.build.yml --env-file ${{ env.ENV_FILE }} up --build
 
-  root:
+  testsintegration:
     needs: build
     runs-on: ubuntu-latest
     if: success()
@@ -28,7 +28,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Run root containers
+      - name: Run integration tests
+        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.testsintegration.yml --env-file ${{ env.ENV_FILE }} up --build
+      
+  root:
+    needs: testsintegration
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy root services
         run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.root.yml --env-file ${{ env.ENV_FILE }} up --build -d
 
   app:
@@ -39,10 +50,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Run app containers
+      - name: Deploy app services
         run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.app.yml --env-file ${{ env.ENV_FILE }} up --build -d
 
-  tests:
+  testssystem:
     needs: app
     runs-on: ubuntu-latest
     if: success()
@@ -51,4 +62,4 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Run system tests
-        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.testssystem.yml --env-file ${{ env.ENV_FILE }} up --build -d
+        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.testssystem.yml --env-file ${{ env.ENV_FILE }} up --build

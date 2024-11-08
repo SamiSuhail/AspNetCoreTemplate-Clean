@@ -1,0 +1,11 @@
+services:
+    testsintegration:
+        image: ${DOCKER_REGISTRY-}testsintegration
+        container_name: testsintegration
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        build:
+            context: ../
+            dockerfile: ./build/Dockerfile.testsintegration
+        environment:
+            TESTCONTAINERS_HOST_OVERRIDE: host.docker.internal
