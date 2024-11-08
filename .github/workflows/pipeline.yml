@@ -1,0 +1,54 @@
+name: Docker Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  BUILD_DIR: MyApp/build
+  ENV_FILE: MyApp/build/docker-compose.env
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run build containers
+        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.build.yml --env-file ${{ env.ENV_FILE }} up --build -d
+
+  root:
+    needs: build
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run root containers
+        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.root.yml --env-file ${{ env.ENV_FILE }} up --build -d
+
+  app:
+    needs: root
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run app containers
+        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.app.yml --env-file ${{ env.ENV_FILE }} up --build -d
+
+  tests:
+    needs: app
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run system tests
+        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.testssystem.yml --env-file ${{ env.ENV_FILE }} up --build -d
