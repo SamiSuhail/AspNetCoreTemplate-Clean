@@ -19,81 +19,15 @@ jobs:
       
       - name: Build solution
         run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.build.yml --env-file ${{ env.ENV_FILE }} up --build
-
-      - name: Save Docker image as artifact
-        run: |
-          docker save ${DOCKER_REGISTRY-}base -o base-image.tar
-          
-      - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: docker-images
-          path: base-image.tar
-
-  testsintegration:
-    needs: build
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Download Docker image artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: docker-images
-          
-      - name: Load Docker image
-        run: docker load -i base-image.tar
       
       - name: Run integration tests
         run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.testsintegration.yml --env-file ${{ env.ENV_FILE }} up --build
       
-  root:
-    needs: testsintegration
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
       - name: Deploy root services
         run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.root.yml --env-file ${{ env.ENV_FILE }} up --build -d
 
-  app:
-    needs: root
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Download Docker image artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: docker-images
-          
-      - name: Load Docker image
-        run: docker load -i base-image.tar
-      
       - name: Deploy app services
         run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.app.yml --env-file ${{ env.ENV_FILE }} up --build -d
 
-  testssystem:
-    needs: app
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        
-      - name: Download Docker image artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: docker-images
-          
-      - name: Load Docker image
-        run: docker load -i base-image.tar
-      
       - name: Run system tests
         run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.testssystem.yml --env-file ${{ env.ENV_FILE }} up --build
