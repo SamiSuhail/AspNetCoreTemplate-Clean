@@ -17,17 +17,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Build solution
-        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.build.yml --env-file ${{ env.ENV_FILE }} up --build
-      
-      - name: Run integration tests
-        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.testsintegration.yml --env-file ${{ env.ENV_FILE }} up --build
-      
-      - name: Deploy root services
-        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.root.yml --env-file ${{ env.ENV_FILE }} up --build -d
-
-      - name: Deploy app services
-        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.app.yml --env-file ${{ env.ENV_FILE }} up --build -d
-
-      - name: Run system tests
-        run: docker compose -f ${{ env.BUILD_DIR }}/docker-compose.testssystem.yml --env-file ${{ env.ENV_FILE }} up --build
+      - name: Build and test solution
+        run: |
+          docker compose -f ${{ env.BUILD_DIR }}/docker-compose.build.yml --env-file ${{ env.ENV_FILE }} up --build
+          docker compose -f ${{ env.BUILD_DIR }}/docker-compose.testsintegration.yml --env-file ${{ env.ENV_FILE }} up --build
+          docker compose -f ${{ env.BUILD_DIR }}/docker-compose.root.yml --env-file ${{ env.ENV_FILE }} up --build -d
+          docker compose -f ${{ env.BUILD_DIR }}/docker-compose.app.yml --env-file ${{ env.ENV_FILE }} up --build -d
+          docker compose -f ${{ env.BUILD_DIR }}/docker-compose.testssystem.yml --env-file ${{ env.ENV_FILE }} up --build
