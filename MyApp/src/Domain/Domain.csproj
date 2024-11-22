@@ -7,7 +7,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-		<PackageReference Include="FluentAssertions" Version="6.12.1" />
+		<PackageReference Include="FluentAssertions" Version="6.12.2" />
 		<Using Include="BCrypt.Net.BCrypt" Alias="BC" />
 	</ItemGroup>
 	

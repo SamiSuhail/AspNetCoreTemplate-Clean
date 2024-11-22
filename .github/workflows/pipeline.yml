@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Build and test solution
         run: |
           docker compose -f ${{ env.BUILD_DIR }}/docker-compose.build.yml --env-file ${{ env.ENV_FILE }} up --build
