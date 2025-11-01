@@ -3,7 +3,7 @@
 public static class RandomData
 {
     private static readonly Random _random = new(1337);
-    private static char[] AlphanumericCharacters { get; } = Enumerable.Range('0', 10)
+    private static char[] _alphanumericCharacters = Enumerable.Range('0', 10)
         .Concat(Enumerable.Range('a', 26))
         .Concat(Enumerable.Range('A', 26))
         .Select(x => (char)x)
@@ -15,7 +15,7 @@ public static class RandomData
 
         for (var i = 0; i < length; i++)
         {
-            chars[i] = AlphanumericCharacters[_random.Next(AlphanumericCharacters.Length)];
+            chars[i] = _alphanumericCharacters[_random.Next(_alphanumericCharacters.Length)];
         }
 
         return new string(chars);
