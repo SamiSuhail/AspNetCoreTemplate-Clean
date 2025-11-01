@@ -8,10 +8,12 @@ docker-compose -f .\build\docker-compose.yml --env-file .\build\docker-compose.e
 ```
 
 Web UIs for local development:
+```
 Email OpenAPI UI:	localhost:8900
 RabbitMQ UI:		localhost:15672
 pgAdmin DB UI:		localhost:8888
 Swagger UI:			localhost:8889
+```
 
 
 ## Renaming the solution
