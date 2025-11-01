@@ -2,21 +2,23 @@
 
 public static class RandomData
 {
-    public static char[] AlphanumericCharacters { get; } = Enumerable.Range('0', 10)
+    private static readonly Random _random = new(1337);
+    private static char[] AlphanumericCharacters { get; } = Enumerable.Range('0', 10)
         .Concat(Enumerable.Range('a', 26))
         .Concat(Enumerable.Range('A', 26))
         .Select(x => (char)x)
         .ToArray();
 
-    public static string Alphanumeric(int length = 10)
+    private static string Alphanumeric(int length = 10)
     {
-        var random = new Random();
+        Span<char> chars = stackalloc char[length];
 
-        var chars = Enumerable.Range(0, length)
-            .Select(_ => AlphanumericCharacters[random.Next(AlphanumericCharacters.Length)])
-            .ToArray();
+        for (var i = 0; i < length; i++)
+        {
+            chars[i] = AlphanumericCharacters[_random.Next(AlphanumericCharacters.Length)];
+        }
 
-        return new(chars);
+        return new string(chars);
     }
 
     public static string InstanceName => Alphanumeric();
